@@ -27,7 +27,7 @@ if (isset($_POST["submit"])) {
             $query = "UPDATE `giay` SET `tengiay`='$TENGIAY',`maloaigiay`='$MALOAIGIAY',`mathuonghieu`='$MATHUONGHIEU',`mamaugiay`='$MAMAUGIAY',`donvitinh`='$DONVITINH',`giaban`='$GIABAN',`anhminhhoa`='$ANHMINHHOA',`mota`='$MOTA' WHERE magiay = '$MAGIAY'";
             if (mysqli_query($conn, $query)) {
                 echo "Update successful.";
-                header("Location: ../index_giay.php");
+                header("Location: ../index.php");
                 exit;
             } else {
                 echo "Something is wrong: " . mysqli_error($conn);
