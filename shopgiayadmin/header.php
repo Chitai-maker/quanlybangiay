@@ -35,7 +35,7 @@ if (session_id() == "") {
                         <span style="color:aquamarine;">Welcome <?= $_SESSION['name'] ?></span><a href="logout.php"><img src="anh/logout.png" alt="Logout" style="width:42px;height:42px;"></a>
                     </div>
                 <?php } else if ($_SESSION['quyen'] == 1) { //nếu quyền là nhân viên kho?>
-                    <a href="index_giay.php">Giầy</a>
+                    <a href="index.php">Giầy</a>
                     <a href="sanphamhot.php">Sản phẩm hot</a>
                     <a href="themloaigiay.php">Thêm loại giầy</a>
                     <a href="themmaugiay.php">Thêm màu giầy</a>
@@ -47,7 +47,7 @@ if (session_id() == "") {
                         <span style="color:aquamarine;">Welcome <?= $_SESSION['name'] ?></span><a href="logout.php"><img src="anh/logout.png" alt="Logout" style="width:42px;height:42px;"></a>
                     </div>
                 <?php } else if ($_SESSION['quyen'] == 2) { //nếu quyền là nhân viên bán hàng?>
-                    <a href="index_giay.php">Giầy</a>
+                    <a href="index.php">Giầy</a>
                     <div class="float-end">
                         <span style="color:aquamarine;">Welcome <?= $_SESSION['name'] ?></span><a href="logout.php"><img src="anh/logout.png" alt="Logout" style="width:42px;height:42px;"></a>
                     </div>
