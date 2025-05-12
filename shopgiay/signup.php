@@ -38,7 +38,7 @@ include "header.php";
                 
             </div>
             <div class="register-btn text-center">
-                <button type="submit" class="btn btn-success" name="submit">Đănh ký</button>
+                <button type="submit" class="btn btn-success" name="submit">Đăng ký</button>
             </div>
 </form>
   </div>
