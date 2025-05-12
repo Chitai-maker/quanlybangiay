@@ -1,0 +1,62 @@
+<?php 
+include 'connectdb.php';
+if(isset($_POST["add"])){
+    if(isset($_SESSION["giohang"])){
+        $item_array_id = array_column($_SESSION["giohang"],"magiay");
+        if(!in_array($_GET["magiay"],$item_array_id)){
+            $count = count($_SESSION["giohang"]);
+            $item_array = array(
+                'magiay' => $_GET["magiay"],
+                'tengiay' => $_POST["1_tengiay"],
+                'giaban' => $_POST["1_giaban"],
+                'soluong' => $_POST["soluong"],
+            );
+            if (!isset($_SESSION['makhachhang'] )){
+                unset($_SESSION["giohang"]);
+                header("location:login.php");
+            }
+            else{
+                $_SESSION["giohang"][$count] = $item_array;
+                $_SESSION['message'] = "Thêm sản phẩm vào giỏ hàng thành công!";
+                // Chuyển hướng về trang sản phẩm
+                $masanpham = $_GET["magiay"];
+                echo "<script>window.location='sanpham.php?masanpham=$masanpham';</script>";
+            }
+        }else{
+            if (!isset($_SESSION['makhachhang'] )){
+                unset($_SESSION["giohang"]);
+                header("location:login.php");
+            }
+            else{
+                $_SESSION['message'] = "Sản phẩm đã có trong giỏ hàng!";
+                // Chuyển hướng về trang sản phẩm
+                $masanpham = $_GET["magiay"];
+                echo "<script>window.location='sanpham.php?masanpham=$masanpham';</script>";
+            }
+        }
+    }else{
+        $item_array = array(
+            'magiay' => $_GET["magiay"],
+            'tengiay' => $_POST["1_tengiay"],
+            'giaban' => $_POST["1_giaban"],
+            'soluong' => $_POST["soluong"],
+        );
+        $_SESSION["giohang"][0] = $item_array;
+        $_SESSION['message'] = "Thêm sản phẩm vào giỏ hàng thành công!";
+        // Chuyển hướng về trang sản phẩm
+        $masanpham = $_GET["magiay"];
+        echo "<script>window.location='sanpham.php?masanpham=$masanpham';</script>";
+    }
+}
+
+if(isset($_GET["action"])){
+    if($_GET["action"] == "delete"){
+        foreach($_SESSION["giohang"] as $keys => $value){
+            if($value["magiay"] == $_GET["magiay"]){
+                unset($_SESSION["giohang"][$keys]);
+                $_SESSION['message'] = "Xoá sản phẩm thành công";
+                echo '<script>window.location="giohang.php"</script>';
+            }
+        }
+    }
+}

@@ -1,0 +1,79 @@
+h1 {
+    text-align: center;
+    margin: 10px 0;
+}
+
+.header {
+    background-color: #116c4d;
+    padding: 20px 0;
+    text-align: center;
+    /* Center the content horizontally */
+}
+
+.menu {
+    padding: 0;
+    display: inline-block;
+    /* Ensure the menu is inline and centered */
+}
+
+.menu a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
+    padding: 20px;
+}
+
+.product {
+    border: 1px solid #eaeaec;
+    margin: 15px;
+    padding: 15px;
+    text-align: center;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Thêm hiệu ứng đổ bóng */
+    transition: transform 0.2s ease-in-out;
+    /* Hiệu ứng hover */
+}
+
+.product:hover {
+    transform: scale(1.05);
+    /* Phóng to nhẹ khi hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    /* Tăng đổ bóng khi hover */
+}
+
+.product img {
+    border-radius: 10px;
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.product h6 {
+    font-size: 18px;
+    color: #ff4d4d;
+    /* Màu đỏ nổi bật */
+    margin: 10px 0;
+}
+
+.product input[type="text"] {
+    width: 60px;
+    text-align: center;
+    margin: 10px 0;
+}
+
+.product .btn-success {
+    background-color: #28a745;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.product .btn-success:hover {
+    background-color: #218838;
+    /* Màu đậm hơn khi hover */
+}
+

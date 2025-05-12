@@ -1,0 +1,197 @@
+/* The sidebar menu */
+.sidenav {
+    height: 100%;
+    /* Full-height: remove this if you want "auto" height */
+    width: 160px;
+    /* Set the width of the sidebar */
+    position: fixed;
+    /* Fixed Sidebar (stay in place on scroll) */
+    z-index: 1;
+    /* Stay on top */
+    top: 0;
+    /* Stay at the top */
+    left: 0;
+    background-color: #111;
+    /* Black */
+    overflow-x: hidden;
+    /* Disable horizontal scroll */
+    padding-top: 20px;
+}
+
+/* The navigation menu links */
+.sidenav a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+}
+
+/* When you mouse over the navigation links, change their color */
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+/* Style page content */
+.main {
+    margin-left: 160px;
+    /* Same as the width of the sidebar */
+    padding: 0px 10px;
+}
+
+/* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+
+    .sidenav a {
+        font-size: 18px;
+    }
+}
+
+h1 {
+    text-align: center;
+    margin: 10px 0;
+}
+
+form {
+    width: 50%;
+    margin: auto;
+    border: 1px solid #cababa;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.header {
+    background-color: #2b0cdd;
+    padding: 20px 0;
+    text-align: center;
+    /* Center the content horizontally */
+}
+
+.menu {
+    padding: 0;
+    display: inline-block;
+    /* Ensure the menu is inline and centered */
+}
+
+.menu a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
+    padding: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+}
+
+th,td {
+    text-align: center;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2
+}
+
+.small-img {
+    width: 150px;
+    height: auto;
+    object-fit: cover;
+}
+
+.session-message {
+    text-align: center;
+    /* Center the content horizontally */
+    margin-bottom: 20px;
+    /* Add some spacing below the message */
+}
+
+/* Remove border from the form */
+.form-no-border {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Align buttons horizontally */
+.button-group a,
+.button-group form {
+    display: inline-block;
+    margin-right: 5px;
+    /* Add spacing between buttons */
+}
+
+/* Ensure table headers and cells don't wrap text */
+table {
+    table-layout: auto;
+    /* Allow columns to adjust based on content */
+    width: 100%;
+    /* Ensure the table takes the full width of the container */
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    /* Increase font size for better readability */
+}
+th {
+    text-align: center;
+}
+
+td {
+    text-align: center;
+    padding: 12px;
+    /* Increase padding for larger cells */
+    white-space: normal;
+    /* Allow text to wrap */
+    vertical-align: middle;
+    /* Center content vertically */
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+    /* Slightly lighter background for even rows */
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+    /* Highlight row on hover */
+}
+
+.small-img {
+    width: 200px;
+    /* Increase image size */
+    height: auto;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+}
+
+textarea {
+    resize: none;
+    /* Disable manual resizing */
+    overflow: hidden;
+    /* Hide scrollbars */
+    min-height: 50px;
+    /* Set a minimum height */
+    max-height: 500px;
+    /* Optional: Set a maximum height */
+}
+
+textarea.auto-resize {
+    height: auto;
+    /* Reset height */
+    overflow-y: hidden;
+    /* Hide vertical scrollbar */
+}
+
+.img-fluid {
+    max-width: 10%;
+    height: auto;
+    /* Ensure images are responsive */
+}
