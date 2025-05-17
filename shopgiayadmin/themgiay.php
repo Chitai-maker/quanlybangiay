@@ -23,7 +23,7 @@ include_once("chucnang/chucnang_showFK.php");
     <div class="container mt-5">
         <form action="chucnang/chucnang_themgiay.php" method="post" enctype="multipart/form-data">
         <h2>Thêm sản phẩm</h2>
-            <label>Tên giầy</label>
+            <label>Tên giày</label>
             <input class="form-control mt-4" type="text" name="tengiay" id="" placeholder="Nhập tên:">
             <label>Đơn vị tính</label>
             <input class="form-control mt-4" type="text" name="donvitinh" id="" placeholder="Nhập tên:">

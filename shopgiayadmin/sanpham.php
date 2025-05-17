@@ -15,6 +15,19 @@ if (isset($_GET['masanpham'])) {
     // Kiểm tra nếu sản phẩm tồn tại
     if (mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
+        // Truy vấn giá khuyến mãi từ bảng sanphamhot
+        $query_discount = "SELECT giakhuyenmai FROM sanphamhot WHERE magiay = '$magiay'";
+        $result_discount = mysqli_query($conn, $query_discount);
+        $discount = 0;
+
+        if (mysqli_num_rows($result_discount) > 0) {
+            $discount_row = mysqli_fetch_assoc($result_discount);
+            $discount = $discount_row['giakhuyenmai'];
+        }
+
+        // Tính giá sau khi giảm
+        $original_price = $row['giaban'];
+        $final_price = $discount > 0 ? $original_price * (1 - $discount / 100) : $original_price;
         ?>
         <!DOCTYPE html>
         <html lang="en">
@@ -38,7 +51,14 @@ if (isset($_GET['masanpham'])) {
                     <!-- Thông tin sản phẩm -->
                     <div class="col-md-6">
                         <h2><?php echo $row['tengiay']; ?></h2>
-                        <h4 class="text-danger"><?php echo number_format($row['giaban'], 0, ',', '.'); ?> VND</h4>
+                        <h4 class="text-danger">
+                            <?php 
+                            if ($discount > 0) {
+                                echo "<del>" . number_format($original_price, 0, ',', '.') . " VND</del> ";
+                            }
+                            echo number_format($final_price, 0, ',', '.') . " VND"; 
+                            ?>
+                        </h4>
                         <p><?php echo $row['mota']; ?></p>
 
                         <!-- Form thêm vào giỏ hàng -->

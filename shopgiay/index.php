@@ -27,14 +27,19 @@ include "chucnang/connectdb.php";
         <button type="submit" class="btn btn-primary ml-2">Tìm kiếm</button>
     </form>
 </div>
-<h2 class="text-center mt-4">Sản Phẩm Giảm Giá<img src="anh/fire.gif" alt="HTML tutorial" style="width:42px;height:42px;"> </h2>
+
 <div class="container" style="margin-top: 50px;">
     <?php
     // Kiểm tra nếu có tham số tìm kiếm
     if (isset($_GET['search']) && !empty($_GET['search'])) {
+        echo "<h2 class='text-center mt-4'>Kết quả tìm kiếm cho: <span style='color: red;'>" . htmlspecialchars($_GET['search']) . "</span></h2>";
+        // Lấy giá trị tìm kiếm từ tham số GET
         $search = mysqli_real_escape_string($conn, $_GET['search']);
         $query = "SELECT * FROM giay WHERE tengiay LIKE '%$search%' ORDER BY magiay ASC";
-    } else {
+    } else { ?>   
+        <h2 class="text-center mt-4">Sản Phẩm Giảm Giá<img src="anh/fire.gif" alt="HTML tutorial" style="width:42px;height:42px;"> </h2>
+        <?php
+        // Nếu không có tìm kiếm, hiển thị tất cả sản phẩm trong bảng sanphamhot
         $query = "SELECT giay.* 
           FROM giay 
           INNER JOIN sanphamhot ON giay.magiay = sanphamhot.magiay 

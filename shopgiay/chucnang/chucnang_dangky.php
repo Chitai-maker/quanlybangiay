@@ -1,5 +1,6 @@
 <?php
 include_once("connectdb.php");
+$error = ""; // Thêm biến lỗi
 if($_SERVER["REQUEST_METHOD"]==="POST") {
     $TEN_KHACHHANG =  $_POST["tenkhachhang"];
     $EMAIL =  $_POST["email"];
@@ -7,14 +8,19 @@ if($_SERVER["REQUEST_METHOD"]==="POST") {
     $DIACHI =  $_POST["diachi"];
     $PASS =  $_POST["psw"];
 
-    //dang ky
-    $pass_dangky =  $PASS;//khong luu tru sao database
-    //hash passward bang password_hash cua php
-    $option= ['cost' => 12];
-    $hash_pass=password_hash($pass_dangky,PASSWORD_BCRYPT,$option);
-
-            $query = "INSERT INTO `khachhang`(`ten_khachhang`, `email`,`sdt`,`diachi`, `matkhau`) VALUES ('$TEN_KHACHHANG','$EMAIL','$SDT','$DIACHI','$hash_pass')";
-            if(mysqli_query($conn, $query)){
-                header("Location: index.php");
-            }
+    // Kiểm tra trùng email
+    $check_email = "SELECT * FROM khachhang WHERE email = '$EMAIL'";
+    $result = mysqli_query($conn, $check_email);
+    if(mysqli_num_rows($result) > 0) {
+        $error = "Email đã tồn tại. Vui lòng chọn email khác!";
+    } else {
+        $option= ['cost' => 12];
+        $hash_pass=password_hash($PASS,PASSWORD_BCRYPT,$option);
+        $query = "INSERT INTO `khachhang`(`ten_khachhang`, `email`,`sdt`,`diachi`, `matkhau`) VALUES ('$TEN_KHACHHANG','$EMAIL','$SDT','$DIACHI','$hash_pass')";
+        if(mysqli_query($conn, $query)){
+            header("Location: index.php");
+            exit();
         }
+    }
+}
+?>

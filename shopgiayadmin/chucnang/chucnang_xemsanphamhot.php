@@ -1,5 +1,5 @@
 <div class="container mt-5">
-    <h2>Danh sách sản phẩm hot</h2>
+    <h2>Danh sách sản phẩm khuyến mãi</h2>
     <table class="table table-bordered">
         <thead>
             <tr>
@@ -11,16 +11,20 @@
         </thead>
         <tbody>
             <?php
-            $query = "SELECT sanphamhot.ma_sanphamyeuthich, giay.tengiay ,sanphamhot.giakhuyenmai
+            $query = "SELECT sanphamhot.ma_sanphamyeuthich, giay.magiay, giay.tengiay ,sanphamhot.giakhuyenmai
                       FROM sanphamhot 
-                      JOIN giay ON sanphamhot.magiay = giay.magiay";
+                      JOIN giay ON sanphamhot.magiay = giay.magiay
+                      order BY giay.tengiay ASC"
+                      ;
             $result = mysqli_query($conn, $query);
 
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>";
-                    echo "<td>" . $row['ma_sanphamyeuthich'] . "</td>";
-                    echo "<td>" . htmlspecialchars($row['tengiay']) . "</td>";
+                    echo "<td>" . $row['ma_sanphamyeuthich'] . "</td>"; ?>
+                    <td><a href="sanpham.php?masanpham=<?php echo $row['magiay']; ?>"> <?= $row['tengiay']; ?></a></td>
+                    
+                    <?php
                     echo "<td>" .htmlspecialchars($row['giakhuyenmai']) . "</td>";
                     echo "<td>
                             <form action='chucnang/chucnang_xoasanphamhot.php' method='post' class='d-inline form-no-border'>

@@ -10,10 +10,18 @@ include "header.php";
     padding: 20px;
     border-radius: 10px;    
 }
+.error-message {
+    color: red;
+    text-align: center;
+    margin-bottom: 10px;
+}
 </style>
 <body>
   <div class="container">
     <h1>Đăng Ký</h1>
+    <?php if (!empty($error)): ?>
+        <div class="error-message"><?php echo $error; ?></div>
+    <?php endif; ?>
           <form action="" style="border:1px solid #ccc"  method="post" enctype="multipart/form-data">       
           <div class="mb-3">
                 <label for="tenkhachhang" class="form-label fw-bold">Tên</label>

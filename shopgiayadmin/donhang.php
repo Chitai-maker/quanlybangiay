@@ -18,6 +18,7 @@ include "header.php"; ?>
 </head>
 
 <body>
+  <h1 class="text-center mt-5">Danh Sách Đơn hàng</h1>
   <?php
   // Display session message if set
   if (isset($_SESSION['message'])) {

@@ -17,7 +17,7 @@ include "header.php";?>
 <body>
     <div class="container mt-5">
         <form action="chucnang/chucnang_themsize.php" method="post" enctype="multipart/form-data">
-        <h2>Thêm size giầy</h2>
+        <h2>Thêm size giày</h2>
             <input class="form-control mt-4" type="text" name="tensize" id="" placeholder="Nhập tên:">
             <input class="btn btn-primary mt-4" type="submit" value="Upload" name="submit">
         </form>

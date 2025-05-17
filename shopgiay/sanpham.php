@@ -56,7 +56,7 @@ if (isset($_GET['masanpham'])) {
                 <div class="row">
                     <!-- Hình ảnh sản phẩm -->
                     <div class="col-md-6">
-                        <img src="../shopgiayadmin/anhgiay/<?php echo $row['anhminhhoa']; ?>" class="img-fluid" alt="<?php echo $row['tengiay']; ?>" style="border-radius: 10px;">
+                        <img src="../shopgiayadmin/anhgiay/<?php echo $row['anhminhhoa']; ?>" class="img-fluid" alt="<?php echo $row['tengiay']; ?>" style="border-radius: 10px; width: 300px; height: auto;">
                     </div>
 
                     <!-- Thông tin sản phẩm -->

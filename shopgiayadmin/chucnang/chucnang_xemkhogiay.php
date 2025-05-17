@@ -42,6 +42,11 @@
           $query .= isset($maloaigiay) ? " AND" : " WHERE";
           $query .= " giay.masize = $sizegiay";
       }
+      // Thêm điều kiện lọc theo thương hiệu
+      if (isset($mathuonghieu)) {
+          $query .= (isset($maloaigiay) || isset($sizegiay)) ? " AND" : " WHERE";
+          $query .= " giay.mathuonghieu = $mathuonghieu";
+      }
 
       // Thêm điều kiện tìm kiếm theo tên giày
       if (isset($_GET['search']) && !empty($_GET['search'])) {

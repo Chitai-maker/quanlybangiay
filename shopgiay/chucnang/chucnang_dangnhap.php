@@ -50,11 +50,11 @@ if (isset($_POST['submit'])){
 
             }
             else{
-                $pwd_err = "Incorrect Password";
+                $pwd_err = "Sai mật khẩu";
             }
         }
         else{
-            $email_err = "Email is not registered";
+            $email_err = "Email chưa được đăng ký";
         }
     }
 

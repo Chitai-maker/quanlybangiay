@@ -32,35 +32,62 @@ include "header.php"; ?>
         <button type="submit" class="btn btn-primary ml-2">Tìm kiếm</button>
     </form>
 </div>
-  
-    <form method="GET" action="" style="border: none;">
+
+<!-- Nút lọc theo thương hiệu -->
+<?php
+include_once("chucnang/connectdb.php");
+$mathuonghieu = isset($_GET['mathuonghieu']) ? intval($_GET['mathuonghieu']) : 0;
+$thuonghieu_query = "SELECT * FROM thuonghieu";
+$thuonghieu_result = mysqli_query($conn, $thuonghieu_query);
+?>
+<form method="GET" action="" style="border: none;">
+    <h3>Thương hiệu</h3>
+    <?php while($row = mysqli_fetch_assoc($thuonghieu_result)): ?>
+        <button type="submit" name="mathuonghieu" value="<?= $row['mathuonghieu'] ?>" class="btn btn-outline-primary" style="border: none;<?= ($mathuonghieu == $row['mathuonghieu']) ? 'font-weight:bold;background:#d1e7fd;' : '' ?>">
+            <?= htmlspecialchars($row['tenthuonghieu']) ?>
+        </button>
+    <?php endwhile; ?>
+</form>
+<!-- Nút lọc theo loại giày -->
+ <?php
+include_once("chucnang/connectdb.php");
+$maloaigiay = isset($_GET['maloaigiay']) ? intval($_GET['maloaigiay']) : 0;
+$loaigiay_query = "SELECT * FROM loaigiay";
+$loaigiay_result = mysqli_query($conn, $loaigiay_query);
+?>
+ <form method="GET" action="" style="border: none;">
     <h3>Loại giày</h3>
-        <!-- Nút lọc theo loại giày -->
-        <button type="submit" name="maloaigiay" value="1" class="btn btn-primary" style="border: none;">Sneaker</button>
-        <button type="submit" name="maloaigiay" value="4" class="btn btn-secondary" style="border: none;">Tất</button>
-        <button type="submit" name="maloaigiay" value="3" class="btn btn-success" style="border: none;">Dép</button>
-        <button type="submit" name="maloaigiay" value="2" class="btn btn-warning" style="border: none;">Sandal</button>
-    </form>
+    <?php while($row = mysqli_fetch_assoc($loaigiay_result)): ?>
+        <button type="submit" name="maloaigiay" value="<?= $row['maloaigiay'] ?>" class="btn btn-outline-primary" style="border: none;<?= ($maloaigiay == $row['maloaigiay']) ? 'font-weight:bold;background:#d1e7fd;' : '' ?>">
+            <?= htmlspecialchars($row['tenloaigiay']) ?>
+        </button>
+    <?php endwhile; ?>
+</form>
 
-
-    <form method="GET" action="" style="border: none;">
-    <h3>size</h3>
-        <!-- Nút lọc theo size giày -->
-        <button type="submit" name="sizegiay" value="1" class="btn btn-info" style="border: none;">Size 36</button>
-        <button type="submit" name="sizegiay" value="2" class="btn btn-info" style="border: none;">Size 37</button>
-        <button type="submit" name="sizegiay" value="3" class="btn btn-info" style="border: none;">Size 38</button>
-        <button type="submit" name="sizegiay" value="4" class="btn btn-info" style="border: none;">Size 39</button>
-        <button type="submit" name="sizegiay" value="5" class="btn btn-info" style="border: none;">Size 40</button>
-    </form>
-
-
-
+<!-- Nút lọc theo size giày -->
+<?php
+include_once("chucnang/connectdb.php");
+$sizegiay = isset($_GET['sizegiay']) ? intval($_GET['sizegiay']) : 0;
+$sizegiay_query = "SELECT * FROM sizegiay";
+$sizegiay_result = mysqli_query($conn, $sizegiay_query);
+?>
+<form method="GET" action="" style="border: none;">
+<h3>Size giày</h3>
+    <?php while($row = mysqli_fetch_assoc($sizegiay_result)): ?>
+        <button type="submit" name="sizegiay" value="<?= $row['masize'] ?>" class="btn btn-outline-primary" style="border: none;<?= ($sizegiay == $row['masize']) ? 'font-weight:bold;background:#d1e7fd;' : '' ?>">
+            <?= htmlspecialchars($row['tensize']) ?>
+        </button>
+    <?php endwhile; ?>
+</form>
 <?php
 // Lấy giá trị $maloaigiay từ tham số GET
 $maloaigiay = isset($_GET['maloaigiay']) ? intval($_GET['maloaigiay']) : null;
 
 // Lấy giá trị $sizegiay từ tham số GET
 $sizegiay = isset($_GET['sizegiay']) ? intval($_GET['sizegiay']) : null;
+
+// Lấy giá trị $mathuonghieu từ tham số GET
+$mathuonghieu = isset($_GET['mathuonghieu']) ? intval($_GET['mathuonghieu']) : null;
 
 include("chucnang/chucnang_xemkhogiay.php");
 ?>

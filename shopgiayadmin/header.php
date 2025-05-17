@@ -22,11 +22,12 @@ if (session_id() == "") {
                     
                     <a href="dashboard.php">Dashboard</a>
                     <a href="index.php">Sản phẩm</a>
+                    <a href="themgiay.php">Thêm Giầy</a>
+                    <a href="sanphamhot.php">Sản phẩm hot</a>
                     <a href="themloaigiay.php">Loại giầy</a>
                     <a href="themmaugiay.php">Màu giầy</a>
                     <a href="themthuonghieu.php">Thương hiệu</a>
-                    <a href="themsize.php">Size</a>
-                    <a href="themgiay.php">Thêm Giầy</a>
+                    <a href="themsize.php">Size</a>                   
                     <a href="donhang.php">Đơn hàng</a>
                     <a href="khachhang.php">Khách hàng</a>
                     <a href="nhanvien.php">Nhân viên</a> 

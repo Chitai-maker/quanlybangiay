@@ -14,12 +14,12 @@ include "chucnang/connectdb.php";
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <title>Thêm sản phẩm hot</title>
+    <title>Thêm sản phẩm khuyến mãi</title>
 </head>
 <body>
     <div class="container mt-5">
         <form action="chucnang/chucnang_themsanphamhot.php" method="post">
-            <h2>Thêm sản phẩm hot</h2>
+            <h2>Thêm sản phẩm khuyến mãi</h2>
             <div class="form-group mt-4">
                 <label for="magiay">Chọn sản phẩm:</label>
                 <select class="form-control" name="magiay" id="magiay" required>
@@ -42,7 +42,7 @@ include "chucnang/connectdb.php";
                 <label for="giakhuyenmai">Giá khuyến mãi (%):</label>
                 <input type="number" class="form-control" name="giakhuyenmai" id="giakhuyenmai" min="1" max="100" required>
             </div>
-            <input class="btn btn-primary mt-4" type="submit" value="Thêm sản phẩm hot" name="submit">
+            <input class="btn btn-primary mt-4" type="submit" value="Thêm" name="submit">
         </form>
     </div>
     <?php include "chucnang/chucnang_xemsanphamhot.php"; ?>
