@@ -1,0 +1,76 @@
+<?php
+include "header.php";
+include_once("chucnang/connectdb.php");
+
+// Lấy năm từ form hoặc mặc định là năm hiện tại
+$year = isset($_GET['year']) ? intval($_GET['year']) : date('Y');
+
+// Truy vấn thống kê doanh thu từng tháng trong năm
+$query = "
+SELECT 
+    MONTH(dh.ngaydat) AS thang,
+    SUM(ct.soluong * g.giaban) AS doanhthu
+FROM donhang dh
+JOIN chitietdonhang ct ON dh.ma_donhang = ct.ma_donhang
+JOIN giay g ON ct.ma_giay = g.magiay
+WHERE YEAR(dh.ngaydat) = $year AND dh.trangthai = 'Hoàn thành'
+GROUP BY thang
+ORDER BY thang ASC
+";
+$result = mysqli_query($conn, $query);
+
+// Chuẩn bị mảng doanh thu 12 tháng, mặc định 0
+$doanhthu_thang = array_fill(1, 12, 0);
+while ($row = mysqli_fetch_assoc($result)) {
+    $doanhthu_thang[intval($row['thang'])] = $row['doanhthu'];
+}
+
+// Tìm tháng có doanh thu cao nhất
+$maxMonth = null;
+$maxDoanhThu = 0;
+foreach ($doanhthu_thang as $thang => $doanhthu) {
+    if ($doanhthu > $maxDoanhThu) {
+        $maxDoanhThu = $doanhthu;
+        $maxMonth = $thang;
+    }
+}
+?>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Thống kê doanh thu từng tháng năm <?= $year ?></h2>
+    <form method="get" class="mb-4 row g-3 justify-content-center">
+        <div class="col-auto">
+            <label for="year" class="form-label">Chọn năm:</label>
+            <input type="number" min="2000" max="<?= date('Y') ?>" id="year" name="year" class="form-control" value="<?= $year ?>">
+        </div>
+        <div class="col-auto align-self-end">
+            <button type="submit" class="btn btn-primary">Xem thống kê</button>
+        </div>
+    </form>
+    <?php if ($maxMonth): ?>
+        <div class="alert alert-success text-center">
+            <b>Tháng <?= $maxMonth ?></b> có doanh thu cao nhất: <b><?= number_format($maxDoanhThu, 0, ',', '.') ?> VND</b>
+        </div>
+    <?php else: ?>
+        <div class="alert alert-warning text-center">
+            Không có dữ liệu doanh thu cho năm này.
+        </div>
+    <?php endif; ?>
+
+    <table class="table table-bordered text-center mt-4">
+        <thead>
+            <tr>
+                <th>Tháng</th>
+                <th>Doanh thu</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php for ($i = 1; $i <= 12; $i++): ?>
+                <tr <?= ($i == $maxMonth) ? 'style="background:#d1e7dd;font-weight:bold;"' : '' ?>>
+                    <td><?= $i ?></td>
+                    <td><?= number_format($doanhthu_thang[$i], 0, ',', '.') ?> VND</td>
+                </tr>
+            <?php endfor; ?>
+        </tbody>
+    </table>
+</div>

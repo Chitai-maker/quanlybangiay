@@ -1,6 +1,13 @@
 <?php
 require 'connectdb.php';
 
+// Lọc theo trạng thái nếu có
+$trangthai_filter = isset($_GET['trangthai']) ? $_GET['trangthai'] : '';
+$where_trangthai = "";
+if ($trangthai_filter != '') {
+    $where_trangthai = "WHERE donhang.trangthai = '" . mysqli_real_escape_string($conn, $trangthai_filter) . "'";
+}
+
 $query = "
    SELECT 
     khachhang.ten_khachhang AS TenKhachHang,
@@ -35,10 +42,9 @@ JOIN
     giay ON chitietdonhang.ma_giay = giay.magiay
 LEFT JOIN 
     sanphamhot ON giay.magiay = sanphamhot.magiay
+$where_trangthai
 ORDER BY 
-    donhang.ma_donhang;
-
-
+    donhang.ma_donhang DESC
 ";
 
 $result = mysqli_query($conn, $query);
@@ -151,11 +157,15 @@ if (mysqli_num_rows($result) > 0) {
                                         <button style="border:none" type="submit" class="btn btn-success" onclick="return confirm('Bạn có chắc chắn muốn cập nhật trạng thái đơn hàng này thành Hoàn thành?');">Hoàn thành</button>
                                     <?php } else { ?>
                                         <input type="hidden" name="trangthai" value="Đang giao hàng">
-                                        <button style="border:none" type="submit" class="btn btn-primary" onclick="return confirm('Bạn có chắc chắn muốn cập nhật trạng thái đơn hàng này thành Đang giao hàng?');">Cập nhật trạng thái</button>
+                                        <button style="border:none" type="submit" class="btn btn-primary" onclick="return confirm('Bạn có chắc chắn muốn cập nhật trạng thái đơn hàng này thành Đang giao hàng?');">Giao hàng</button>
                                     <?php } ?>
                                 </form>
                             <?php } ?>
                         </td>
                     </tr>
             <?php }
-            } ?>
+            } else {
+                // Nếu không có dữ liệu, hiển thị thông báo
+                echo '<div class="container mt-5"><h4 class="text-center text-danger">Không có đơn hàng</h4></div>';
+            }
+            ?>

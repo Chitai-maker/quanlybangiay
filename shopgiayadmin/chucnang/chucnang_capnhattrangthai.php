@@ -19,7 +19,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Chuyển hướng về trang đơn hàng
-    header("Location: ../donhang.php");
+    header("Location: ../donhang.php?trangthai=$trangThai");
+    $stmt->close();
     exit();
 }
 ?>

@@ -36,7 +36,7 @@ JOIN
 WHERE 
     khachhang.ma_khachhang = $makhachhang
 ORDER BY 
-    donhang.ma_donhang;
+    donhang.ma_donhang DESC
 ";
 
 $result = mysqli_query($conn, $query);
@@ -134,13 +134,15 @@ if (mysqli_num_rows($result) > 0) {
                     </td>
                     <td>
                         <!-- Nút Hủy đơn hàng -->
-                        <?php if ($order['trangthai'] !== 'Đã hủy') { ?>
+                        <?php if ($order['trangthai'] !== 'Đã hủy' && $order['trangthai'] !== 'Hoàn thành') { ?>
                             <form method="post" action="">
                                 <input type="hidden" name="ma_donhang" value="<?php echo $maDonHang; ?>">
                                 <button type="submit" name="huy_donhang" class="btn btn-danger">Hủy đơn hàng</button>
                             </form>
-                        <?php } else { ?>
+                        <?php } elseif ($order['trangthai'] === 'Đã hủy') { ?>
                             <span class="text-muted">Đã hủy</span>
+                        <?php } elseif ($order['trangthai'] === 'Hoàn thành') { ?>
+                            <span class="text-success">Hoàn thành</span>
                         <?php } ?>
                     </td>
                 </tr>

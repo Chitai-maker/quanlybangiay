@@ -22,8 +22,8 @@ if (session_id() == "") {
                     
                     <a href="dashboard.php">Dashboard</a>
                     <a href="index.php">Sản phẩm</a>
-                    <a href="themgiay.php">Thêm Giày</a>
-                    <a href="sanphamhot.php">Sản phẩm hot</a>
+                    
+                    <a href="sanphamhot.php">Khuyến mãi</a>
                     <a href="themloaigiay.php">Loại giày</a>
                     <a href="themmaugiay.php">Màu giày</a>
                     <a href="themthuonghieu.php">Thương hiệu</a>
@@ -31,7 +31,7 @@ if (session_id() == "") {
                     <a href="donhang.php">Đơn hàng</a>
                     <a href="khachhang.php">Khách hàng</a>
                     <a href="nhanvien.php">Nhân viên</a> 
-                    <a href="sanphamhot.php">Sản phẩm hot</a>                  
+                                    
                     <div class="float-end">
                         <span style="color:aquamarine;">Welcome <?= $_SESSION['name'] ?></span><a href="logout.php"><img src="anh/logout.png" alt="Logout" style="width:42px;height:42px;"></a>
                     </div>

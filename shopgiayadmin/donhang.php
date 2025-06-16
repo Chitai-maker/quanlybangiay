@@ -2,10 +2,9 @@
 session_start();
 if (!isset($_SESSION['name']))
   header("location:login.php");
-  if($_SESSION['quyen'] > 1){
-    header("location:dangnhap_quyencaohon.php");
-  
-  }   
+if($_SESSION['quyen'] > 1){
+  header("location:dangnhap_quyencaohon.php");
+}
 include "header.php"; ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,17 +21,40 @@ include "header.php"; ?>
   <?php
   // Display session message if set
   if (isset($_SESSION['message'])) {
-    echo "<div class='session-message text-center'>"; // Add a wrapper with a class
+    echo "<div class='session-message text-center'>";
     echo "<div class='alert alert-success alert-dismissible fade show d-inline-block' role='alert'>";
     echo $_SESSION['message'];
     echo "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
     echo "</div>";
     echo "</div>";
-    unset($_SESSION['message']); // Clear the message after displaying it
+    unset($_SESSION['message']);
   }
+  ?>
+
+  <!-- Form lọc theo trạng thái -->
+  <div class="container mb-3">
+    <form method="get" class="row g-3 justify-content-center">
+      <div class="col-auto">
+        <label for="trangthai" class="form-label">Lọc theo trạng thái:</label>
+        <select name="trangthai" id="trangthai" class="form-control">
+          <option value="">Tất cả</option>
+          <option value="Đang xử lý" <?= (isset($_GET['trangthai']) && $_GET['trangthai'] == 'Đang xử lý') ? 'selected' : '' ?>>Đang xử lý</option>
+          <option value="Đang giao hàng" <?= (isset($_GET['trangthai']) && $_GET['trangthai'] == 'Đang giao hàng') ? 'selected' : '' ?>>Đang giao hàng</option>
+          <option value="Hoàn thành" <?= (isset($_GET['trangthai']) && $_GET['trangthai'] == 'Hoàn thành') ? 'selected' : '' ?>>Hoàn thành</option>
+          <option value="Đã hủy" <?= (isset($_GET['trangthai']) && $_GET['trangthai'] == 'Đã hủy') ? 'selected' : '' ?>>Đã hủy</option>
+        </select>
+      </div>
+      <div class="col-auto align-self-end">
+        <button type="submit" class="btn btn-primary">Lọc</button>
+      </div>
+    </form>
+  </div>
+
+  <?php
+  // Truyền biến lọc trạng thái cho file xem đơn hàng
+  $trangthai_filter = isset($_GET['trangthai']) ? $_GET['trangthai'] : '';
   include_once("chucnang/chucnang_xemdonhang.php");
   ?>
 
 </body>
-
 </html>

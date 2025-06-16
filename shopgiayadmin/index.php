@@ -26,11 +26,14 @@ include "header.php"; ?>
   }
   ?>
 
-<div class="container mt-4">
-    <form method="get" action="index.php" class="d-flex justify-content-center">
+<div class="container mt-4 d-flex justify-content-center align-items-center">
+    <form method="get" action="index.php" class="d-flex flex-grow-1 justify-content-center">
         <input type="text" name="search" class="form-control w-50" placeholder="Tìm kiếm sản phẩm..." value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
         <button type="submit" class="btn btn-primary ml-2">Tìm kiếm</button>
     </form>
+    <a href="themgiay.php" class="btn btn-success ms-3" title="Thêm sản phẩm mới" style="font-size: 1.5rem; border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;">
+        +
+    </a>
 </div>
 
 <!-- Nút lọc theo thương hiệu -->
