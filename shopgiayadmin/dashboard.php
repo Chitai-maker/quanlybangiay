@@ -22,21 +22,181 @@ $donhang_chuaduyet = $row['total'];
 $donhang_danggiaohang = $row2['total'];
 $donhang_hoanthanh = $row3['total'];
 $donhang_huy = $row4['total'];
-// đếm số khách hàng
+// Đếm số khách hàng
 $query5 = "SELECT COUNT(*) AS total FROM khachhang";
 $result5 = mysqli_query($conn, $query5);
 $row5 = mysqli_fetch_assoc($result5);
 $khachhang_count = $row5['total'];
-
+// Đếm tổng doanh thu
+$query6 = "SELECT SUM(chitietdonhang.soluong * giay.giaban) AS total FROM donhang JOIN chitietdonhang ON donhang.ma_donhang = chitietdonhang.ma_donhang JOIN giay ON chitietdonhang.ma_giay = giay.magiay WHERE donhang.trangthai = 'Hoàn thành'";
+$result6 = mysqli_query($conn, $query6);
+$row6 = mysqli_fetch_assoc($result6);
+$doanhthu_total = $row6['total'] ? number_format($row6['total'], 0, ',', '.') : '0';
+// Đếm số nhân viên
+$query7 = "SELECT COUNT(*) AS total FROM nhanvien";
+$result7 = mysqli_query($conn, $query7);
+$row7 = mysqli_fetch_assoc($result7);
+$nhanvien_count = $row7['total'];
+// Đếm số sản phẩm
+$query8 = "SELECT COUNT(*) AS total FROM giay";
+$result8 = mysqli_query($conn, $query8);
+$row8 = mysqli_fetch_assoc($result8);
+$sanpham_count = $row8['total'];
+// Đóng kết nối
+mysqli_close($conn);
 ?>
-<h1>My Dashboard</h1>
-<div style="margin: 20px 0;">
-    <a href="donhang.php?trangthai=Đang+xử+lý"><h3>Số đơn hàng chưa duyệt: <span style="color: red;"><?= $donhang_chuaduyet ?></span></h3></a>
-    <a href="donhang.php?trangthai=Đang+giao+hàng"><h3>Số đơn hàng đang giao hàng: <span style="color: red;"><?= $donhang_danggiaohang ?></span></h3></a>
-    <a href="donhang.php?trangthai=Hoàn+thành"><h3>Số đơn hàng đã hoàn thành: <span style="color: red;"><?= $donhang_hoanthanh ?></span></h3></a>
-    <a href="donhang.php?trangthai=Đã+hủy"><h3>Số đơn hàng đã hủy: <span style="color: red;"><?= $donhang_huy ?></span></h3></a>
-    <a href="khachhang.php"><h3>Số khách hàng: <span style="color: red;"><?= $khachhang_count ?></span></h3></a>
-    <a href="thongke.php"><h3>Thống kê sản phẩm bán chạy nhất</h3></a>
+<style>
+    .dashboard-cards {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+        margin: 30px 0 30px 0;
+        justify-content: flex-start;
+    }
+
+    .dashboard-card {
+        flex: 1 1 250px;
+        min-width: 220px;
+        max-width: 320px;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        display: flex;
+        align-items: center;
+        padding: 24px 32px;
+        gap: 18px;
+        transition: box-shadow 0.2s;
+        text-decoration: none;
+    }
+
+    .dashboard-card:hover {
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+        text-decoration: none;
+    }
+
+    .dashboard-icon {
+        font-size: 2.2rem;
+        color: #fff;
+        border-radius: 10px;
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .bg-blue {
+        background: #2563eb;
+    }
+
+    .bg-green {
+        background: #22c55e;
+    }
+
+    .bg-red {
+        background: #ef4444;
+    }
+
+    .bg-purple {
+        background: #7c3aed;
+    }
+
+    .bg-pink {
+        background: #e11d48;
+    }
+
+    .bg-cyan {
+        background: #06b6d4;
+    }
+
+    .bg-orange {
+        background: #f59e42;
+    }
+
+    .bg-gray {
+        background: #64748b;
+    }
+
+    .card-label {
+        font-size: 1.1rem;
+        color: #444;
+        margin-bottom: 2px;
+    }
+
+    .card-value {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #222;
+    }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<h1>Bảng Tổng Hợp</h1>
+<div class="dashboard-cards">
+    <a href="donhang.php?trangthai=Đang+xử+lý" class="dashboard-card">
+        <span class="dashboard-icon bg-purple"><i class="fa fa-receipt"></i></span>
+        <div>
+            <div class="card-label">Đơn đặt hàng</div>
+            <div class="card-value"><?= $donhang_chuaduyet ?></div>
+        </div>
+    </a>
+    <a href="donhang.php?trangthai=Đang+giao+hàng" class="dashboard-card">
+        <span class="dashboard-icon bg-blue"><i class="fa fa-truck"></i></span>
+        <div>
+            <div class="card-label">Đơn hàng đang giao hàng</div>
+            <div class="card-value"><?= $donhang_danggiaohang ?></div>
+        </div>
+    </a>
+    <a href="donhang.php?trangthai=Hoàn+thành" class="dashboard-card">
+        <span class="dashboard-icon bg-cyan"><i class="fa fa-check-circle"></i></span>
+        <div>
+            <div class="card-label">Đơn hàng hoàn thành</div>
+            <div class="card-value"><?= $donhang_hoanthanh ?></div>
+        </div>
+    </a>
+    <a href="donhang.php?trangthai=Đã+hủy" class="dashboard-card">
+        <span class="dashboard-icon bg-red"><i class="fa fa-ban"></i></span>
+        <div>
+            <div class="card-label">Đơn hàng đã hủy</div>
+            <div class="card-value"><?= $donhang_huy ?></div>
+        </div>
+    </a>
+    <a href="index.php" class="dashboard-card">
+        <span class="dashboard-icon bg-pink"><i class="fa fa-store"></i></span>
+        <div>
+            <div class="card-label">Mặt hàng</div>
+            <div class="card-value"><?= $sanpham_count ?></div>
+        </div>
+    </a>
+    <a href="khachhang.php" class="dashboard-card">
+        <span class="dashboard-icon bg-blue"><i class="fa fa-users"></i></span>
+        <div>
+            <div class="card-label">Khách hàng</div>
+            <div class="card-value"><?= $khachhang_count ?></div>
+        </div>
+    </a>
+    <a href="nhanvien.php" class="dashboard-card">
+        <span class="dashboard-icon bg-orange"><i class="fa fa-user-tie"></i></span>
+        <div>
+            <div class="card-label">Nhân viên</div>
+            <div class="card-value"><?= $nhanvien_count ?></div>
+        </div>
+    </a>
+    <a href="doanhthu.php" class="dashboard-card">
+        <span class="dashboard-icon bg-green"><i class="fa fa-dollar-sign"></i></span>
+        <div>
+            <div class="card-label">Doanh số</div>
+            <div class="card-value"><?= $doanhthu_total ?> đ</div>
+        </div>
+    </a>
+    <a href="thongke.php" class="dashboard-card">
+        <span class="dashboard-icon bg-gray"><i class="fa fa-chart-bar"></i></span>
+        <div>
+            <div class="card-label">Thống kê sản phẩm bán chạy nhất</div>
+        </div>
+    </a>
+
 </div>
 </body>
+
 </html>

@@ -92,7 +92,7 @@ $result = mysqli_query($conn, $query);
             <button type="submit" class="btn btn-primary">Lọc</button>
         </div>
     </form>
-        <a href="thongketheothang.php"><h3>Thống kê doanh thu theo tháng</h3></a>
+        
 
     <table class="table table-bordered text-center">
         <thead>
