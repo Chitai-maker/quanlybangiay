@@ -2,6 +2,9 @@
 // filepath: c:\xampp\htdocs\quanlybangiay\shopgiayadmin\thongke.php
 include "header.php";
 include_once("chucnang/connectdb.php");
+if($_SESSION['quyen'] > 0){
+    header("location:dangnhap_quyencaohon.php");     
+} 
 
 // Xử lý lọc theo thời gian
 $from = isset($_GET['from']) ? $_GET['from'] : '';

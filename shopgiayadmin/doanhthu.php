@@ -1,6 +1,9 @@
 <?php
 include "header.php";
 include_once("chucnang/connectdb.php");
+if($_SESSION['quyen'] > 0){
+    header("location:dangnhap_quyencaohon.php");     
+} 
 
 // Lấy năm từ form hoặc mặc định là năm hiện tại
 $year = isset($_GET['year']) ? intval($_GET['year']) : date('Y');

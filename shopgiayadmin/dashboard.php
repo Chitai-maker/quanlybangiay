@@ -4,6 +4,9 @@ if (!isset($_SESSION['name']))
     header("location:login.php");
 include "header.php";
 include_once("chucnang/connectdb.php");
+if($_SESSION['quyen'] > 0){
+    header("location:dangnhap_quyencaohon.php");     
+} 
 
 // Đếm số đơn hàng theo trạng thái
 $query = "SELECT COUNT(*) AS total FROM donhang WHERE trangthai = 'Đang xử lý'";
