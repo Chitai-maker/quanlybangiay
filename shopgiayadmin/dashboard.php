@@ -42,6 +42,32 @@ $query8 = "SELECT COUNT(*) AS total FROM giay";
 $result8 = mysqli_query($conn, $query8);
 $row8 = mysqli_fetch_assoc($result8);
 $sanpham_count = $row8['total'];
+// Đếm số loai giày
+$query9 = "SELECT COUNT(*) AS total FROM loaigiay";
+$result9 = mysqli_query($conn, $query9);
+$row9 = mysqli_fetch_assoc($result9);
+$loaigiay_count = $row9['total'];
+// Đếm số thương hiệu
+$query10 = "SELECT COUNT(*) AS total FROM thuonghieu";
+$result10 = mysqli_query($conn, $query10);
+$row10 = mysqli_fetch_assoc($result10);
+$thuonghieu_count = $row10['total'];
+// Đếm số màu giầy
+$query11 = "SELECT COUNT(*) AS total FROM maugiay";
+$result11 = mysqli_query($conn, $query11);
+$row11 = mysqli_fetch_assoc($result11);
+$maugiay_count = $row11['total'];
+// Đếm số kích cỡ giầy
+$query12 = "SELECT COUNT(*) AS total FROM sizegiay";
+$result12 = mysqli_query($conn, $query12);
+$row12 = mysqli_fetch_assoc($result12);
+$kichco_count = $row12['total'];
+// Đếm mặt hàng khuyến mãi
+$query13 = "SELECT COUNT(*) AS total FROM sanphamhot";
+$result13 = mysqli_query($conn, $query13);
+$row13 = mysqli_fetch_assoc($result13);
+$khuyenmai_count = $row13['total'];
+
 // Đóng kết nối
 mysqli_close($conn);
 ?>
@@ -182,20 +208,48 @@ mysqli_close($conn);
             <div class="card-value"><?= $nhanvien_count ?></div>
         </div>
     </a>
-    <a href="doanhthu.php" class="dashboard-card">
+    <a href="thongke.php" class="dashboard-card">
         <span class="dashboard-icon bg-green"><i class="fa fa-dollar-sign"></i></span>
         <div>
             <div class="card-label">Doanh số</div>
             <div class="card-value"><?= $doanhthu_total ?> đ</div>
         </div>
     </a>
-    <a href="thongke.php" class="dashboard-card">
-        <span class="dashboard-icon bg-gray"><i class="fa fa-chart-bar"></i></span>
+    <a href="themloaigiay.php" class="dashboard-card">
+        <span class="dashboard-icon bg-purple"><i class="fa fa-shoe-prints"></i></span>
         <div>
-            <div class="card-label">Thống kê sản phẩm bán chạy nhất</div>
+            <div class="card-label">Loại giày</div>
+            <div class="card-value"><?= $loaigiay_count ?></div>
         </div>
     </a>
-
+    <a href="themmaugiay.php" class="dashboard-card">
+        <span class="dashboard-icon bg-pink"><i class="fa fa-palette"></i></span>
+        <div>
+            <div class="card-label">Màu giày</div>
+            <div class="card-value"><?= $maugiay_count ?></div>
+        </div>
+    </a>
+    <a href="themthuonghieu.php" class="dashboard-card">
+        <span class="dashboard-icon bg-cyan"><i class="fa fa-tag"></i></span>
+        <div>
+            <div class="card-label">Thương hiệu</div>
+            <div class="card-value"><?= $thuonghieu_count ?></div>
+        </div>
+    </a>
+    <a href="themsize.php" class="dashboard-card">
+        <span class="dashboard-icon bg-gray"><i class="fa fa-ruler"></i></span>
+        <div>
+            <div class="card-label">Kích cỡ</div>
+            <div class="card-value"><?= $kichco_count ?></div>
+        </div>
+    </a>
+    <a href="sanphamhot.php" class="dashboard-card">
+        <span class="dashboard-icon bg-orange"><i class="fa fa-fire"></i></span>
+        <div>
+            <div class="card-label">Khuyến mãi</div>
+            <div class="card-value"><?= $khuyenmai_count ?></div>
+        </div>
+    </a>
 </div>
 </body>
 

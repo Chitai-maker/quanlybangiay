@@ -34,6 +34,15 @@ foreach ($doanhthu_thang as $thang => $doanhthu) {
         $maxMonth = $thang;
     }
 }
+
+// Sắp xếp mảng theo doanh thu giảm dần, giữ lại số tháng
+$doanhthu_sorted = [];
+foreach ($doanhthu_thang as $thang => $doanhthu) {
+    $doanhthu_sorted[] = ['thang' => $thang, 'doanhthu' => $doanhthu];
+}
+usort($doanhthu_sorted, function($a, $b) {
+    return $b['doanhthu'] <=> $a['doanhthu'];
+});
 ?>
 
 <div class="container mt-5">
@@ -65,12 +74,12 @@ foreach ($doanhthu_thang as $thang => $doanhthu) {
             </tr>
         </thead>
         <tbody>
-            <?php for ($i = 1; $i <= 12; $i++): ?>
-                <tr <?= ($i == $maxMonth) ? 'style="background:#d1e7dd;font-weight:bold;"' : '' ?>>
-                    <td><?= $i ?></td>
-                    <td><?= number_format($doanhthu_thang[$i], 0, ',', '.') ?> VND</td>
+            <?php foreach ($doanhthu_sorted as $item): ?>
+                <tr <?= ($item['thang'] == $maxMonth) ? 'style="background:#d1e7dd;font-weight:bold;"' : '' ?>>
+                    <td><?= $item['thang'] ?></td>
+                    <td><?= number_format($item['doanhthu'], 0, ',', '.') ?> VND</td>
                 </tr>
-            <?php endfor; ?>
+            <?php endforeach; ?>
         </tbody>
     </table>
 </div>

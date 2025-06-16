@@ -20,9 +20,9 @@ if (session_id() == "") {
             if (isset($_SESSION['name'])) { ?>
                 <?php if ($_SESSION['quyen'] == 0) { //nếu quyên là ADMIN?>
                     
-                    <a href="dashboard.php">Dashboard</a>
+                    <a href="dashboard.php">Bảng tổng hợp</a>
+                    <a href="thongke.php">Thống kê</a>
                     <a href="index.php">Sản phẩm</a>
-                    
                     <a href="sanphamhot.php">Khuyến mãi</a>
                     <a href="themloaigiay.php">Loại giày</a>
                     <a href="themmaugiay.php">Màu giày</a>
@@ -30,10 +30,9 @@ if (session_id() == "") {
                     <a href="themsize.php">Size</a>                   
                     <a href="donhang.php">Đơn hàng</a>
                     <a href="khachhang.php">Khách hàng</a>
-                    <a href="nhanvien.php">Nhân viên</a> 
-                                    
+                    <a href="nhanvien.php">Nhân viên</a>                    
                     <div class="float-end">
-                        <span style="color:aquamarine;">Welcome <?= $_SESSION['name'] ?></span><a href="logout.php"><img src="anh/logout.png" alt="Logout" style="width:42px;height:42px;"></a>
+                        <span style="color:aquamarine;">Welcome, <?= $_SESSION['name'] ?></span><a href="logout.php"><img src="anh/logout.png" alt="Logout" style="width:42px;height:42px;"></a>
                     </div>
                 <?php } else if ($_SESSION['quyen'] == 1) { //nếu quyền là nhân viên kho?>
                     <a href="index.php">Giày</a>
@@ -45,12 +44,12 @@ if (session_id() == "") {
                     <a hre="themsize.php">Thêm size</a>
                     <a href="donhang.php">Đơn hàng</a>
                     <div class="float-end">
-                        <span style="color:aquamarine;">Welcome <?= $_SESSION['name'] ?></span><a href="logout.php"><img src="anh/logout.png" alt="Logout" style="width:42px;height:42px;"></a>
+                        <span style="color:aquamarine;">Welcome, <?= $_SESSION['name'] ?></span><a href="logout.php"><img src="anh/logout.png" alt="Logout" style="width:42px;height:42px;"></a>
                     </div>
                 <?php } else if ($_SESSION['quyen'] == 2) { //nếu quyền là nhân viên bán hàng?>
                     <a href="index.php">Giày</a>
                     <div class="float-end">
-                        <span style="color:aquamarine;">Welcome <?= $_SESSION['name'] ?></span><a href="logout.php"><img src="anh/logout.png" alt="Logout" style="width:42px;height:42px;"></a>
+                        <span style="color:aquamarine;">Welcome, <?= $_SESSION['name'] ?></span><a href="logout.php"><img src="anh/logout.png" alt="Logout" style="width:42px;height:42px;"></a>
                     </div>
                 <?php } ?>
             <?php } else { ?>

@@ -1,140 +1,119 @@
 <?php
-// filepath: c:\xampp\htdocs\quanlybangiay\shopgiayadmin\thongke.php
+session_start();
+if (!isset($_SESSION['name']))
+    header("location:login.php");
 include "header.php";
-include_once("chucnang/connectdb.php");
-
-// Xử lý lọc theo thời gian
-$from = isset($_GET['from']) ? $_GET['from'] : '';
-$to = isset($_GET['to']) ? $_GET['to'] : '';
-
-// Lọc theo loại giày
-$maloaigiay = isset($_GET['maloaigiay']) ? intval($_GET['maloaigiay']) : 0;
-
-// Lọc theo thương hiệu
-$mathuonghieu = isset($_GET['mathuonghieu']) ? intval($_GET['mathuonghieu']) : 0;
-
-// Lấy danh sách loại giày
-$loaigiay_result = mysqli_query($conn, "SELECT * FROM loaigiay");
-
-// Lấy danh sách thương hiệu
-$thuonghieu_result = mysqli_query($conn, "SELECT * FROM thuonghieu");
-
-// Truy vấn thống kê sản phẩm bán chạy theo thời gian, loại và thương hiệu
-$where = [];
-if ($from && $to) {
-    $where[] = "dh.ngaydat BETWEEN '$from' AND '$to'";
-} elseif ($from) {
-    $where[] = "dh.ngaydat >= '$from'";
-} elseif ($to) {
-    $where[] = "dh.ngaydat <= '$to'";
-}
-if ($maloaigiay > 0) {
-    $where[] = "g.maloaigiay = $maloaigiay";
-}
-if ($mathuonghieu > 0) {
-    $where[] = "g.mathuonghieu = $mathuonghieu";
-}
-$where_sql = '';
-if (count($where) > 0) {
-    $where_sql = "WHERE " . implode(" AND ", $where);
-}
-
-$query = "
-SELECT 
-    g.tengiay,
-    SUM(ct.soluong) AS tong_soluong,
-    g.anhminhhoa
-FROM chitietdonhang ct
-JOIN donhang dh ON ct.ma_donhang = dh.ma_donhang
-JOIN giay g ON ct.ma_giay = g.magiay
-$where_sql
-GROUP BY ct.ma_giay
-ORDER BY tong_soluong DESC
-LIMIT 10
-";
-$result = mysqli_query($conn, $query);
 ?>
+<style>
+    .dashboard-cards {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 24px;
+        margin: 30px 0 30px 0;
+        justify-content: flex-start;
+    }
 
-<div class="container mt-5">
-    <h2 class="mb-4 text-center">Thống kê sản phẩm bán chạy nhất</h2>
-    <form method="get" class="mb-4 row g-3 justify-content-center">
-        <div class="col-auto">
-            <label for="from" class="form-label">Từ ngày:</label>
-            <input type="date" id="from" name="from" class="form-control" value="<?= htmlspecialchars($from) ?>">
-        </div>
-        <div class="col-auto">
-            <label for="to" class="form-label">Đến ngày:</label>
-            <input type="date" id="to" name="to" class="form-control" value="<?= htmlspecialchars($to) ?>">
-        </div>
-        <div class="col-auto">
-            <label for="maloaigiay" class="form-label">Loại giày:</label>
-            <select name="maloaigiay" id="maloaigiay" class="form-control">
-                <option value="0">Tất cả</option>
-                <?php while($row = mysqli_fetch_assoc($loaigiay_result)): ?>
-                    <option value="<?= $row['maloaigiay'] ?>" <?= ($maloaigiay == $row['maloaigiay']) ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($row['tenloaigiay']) ?>
-                    </option>
-                <?php endwhile; ?>
-            </select>
-        </div>
-        <div class="col-auto">
-            <label for="mathuonghieu" class="form-label">Thương hiệu:</label>
-            <select name="mathuonghieu" id="mathuonghieu" class="form-control">
-                <option value="0">Tất cả</option>
-                <?php while($row = mysqli_fetch_assoc($thuonghieu_result)): ?>
-                    <option value="<?= $row['mathuonghieu'] ?>" <?= ($mathuonghieu == $row['mathuonghieu']) ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($row['tenthuonghieu']) ?>
-                    </option>
-                <?php endwhile; ?>
-            </select>
-        </div>
-        <div class="col-auto align-self-end">
-            <button type="submit" class="btn btn-primary">Lọc</button>
-        </div>
-    </form>
-        
+    .dashboard-card {
+        flex: 1 1 250px;
+        min-width: 220px;
+        max-width: 320px;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        display: flex;
+        align-items: center;
+        padding: 24px 32px;
+        gap: 18px;
+        transition: box-shadow 0.2s;
+        text-decoration: none;
+    }
 
-    <table class="table table-bordered text-center">
-        <thead>
-            <tr>
-                <th>STT</th>
-                <th>Ảnh sản phẩm</th>
-                <th>Tên sản phẩm</th>
-                <th>Số lượng bán</th>
-                <th>Tổng doanh thu</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if ($result && mysqli_num_rows($result) > 0): ?>
-                <?php $stt = 1; while ($row = mysqli_fetch_assoc($result)): ?>
-                    <tr>
-                        <td><?= $stt++; ?></td>
-                        <td>
-                            <img src="../shopgiayadmin/anhgiay/<?= htmlspecialchars($row['anhminhhoa']) ?>" width="80" height="80" style="object-fit:cover;border-radius:8px;">
-                        </td>
-                        <td><?= htmlspecialchars($row['tengiay']) ?></td>
-                        <td><?= $row['tong_soluong'] ?></td>
-                        <td>
-                            <?php
-                            // Tính tổng doanh thu cho sản phẩm
-                            $tengiay = mysqli_real_escape_string($conn, $row['tengiay']);
-                            $giay_query = "SELECT giaban FROM giay WHERE tengiay = '$tengiay' LIMIT 1";
-                            $giay_result = mysqli_query($conn, $giay_query);
-                            $giaban = 0;
-                            if ($giay_result && $giay_row = mysqli_fetch_assoc($giay_result)) {
-                                $giaban = $giay_row['giaban'];
-                            }
-                            $tong_doanhthu = $giaban * $row['tong_soluong'];
-                            echo number_format($tong_doanhthu, 0, ',', '.') . " đ";
-                            ?>
-                        </td>
-                    </tr>
-                <?php endwhile; ?>
-            <?php else: ?>
-                <tr>
-                    <td colspan="5">Không có dữ liệu thống kê.</td>
-                </tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
+    .dashboard-card:hover {
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+        text-decoration: none;
+    }
+
+    .dashboard-icon {
+        font-size: 2.2rem;
+        color: #fff;
+        border-radius: 10px;
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .bg-blue {
+        background: #2563eb;
+    }
+
+    .bg-green {
+        background: #22c55e;
+    }
+
+    .bg-red {
+        background: #ef4444;
+    }
+
+    .bg-purple {
+        background: #7c3aed;
+    }
+
+    .bg-pink {
+        background: #e11d48;
+    }
+
+    .bg-cyan {
+        background: #06b6d4;
+    }
+
+    .bg-orange {
+        background: #f59e42;
+    }
+
+    .bg-gray {
+        background: #64748b;
+    }
+
+    .card-label {
+        font-size: 1.1rem;
+        color: #444;
+        margin-bottom: 2px;
+    }
+
+    .card-value {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #222;
+    }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<h1>Bảng Tổng Hợp</h1>
+<div class="dashboard-cards">
+    
+    <a href="doanhthu.php" class="dashboard-card">
+        <span class="dashboard-icon bg-green"><i class="fa fa-dollar-sign"></i></span>
+        <div>
+            <div class="card-label">Doanh thu theo tháng</div>
+            
+        </div>
+    </a>
+    <a href="doanhthusanpham.php" class="dashboard-card">
+        <span class="dashboard-icon bg-green"><i class="fa fa-chart-bar"></i></span>
+        <div>
+            <div class="card-label">Thống kê sản phẩm bán chạy nhất</div>
+        </div>
+    </a>
+    <a href="doanhthukhachhang.php" class="dashboard-card">
+        <span class="dashboard-icon bg-green"><i class="fa-solid fa-user"></i></span>
+        <div>
+            <div class="card-label">Doanh thu theo khách hàng</div>
+        </div>
+    </a>
+
 </div>
+</body>
+
+</html>
