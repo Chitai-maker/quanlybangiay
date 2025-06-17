@@ -93,7 +93,7 @@ include "sidebar.php";
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<h1>Bảng Tổng Hợp</h1>
+<h1>📊 Báo Cáo Tổng Hợp</h1>
 <div class="dashboard-cards">
     
     <a href="doanhthu.php" class="dashboard-card">
@@ -113,6 +113,18 @@ include "sidebar.php";
         <span class="dashboard-icon bg-green"><i class="fa-solid fa-user"></i></span>
         <div>
             <div class="card-label">Doanh thu theo khách hàng</div>
+        </div>
+    </a>
+    <a href="doanhthuthuonghieu.php" class="dashboard-card">
+        <span class="dashboard-icon bg-green"><i class="fa-solid fa-copyright"></i></i></span>
+        <div>
+            <div class="card-label">Doanh thu theo thương hiệu</div>
+        </div>
+    </a>
+    <a href="doanhthuloai.php" class="dashboard-card">
+        <span class="dashboard-icon bg-green"><i class="fa-solid fa-list"></i></span>
+        <div>
+            <div class="card-label">Doanh thu theo loại</div>
         </div>
     </a>
 
