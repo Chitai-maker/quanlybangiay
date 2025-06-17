@@ -2,7 +2,7 @@
 session_start();
 if (!isset($_SESSION['name']))
     header("location:login.php");
-include "header.php";
+include "sidebar.php";
 include_once("chucnang/connectdb.php");
 if($_SESSION['quyen'] > 0){
     header("location:dangnhap_quyencaohon.php");     

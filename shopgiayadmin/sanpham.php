@@ -1,6 +1,6 @@
 <!-- filepath: c:\xampp\htdocs\shopgiay\sanpham.php -->
 <?php
-include "header.php";
+include "sidebar.php";
 include "chucnang/connectdb.php";
 
 

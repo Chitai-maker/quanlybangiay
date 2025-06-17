@@ -5,7 +5,7 @@ if (!isset($_SESSION['name']))
 if($_SESSION['quyen'] > 1){
   header("location:dangnhap_quyencaohon.php");
 }
-include "header.php"; ?>
+include "sidebar.php"; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,8 +32,8 @@ include "header.php"; ?>
   ?>
 
   <!-- Form lọc theo trạng thái -->
-  <div class="container mb-3">
-    <form method="get" class="row g-3 justify-content-center">
+  <div class="container mb-3" style="border:none; box-shadow:none;">
+    <form method="get" class="row g-3 justify-content-center" style="border:none; box-shadow:none;">
       <div class="col-auto">
         <label for="trangthai" class="form-label">Lọc theo trạng thái:</label>
         <select name="trangthai" id="trangthai" class="form-control">

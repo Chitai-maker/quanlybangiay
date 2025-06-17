@@ -5,7 +5,7 @@ header("location:login.php");
 if($_SESSION['quyen'] > 1){
     header("location:dangnhap_quyencaohon.php");     
 } 
-include "header.php";?>
+include "sidebar.php";?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

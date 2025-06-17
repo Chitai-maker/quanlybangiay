@@ -2,7 +2,7 @@
 session_start();
 if (!isset($_SESSION['name']))
   header("location:login.php");
-include "header.php"; ?>
+include "sidebar.php"; ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,8 +26,8 @@ include "header.php"; ?>
   }
   ?>
 
-<div class="container mt-4 d-flex justify-content-center align-items-center">
-    <form method="get" action="index.php" class="d-flex flex-grow-1 justify-content-center">
+<div class="container mt-4 d-flex justify-content-center align-items-center" style="border:none; box-shadow:none;">
+    <form method="get" action="index.php" class="d-flex flex-grow-1 justify-content-center"style="border:none; box-shadow:none;">
         <input type="text" name="search" class="form-control w-50" placeholder="Tìm kiếm sản phẩm..." value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
         <button type="submit" class="btn btn-primary ml-2">Tìm kiếm</button>
     </form>

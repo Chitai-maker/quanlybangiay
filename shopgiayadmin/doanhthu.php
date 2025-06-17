@@ -1,5 +1,5 @@
 <?php
-include "header.php";
+include "sidebar.php";
 include_once("chucnang/connectdb.php");
 if (!isset($_SESSION['name']))
   header("location:login.php");

@@ -5,7 +5,7 @@ header("location:login.php");
 if($_SESSION['quyen'] > 1){
     header("location:dangnhap_quyencaohon.php");     
 } 
-include "header.php";?>
+include "sidebar.php";?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +20,7 @@ include "header.php";?>
         <form action="chucnang/chucnang_themloai.php" method="post" enctype="multipart/form-data">
         <h2>Thêm Loại</h2>
             <input class="form-control mt-4" type="text" name="tenloaigiay" id="" placeholder="Nhập tên:">
-            <input class="btn btn-primary mt-4" type="submit" value="Upload" name="submit">
+            <input class="btn btn-primary mt-4" type="submit" value="Thêm loại" name="submit">
         </form>
     </div>
     <?php include "chucnang/chucnang_xemloai.php";?>

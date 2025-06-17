@@ -1,6 +1,6 @@
 <?php
 include "chucnang/chucnang_dangky.php";
-include "header.php";
+include "sidebar.php";
 ?>
 <body>
   <div class="container">

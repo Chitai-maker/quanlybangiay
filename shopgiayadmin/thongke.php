@@ -5,7 +5,7 @@ if (!isset($_SESSION['name']))
 if ($_SESSION['quyen'] > 0) {
     header("location:dangnhap_quyencaohon.php");
 }
-include "header.php";
+include "sidebar.php";
 ?>
 <style>
     .dashboard-cards {

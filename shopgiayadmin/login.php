@@ -1,6 +1,6 @@
 <?php
 include "chucnang/chucnang_dangnhap.php";
-include "header.php";
+include "sidebar.php";
 ?>
 <div class="container">
         <h1>Đăng nhập</h1>

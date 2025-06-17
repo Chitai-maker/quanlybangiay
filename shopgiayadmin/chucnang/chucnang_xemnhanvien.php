@@ -24,7 +24,7 @@
             <td><?= $NHANVIEN_SLQ['diachi']; ?></td>
             <td><?= $NHANVIEN_SLQ['ngaysinh']; ?></td>
             <td><?= $NHANVIEN_SLQ['gioitinh']; ?></td>
-            <td><?= $NHANVIEN_SLQ['luong']; ?></td>
+            <td><?= number_format($NHANVIEN_SLQ['luong'], 0, ',', '.')." đ"; ?></td>
             <td><?= $NHANVIEN_SLQ['quyen'] == 0 ? "Admin" : ($NHANVIEN_SLQ['quyen'] == 1 ? "Nhân viên kho" : "Nhân viên bán hàng"); ?></td>
             <td>
               <div class="button-group">

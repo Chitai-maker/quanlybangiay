@@ -7,7 +7,7 @@ if (!isset($_SESSION['name']))
     header("location:dangnhap_quyencaohon.php");
   
   }   
-include "header.php"; ?>
+include "sidebar.php"; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
