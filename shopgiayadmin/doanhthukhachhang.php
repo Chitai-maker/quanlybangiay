@@ -2,9 +2,11 @@
 <?php
 include "header.php";
 include_once("chucnang/connectdb.php");
-if($_SESSION['quyen'] > 0){
-    header("location:dangnhap_quyencaohon.php");     
-} 
+if (!isset($_SESSION['name']))
+  header("location:login.php");
+if ($_SESSION['quyen'] > 0) {
+    header("location:dangnhap_quyencaohon.php");
+}
 
 // Xử lý lọc theo ngày
 $from = isset($_GET['from']) ? $_GET['from'] : '';
