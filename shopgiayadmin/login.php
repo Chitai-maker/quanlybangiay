@@ -22,11 +22,11 @@ include "sidebar.php";
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="1" id="" name="remember" <?= $checked?>/>
-                <label class="form-check-label" for=""> Remember Me </label>
+                <label class="form-check-label" for=""> Nhớ tôi </label>
             </div>
             
             <div class="register-btn text-center">
-                <button type="submit" class="btn btn-success" name="submit">Login</button>
+                <button type="submit" class="btn btn-success" name="submit">Đăng nhập</button>
             </div>
         </form>
     </div>

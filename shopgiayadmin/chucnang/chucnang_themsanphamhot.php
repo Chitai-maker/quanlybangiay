@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['message'] = "Thêm sản phẩm hot thất bại. Vui lòng thử lại.";
     }
 
-    header("Location: ../sanphamhot.php");
+    header("Location: ../khuyenmai.php");
     exit;
 }
 ?>

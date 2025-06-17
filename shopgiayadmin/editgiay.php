@@ -25,8 +25,8 @@ if(isset($_GET['magiay']))
             $giay = mysqli_fetch_array($query_run);
             ?>
             <form action="chucnang/chucnang_editgiay.php" method="post" enctype="multipart/form-data">
-            <button type="submit" name="submit" class="btn btn-primary"> Update</button>
-                <label>id sản phẩm</label>
+            <button type="submit" name="submit" class="btn btn-primary"> Edit</button>
+                
                 <input type="number" name="magiay" value="<?=$giay['magiay'];?>" class="form-control" readonly >
                 <label>Tên sản phẩm</label>
                 <input type="text" name="tengiay" value="<?=$giay['tengiay'];?>" class="form-control">
@@ -59,7 +59,7 @@ if(isset($_GET['magiay']))
                 <option value="<?php echo $row['mathuonghieu']; ?>"><?php echo $row['tenthuonghieu']; ?></option>
                 <?php endwhile; ?>
                 
-                                </form>
+                </form>
         <?php }else {
     echo "<p>No product found with the given ID.</p>";
 }?>         

@@ -33,8 +33,20 @@ $sql_ct = "SELECT ct.*, g.tengiay, g.giaban, g.anhminhhoa
 $res_ct = mysqli_query($conn, $sql_ct);
 ?>
 
+<style>
+@media print {
+    .btn, .sidebar, .header, .footer {
+        display: none !important;
+    }
+    body {
+        background: #fff !important;
+    }
+    
+}
+</style>
+<a href="donhang.php" class="btn btn-secondary">← Quay lại</a>
 <div class="container mt-4">
-    <h2 class="mb-4 text-center"><i class="fa fa-file-invoice"></i> Chi Tiết Đơn Hàng #<?= $ma_donhang ?></h2>
+    <h2 class="mb-4 text-center"><i class="fa fa-file-invoice"></i> Hoá đơn đơn hàng Đơn Hàng #<?= $ma_donhang ?></h2>
     <div class="mb-3">
         <b>Khách hàng:</b> <?= htmlspecialchars($donhang['ten_khachhang']) ?><br>
         <b>Email:</b> <?= htmlspecialchars($donhang['email']) ?><br>
@@ -78,5 +90,8 @@ $res_ct = mysqli_query($conn, $sql_ct);
             </tr>
         </tfoot>
     </table>
-    <a href="donhang.php" class="btn btn-secondary">← Quay lại</a>
+    <button class="btn btn-success mb-3" onclick="window.print()">
+        <i class="fa fa-print"></i> In hóa đơn
+    </button>
+    
 </div>

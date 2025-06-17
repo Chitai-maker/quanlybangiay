@@ -59,7 +59,7 @@ include_once("chucnang/chucnang_showFK.php");
                     <option value="<?php echo $row['masize']; ?>"><?php echo $row['tensize']; ?></option>
                 <?php endwhile; ?>
             </select>
-            <input class="btn btn-primary mt-4" type="submit" value="Upload" name="submit">
+            <input class="btn btn-primary mt-4" type="submit" value="Thêm" name="submit">
         </form>
     </div>
 

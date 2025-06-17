@@ -20,7 +20,7 @@ include "sidebar.php";?>
         <form action="chucnang/chucnang_themmaugiay.php" method="post" enctype="multipart/form-data">
         <h2>Thêm màu</h2>    
             <input class="form-control mt-4" type="text" name="tenmaugiay" id="" placeholder="Nhập tên:">
-            <input class="btn btn-primary mt-4" type="submit" value="Upload" name="submit">
+            <input class="btn btn-primary mt-4" type="submit" value="Thêm màu" name="submit">
         </form>
     </div>
     <?php include "chucnang/chucnang_xemmau.php";?>

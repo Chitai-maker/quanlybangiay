@@ -71,8 +71,7 @@ $result13 = mysqli_query($conn, $query13);
 $row13 = mysqli_fetch_assoc($result13);
 $khuyenmai_count = $row13['total'];
 
-// Đóng kết nối
-mysqli_close($conn);
+
 ?>
 <style>
     .dashboard-cards {
@@ -159,7 +158,7 @@ mysqli_close($conn);
     }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+<title>Dashboard - Quản trị Shop Giày</title>
 <h1>Bảng Tổng Hợp</h1>
 <div class="dashboard-cards">
     <a href="donhang.php?trangthai=Đang+xử+lý" class="dashboard-card">
@@ -190,13 +189,7 @@ mysqli_close($conn);
             <div class="card-value"><?= $donhang_huy ?></div>
         </div>
     </a>
-    <a href="index.php" class="dashboard-card">
-        <span class="dashboard-icon bg-pink"><i class="fa fa-store"></i></span>
-        <div>
-            <div class="card-label">Mặt hàng</div>
-            <div class="card-value"><?= $sanpham_count ?></div>
-        </div>
-    </a>
+    
     <a href="khachhang.php" class="dashboard-card">
         <span class="dashboard-icon bg-blue"><i class="fa fa-users"></i></span>
         <div>
@@ -211,11 +204,11 @@ mysqli_close($conn);
             <div class="card-value"><?= $nhanvien_count ?></div>
         </div>
     </a>
-    <a href="thongke.php" class="dashboard-card">
-        <span class="dashboard-icon bg-green"><i class="fa fa-dollar-sign"></i></span>
+    <a href="index.php" class="dashboard-card">
+        <span class="dashboard-icon bg-pink"><i class="fa fa-store"></i></span>
         <div>
-            <div class="card-label">Doanh số</div>
-            <div class="card-value"><?= $doanhthu_total ?> đ</div>
+            <div class="card-label">Mặt hàng</div>
+            <div class="card-value"><?= $sanpham_count ?></div>
         </div>
     </a>
     <a href="themloaigiay.php" class="dashboard-card">
@@ -253,7 +246,60 @@ mysqli_close($conn);
             <div class="card-value"><?= $khuyenmai_count ?></div>
         </div>
     </a>
+    <a href="thongke.php" class="dashboard-card">
+        <span class="dashboard-icon bg-green"><i class="fa fa-dollar-sign"></i></span>
+        <div>
+            <div class="card-label">Doanh số</div>
+            <div class="card-value"><?= $doanhthu_total ?> đ</div>
+        </div>
+    </a>
 </div>
+
+<!-- Bảng khách hàng mới -->
+<div class="card shadow-sm mb-4" style="max-width:400px;">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span><b>Khách hàng mới</b></span>
+        <div class="dropdown">
+            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-ellipsis-h"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="khachhang.php">Xem tất cả</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="card-body p-2">
+        <ul class="list-unstyled mb-0">
+            <?php
+            // Lấy 6 khách hàng mới nhất
+            $sql = "SELECT ten_khachhang, email, sdt FROM khachhang ORDER BY ma_khachhang DESC LIMIT 6";
+            $result = mysqli_query($conn, $sql);
+            while ($row = mysqli_fetch_assoc($result)):
+            ?>
+            <li class="d-flex align-items-center mb-2">
+                <i class="fa fa-user-circle fa-2x me-2"></i>
+                <div class="flex-grow-1">
+                    <div><b><?= htmlspecialchars($row['ten_khachhang']) ?></b></div>
+                    <div style="font-size:13px; color:#888;">
+                        <?= htmlspecialchars($row['email']) ?> | <?= htmlspecialchars($row['sdt']) ?>
+                    </div>
+                </div>
+                <a href="mailto:<?= htmlspecialchars($row['email']) ?>" class="text-primary me-2" title="Gửi mail">
+                    <i class="fa fa-envelope"></i>
+                </a>
+                
+            </li>
+            <?php endwhile; ?>
+        </ul>
+    </div>
+</div>
+<?php 
+// Đóng kết nối
+mysqli_close($conn);
+?>
+<!-- Thêm vào cuối trang (nếu chưa có) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

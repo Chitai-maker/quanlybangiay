@@ -27,29 +27,32 @@ include "sidebar.php"; ?>
   ?>
 
 <div class="container mt-4 d-flex justify-content-center align-items-center" style="border:none; box-shadow:none;">
+    <a href="themgiay.php"><img src="anh/add.webp" alt="them" style="width:50px;height:50px;"></a>
     <form method="get" action="index.php" class="d-flex flex-grow-1 justify-content-center"style="border:none; box-shadow:none;">
         <input type="text" name="search" class="form-control w-50" placeholder="Tìm kiếm sản phẩm..." value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
         <button type="submit" class="btn btn-primary ml-2">Tìm kiếm</button>
     </form>
-    <a href="themgiay.php" class="btn btn-success ms-3" title="Thêm sản phẩm mới" style="font-size: 1.5rem; border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center;">
-        +
-    </a>
+    
+    
 </div>
-
-<!-- Nút lọc theo thương hiệu -->
+<div class="d-flex gap-3">
+    <!-- Nút lọc theo thương hiệu -->
 <?php
 include_once("chucnang/connectdb.php");
 $mathuonghieu = isset($_GET['mathuonghieu']) ? intval($_GET['mathuonghieu']) : 0;
 $thuonghieu_query = "SELECT * FROM thuonghieu";
 $thuonghieu_result = mysqli_query($conn, $thuonghieu_query);
 ?>
-<form method="GET" action="" style="border: none;">
+<form method="GET" action="" style="border: none; max-width:300px;">
     <h3>Thương hiệu</h3>
-    <?php while($row = mysqli_fetch_assoc($thuonghieu_result)): ?>
-        <button type="submit" name="mathuonghieu" value="<?= $row['mathuonghieu'] ?>" class="btn btn-outline-primary" style="border: none;<?= ($mathuonghieu == $row['mathuonghieu']) ? 'font-weight:bold;background:#d1e7fd;' : '' ?>">
-            <?= htmlspecialchars($row['tenthuonghieu']) ?>
-        </button>
-    <?php endwhile; ?>
+    <select name="mathuonghieu" class="form-select mb-2" onchange="this.form.submit()">
+        <option value="0">Tất cả thương hiệu</option>
+        <?php while($row = mysqli_fetch_assoc($thuonghieu_result)): ?>
+            <option value="<?= $row['mathuonghieu'] ?>" <?= ($mathuonghieu == $row['mathuonghieu']) ? 'selected' : '' ?>>
+                <?= htmlspecialchars($row['tenthuonghieu']) ?>
+            </option>
+        <?php endwhile; ?>
+    </select>
 </form>
 <!-- Nút lọc theo loại giày -->
  <?php
@@ -58,13 +61,16 @@ $maloaigiay = isset($_GET['maloaigiay']) ? intval($_GET['maloaigiay']) : 0;
 $loaigiay_query = "SELECT * FROM loaigiay";
 $loaigiay_result = mysqli_query($conn, $loaigiay_query);
 ?>
- <form method="GET" action="" style="border: none;">
+<form method="GET" action="" style="border: none; max-width:300px;">
     <h3>Loại giày</h3>
-    <?php while($row = mysqli_fetch_assoc($loaigiay_result)): ?>
-        <button type="submit" name="maloaigiay" value="<?= $row['maloaigiay'] ?>" class="btn btn-outline-primary" style="border: none;<?= ($maloaigiay == $row['maloaigiay']) ? 'font-weight:bold;background:#d1e7fd;' : '' ?>">
-            <?= htmlspecialchars($row['tenloaigiay']) ?>
-        </button>
-    <?php endwhile; ?>
+    <select name="maloaigiay" class="form-select mb-2" onchange="this.form.submit()">
+        <option value="0">Tất cả loại giày</option>
+        <?php while($row = mysqli_fetch_assoc($loaigiay_result)): ?>
+            <option value="<?= $row['maloaigiay'] ?>" <?= ($maloaigiay == $row['maloaigiay']) ? 'selected' : '' ?>>
+                <?= htmlspecialchars($row['tenloaigiay']) ?>
+            </option>
+        <?php endwhile; ?>
+    </select>
 </form>
 
 <!-- Nút lọc theo size giày -->
@@ -74,14 +80,19 @@ $sizegiay = isset($_GET['sizegiay']) ? intval($_GET['sizegiay']) : 0;
 $sizegiay_query = "SELECT * FROM sizegiay";
 $sizegiay_result = mysqli_query($conn, $sizegiay_query);
 ?>
-<form method="GET" action="" style="border: none;">
-<h3>Size giày</h3>
-    <?php while($row = mysqli_fetch_assoc($sizegiay_result)): ?>
-        <button type="submit" name="sizegiay" value="<?= $row['masize'] ?>" class="btn btn-outline-primary" style="border: none;<?= ($sizegiay == $row['masize']) ? 'font-weight:bold;background:#d1e7fd;' : '' ?>">
-            <?= htmlspecialchars($row['tensize']) ?>
-        </button>
-    <?php endwhile; ?>
+<form method="GET" action="" style="border: none; max-width:300px;">
+    <h3>Size giày</h3>
+    <select name="sizegiay" class="form-select mb-2" onchange="this.form.submit()">
+        <option value="0">Tất cả size</option>
+        <?php while($row = mysqli_fetch_assoc($sizegiay_result)): ?>
+            <option value="<?= $row['masize'] ?>" <?= ($sizegiay == $row['masize']) ? 'selected' : '' ?>>
+                <?= htmlspecialchars($row['tensize']) ?>
+            </option>
+        <?php endwhile; ?>
+    </select>
 </form>
+</div>
+
 <?php
 // Lấy giá trị $maloaigiay từ tham số GET
 $maloaigiay = isset($_GET['maloaigiay']) ? intval($_GET['maloaigiay']) : null;

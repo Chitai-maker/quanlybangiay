@@ -92,7 +92,7 @@ include "sidebar.php";
     }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+<title>Thống kê - Báo Cáo Tổng Hợp</title>
 <h1>📊 Báo Cáo Tổng Hợp</h1>
 <div class="dashboard-cards">
     
