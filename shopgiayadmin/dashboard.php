@@ -4,9 +4,9 @@ if (!isset($_SESSION['name']))
     header("location:login.php");
 include "sidebar.php";
 include_once("chucnang/connectdb.php");
-if($_SESSION['quyen'] > 0){
-    header("location:dangnhap_quyencaohon.php");     
-} 
+if ($_SESSION['quyen'] > 0) {
+    header("location:dangnhap_quyencaohon.php");
+}
 
 // Đếm số đơn hàng theo trạng thái
 $query = "SELECT COUNT(*) AS total FROM donhang WHERE trangthai = 'Đang xử lý'";
@@ -189,7 +189,7 @@ $khuyenmai_count = $row13['total'];
             <div class="card-value"><?= $donhang_huy ?></div>
         </div>
     </a>
-    
+
     <a href="khachhang.php" class="dashboard-card">
         <span class="dashboard-icon bg-blue"><i class="fa fa-users"></i></span>
         <div>
@@ -255,45 +255,102 @@ $khuyenmai_count = $row13['total'];
     </a>
 </div>
 
-<!-- Bảng khách hàng mới -->
-<div class="card shadow-sm mb-4" style="max-width:400px;">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <span><b>Khách hàng mới</b></span>
-        <div class="dropdown">
-            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fa fa-ellipsis-h"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="khachhang.php">Xem tất cả</a></li>
-            </ul>
+<div class="row mb-4">
+    <!-- Bảng khách hàng mới -->
+    <div class="col-md-6">
+        <div class="card shadow-sm mb-4" style="max-width:400px;">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span><b>Khách hàng mới</b></span>
+                <div class="dropdown">
+                    <button class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-ellipsis-h"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="khachhang.php">Xem tất cả</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body p-2">
+                <ul class="list-unstyled mb-0">
+                    <?php
+                    // Lấy 6 khách hàng mới nhất
+                    $sql = "SELECT ten_khachhang, email, sdt FROM khachhang ORDER BY ma_khachhang DESC LIMIT 6";
+                    $result = mysqli_query($conn, $sql);
+                    while ($row = mysqli_fetch_assoc($result)):
+                    ?>
+                        <li class="d-flex align-items-center mb-2">
+                            <i class="fa fa-user-circle fa-2x me-2"></i>
+                            <div class="flex-grow-1">
+                                <div><b><?= htmlspecialchars($row['ten_khachhang']) ?></b></div>
+                                <div style="font-size:13px; color:#888;">
+                                    <?= htmlspecialchars($row['email']) ?> | <?= htmlspecialchars($row['sdt']) ?>
+                                </div>
+                            </div>
+                            <a href="mailto:<?= htmlspecialchars($row['email']) ?>" class="text-primary me-2" title="Gửi mail">
+                                <i class="fa fa-envelope"></i>
+                            </a>
+
+                        </li>
+                    <?php endwhile; ?>
+                </ul>
+            </div>
         </div>
     </div>
-    <div class="card-body p-2">
-        <ul class="list-unstyled mb-0">
-            <?php
-            // Lấy 6 khách hàng mới nhất
-            $sql = "SELECT ten_khachhang, email, sdt FROM khachhang ORDER BY ma_khachhang DESC LIMIT 6";
-            $result = mysqli_query($conn, $sql);
-            while ($row = mysqli_fetch_assoc($result)):
-            ?>
-            <li class="d-flex align-items-center mb-2">
-                <i class="fa fa-user-circle fa-2x me-2"></i>
-                <div class="flex-grow-1">
-                    <div><b><?= htmlspecialchars($row['ten_khachhang']) ?></b></div>
-                    <div style="font-size:13px; color:#888;">
-                        <?= htmlspecialchars($row['email']) ?> | <?= htmlspecialchars($row['sdt']) ?>
-                    </div>
+    <!-- Bảng đơn hàng mới -->
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span><b>Đơn hàng mới</b></span>
+                <div class="dropdown">
+                    <button class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-ellipsis-h"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="donhang.php">Xem tất cả</a></li>
+                    </ul>
                 </div>
-                <a href="mailto:<?= htmlspecialchars($row['email']) ?>" class="text-primary me-2" title="Gửi mail">
-                    <i class="fa fa-envelope"></i>
-                </a>
-                
-            </li>
-            <?php endwhile; ?>
-        </ul>
+            </div>
+            <div class="card-body p-2">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th style="color:#b0b3b9;">MÃ ĐƠN HÀNG</th>
+                            <th style="color:#b0b3b9;">NGÀY ĐẶT HÀNG</th>
+
+                            <th style="color:#b0b3b9;">TRẠNG THÁI</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        // Lấy đơn hàng mới nhất
+                        $sql = "SELECT ma_donhang, ngaydat, trangthai
+                                FROM donhang
+                                WHERE trangthai = 'Đang xử lý'
+                                ORDER BY ma_donhang DESC
+                                LIMIT 3";
+                        $result = mysqli_query($conn, $sql);
+                        while ($row = mysqli_fetch_assoc($result)):
+                        ?>
+                            <tr>
+                                <td>
+                                    <span class="badge bg-primary rounded-circle me-2" style="width:28px;height:28px;"><i class="fa fa-check fa-lg"></i></span>
+                                    <b>#<?= $row['ma_donhang'] ?></b>
+                                </td>
+                                <td><?= date('d/m/Y H:i:s', strtotime($row['ngaydat'])) ?></td>
+
+                                <td>
+                                    <span class="btn btn-sm btn-outline-primary"><?= htmlspecialchars($row['trangthai']) ?></span>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
-<?php 
+
+<?php
 // Đóng kết nối
 mysqli_close($conn);
 ?>
