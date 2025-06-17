@@ -17,7 +17,7 @@
               <div class="button-group">
                 <a href="edit_loai.php?maloaigiay=<?= $LOAI_SLQ['maloaigiay']; ?>" class="btn btn-success btn-sm">Edit</a>
                 <form action="chucnang/chucnang_xoaloai.php" method="POST" class="d-inline form-no-border">
-                  <button type="submit" name="xoa_loai" value="<?= $LOAI_SLQ['maloaigiay']; ?>" class="btn btn-danger btn-sm">Xoá</button>
+                  <button type="submit" name="xoa_loai" value="<?= $LOAI_SLQ['maloaigiay']; ?>" class="btn btn-danger btn-sm"onclick="return confirm('Bạn có chắc chắn muốn xóa loại này?');">Xoá</button>
                 </form>
               </div>
             </td>

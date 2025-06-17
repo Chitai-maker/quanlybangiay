@@ -17,7 +17,7 @@
               <div class="button-group">
                 <a href="edit_thuonghieu.php?mathuonghieu=<?= $THUONGHIEU_SLQ['mathuonghieu']; ?>" class="btn btn-success btn-sm">Edit</a>
                 <form action="chucnang/chucnang_xoathuonghieu.php" method="POST" class="d-inline form-no-border">
-                  <button type="submit" name="xoa_thuonghieu" value="<?= $THUONGHIEU_SLQ['mathuonghieu']; ?>" class="btn btn-danger btn-sm">Xoá</button>
+                  <button type="submit" name="xoa_thuonghieu" value="<?= $THUONGHIEU_SLQ['mathuonghieu']; ?>" class="btn btn-danger btn-sm"onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này?');">Xoá</button>
                 </form>
               </div>
             </td>

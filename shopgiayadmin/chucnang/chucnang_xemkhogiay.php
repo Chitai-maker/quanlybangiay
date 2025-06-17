@@ -78,7 +78,7 @@
               <div class="button-group">
                 <a href="editgiay.php?magiay=<?= $GIAY_SLQ['magiay']; ?>" class="btn btn-success btn-sm">Edit</a>
                 <form action="chucnang/chucnang_xoagiay.php" method="POST" class="d-inline form-no-border">
-                  <button type="submit" name="xoa_giay" value="<?= $GIAY_SLQ['magiay']; ?>" class="btn btn-danger btn-sm">Xoá</button>
+                  <button type="submit" name="xoa_giay" value="<?= $GIAY_SLQ['magiay']; ?>" class="btn btn-danger btn-sm"onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">Xoá</button>
                 </form>
               </div>
             </td>

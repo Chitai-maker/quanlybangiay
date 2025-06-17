@@ -14,26 +14,22 @@
             $query = "SELECT sanphamhot.ma_sanphamyeuthich, giay.magiay, giay.tengiay ,sanphamhot.giakhuyenmai
                       FROM sanphamhot 
                       JOIN giay ON sanphamhot.magiay = giay.magiay
-                      order BY giay.tengiay ASC"
-                      ;
+                      order BY giay.tengiay ASC";
             $result = mysqli_query($conn, $query);
-
             if (mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo "<tr>";
-                    echo "<td>" . $row['ma_sanphamyeuthich'] . "</td>"; ?>
-                    <td><a href="sanpham.php?masanpham=<?php echo $row['magiay']; ?>"> <?= $row['tengiay']; ?></a></td>
-                    
-                    <?php
-                    echo "<td>" .htmlspecialchars($row['giakhuyenmai']) . "</td>";
-                    echo "<td>
+                while ($row = mysqli_fetch_assoc($result)) { ?>
+                    <tr>
+                    <td> <?php echo $row['ma_sanphamyeuthich']; ?> </td>
+                    <td><a href="sanpham.php?masanpham=<?php echo $row['magiay']; ?>"> <?= $row['tengiay']; ?></a></td>                                       
+                    <td><?php echo $row['giakhuyenmai'] ." %" ?></td>
+                    <td>
                             <form action='chucnang/chucnang_xoasanphamhot.php' method='post' class='d-inline form-no-border'>
-                                <input type='hidden' name='ma_sanphamyeuthich' value='" . $row['ma_sanphamyeuthich'] . "'>
-                                <button type='submit' class='btn btn-danger btn-sm'>Xóa</button>
+                                <input type='hidden' name='ma_sanphamyeuthich' value='<?php echo $row['ma_sanphamyeuthich'] ?>'>
+                                <button type='submit' class='btn btn-danger btn-sm'onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này?');">Xóa</button>
                             </form>
-                          </td>";
+                          </td>
                     
-                    echo "</tr>";
+                    </tr><?php
                 }
             } else {
                 echo "<tr><td colspan='3' class='text-center'>Không có sản phẩm hot</td></tr>";

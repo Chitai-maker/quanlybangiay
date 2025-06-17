@@ -20,7 +20,7 @@
             <td>
               <div class="button-group">
                 <form action="chucnang/chucnang_xoakhachhang.php" method="POST" class="d-inline form-no-border">
-                <button type="submit" name="xoa_khachhang" value="<?= $KHACHHANG_SLQ['ma_khachhang']; ?>" class="btn btn-danger btn-sm">Xoá</button>
+                <button type="submit" name="xoa_khachhang" value="<?= $KHACHHANG_SLQ['ma_khachhang']; ?>" class="btn btn-danger btn-sm"onclick="return confirm('Bạn có chắc chắn muốn xóa khách hàng này?');">Xoá</button>
 
               </form>
               </div>

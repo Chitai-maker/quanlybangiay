@@ -17,7 +17,7 @@
               <div class="button-group">
                 <a href="edit_size.php?masize=<?= $SIZE_SLQ['masize']; ?>" class="btn btn-success btn-sm">Edit</a>
                 <form action="chucnang/chucnang_xoasize.php" method="POST" class="d-inline form-no-border">
-                  <button type="submit" name="xoa_size" value="<?= $SIZE_SLQ['masize']; ?>" class="btn btn-danger btn-sm">Xoá</button>
+                  <button type="submit" name="xoa_size" value="<?= $SIZE_SLQ['masize']; ?>" class="btn btn-danger btn-sm"onclick="return confirm('Bạn có chắc chắn muốn xóa size này?');">Xoá</button>
                 </form>
               </div>
             </td>

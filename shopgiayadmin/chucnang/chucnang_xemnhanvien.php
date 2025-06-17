@@ -29,7 +29,7 @@
             <td>
               <div class="button-group">
                 <form action="chucnang/chucnang_xoanhanvien.php" method="POST" class="d-inline form-no-border">
-                <button type="submit" name="xoa_nhanvien" value="<?= $NHANVIEN_SLQ['ma_nhanvien']; ?>" class="btn btn-danger btn-sm">Xoá</button>
+                <button type="submit" name="xoa_nhanvien" value="<?= $NHANVIEN_SLQ['ma_nhanvien']; ?>" class="btn btn-danger btn-sm"onclick="return confirm('Bạn có chắc chắn muốn xóa nhân viên này này?');">Xoá</button>
               </form>
               </div>
             </td>
