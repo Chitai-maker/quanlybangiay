@@ -67,7 +67,7 @@ if (session_id() == "") {
                 <?php elseif ($_SESSION['quyen'] == 1): // Nhân viên kho ?>
                     <div class="welcome">
                         Welcome, <?= $_SESSION['name'] ?>
-                        <a href="logout.php" class="logout"><img src="anh/logout.png" alt="Logout" style="width:32px;height:32px;"></a>
+                        
                     </div>
                     <a href="index.php">Giày</a>
                     <a href="khuyenmai.php">Sản phẩm hot</a>
@@ -77,13 +77,13 @@ if (session_id() == "") {
                     <a href="themgiay.php">Thêm giày</a>
                     <a href="themsize.php">Thêm size</a>
                     <a href="donhang.php">Đơn hàng</a>
-                    
+                    <a href="logout.php" class="logout"><img src="anh/logout.png" alt="Logout" style="width:32px;height:32px;"></a>
                 <?php elseif ($_SESSION['quyen'] == 2): // Nhân viên bán hàng ?>
                     <div class="welcome">
-                        <a href="logout.php" class="logout"><img src="anh/logout.png" alt="Logout" style="width:32px;height:32px;">Welcome, <?= $_SESSION['name'] ?></a>
+                        Welcome, <?= $_SESSION['name'] ?>
                     </div>
                     <a href="index.php">Giày</a>
-                    
+                    <a href="logout.php" class="logout"><img src="anh/logout.png" alt="Logout" style="width:32px;height:32px;"></a>
                 <?php endif; ?>
             <?php else: ?>
                 <a href="login.php">Quản lý kho hàng</a>

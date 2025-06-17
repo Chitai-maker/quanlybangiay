@@ -45,7 +45,13 @@ if (isset($_POST['submit'])){
                     }
 
                 }
-                header("location:dashboard.php");
+                if ($_SESSION['quyen'] > 0) {
+                    header("location:index.php");
+                }
+                else{
+                    header("location:dashboard.php");
+                }
+                
 
             }
             else{
