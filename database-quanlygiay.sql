@@ -34,6 +34,7 @@ CREATE TABLE giay (
     giaban int NOT NULL,
     anhminhhoa VARCHAR(200),
     mota TEXT,
+    soluongtonkho INT NOT NULL DEFAULT 0,
     FOREIGN KEY (maloaigiay) REFERENCES loaigiay(maloaigiay),
     FOREIGN KEY (mathuonghieu) REFERENCES thuonghieu(mathuonghieu),
     FOREIGN KEY (mamaugiay) REFERENCES maugiay(mamaugiay),

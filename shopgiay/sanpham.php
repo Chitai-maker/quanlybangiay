@@ -70,9 +70,9 @@ if (isset($_GET['masanpham'])) {
                             echo number_format($final_price, 0, ',', '.') . " VND"; 
                             ?>
                         </h4>
-                        <p><?php echo $row['mota']; ?></p>
-
-                        <!-- Form thêm vào giỏ hàng -->
+                        <!-- Nút mua ngay hoặc thông báo hết hàng -->
+                        <?php if ($row['soluongtonkho'] > 0): ?>
+                             <!-- Form thêm vào giỏ hàng -->
                         <form method="post" action="sanpham.php?action=add&magiay=<?php echo $row['magiay']; ?>">
                             <div class="form-group">
                                 <label for="soluong">Số lượng:</label>
@@ -82,6 +82,10 @@ if (isset($_GET['masanpham'])) {
                             <input type="hidden" name="1_giaban" value="<?php echo $final_price; ?>">
                             <button type="submit" name="add" class="btn btn-success">Thêm vào giỏ hàng</button>
                         </form>
+                        <?php else: ?>
+                            <span class="badge bg-danger">Hết hàng</span>
+                        <?php endif; ?>
+                        <p><?php echo $row['mota']; ?></p>
                     </div>
                 </div>
             </div>

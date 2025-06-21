@@ -70,8 +70,16 @@ $query13 = "SELECT COUNT(*) AS total FROM sanphamhot";
 $result13 = mysqli_query($conn, $query13);
 $row13 = mysqli_fetch_assoc($result13);
 $khuyenmai_count = $row13['total'];
-
-
+//đếm sản phẩm hết hàng
+$query14 = "SELECT COUNT(*) AS total FROM giay WHERE soluongtonkho = 0";
+$result14 = mysqli_query($conn, $query14);
+$row14 = mysqli_fetch_assoc($result14);
+$hethang_count = $row14['total'];
+// Đếm số lượng sản phẩm sắp hết hàng
+$query15 = "SELECT COUNT(*) AS total FROM giay WHERE soluongtonkho < 5";
+$result15 = mysqli_query($conn, $query15);
+$row15 = mysqli_fetch_assoc($result15);
+$saphethang_count = $row15['total'];
 ?>
 <style>
     .dashboard-cards {
@@ -251,6 +259,20 @@ $khuyenmai_count = $row13['total'];
         <div>
             <div class="card-label">Doanh số</div>
             <div class="card-value"><?= $doanhthu_total ?> đ</div>
+        </div>
+    </a>
+    <a href="hethang.php" class="dashboard-card">
+        <span class="dashboard-icon bg-red"><i class="fa fa-box-open"></i></span>
+        <div>
+            <div class="card-label">Hết hàng</div>
+            <div class="card-value"><?= $hethang_count ?></div>
+        </div>
+    </a>
+    <a href="saphethang.php" class="dashboard-card">
+        <span class="dashboard-icon bg-blue"><i class="fa fa-boxes"></i></span>
+        <div>
+            <div class="card-label">Sắp hết hàng</div>
+            <div class="card-value"><?= $saphethang_count ?></div>
         </div>
     </a>
 </div>
