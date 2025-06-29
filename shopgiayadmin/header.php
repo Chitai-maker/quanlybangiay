@@ -23,7 +23,7 @@ if (session_id() == "") {
                     <a href="dashboard.php">Bảng tổng hợp</a>
                     <a href="thongke.php">Thống kê</a>
                     <a href="index.php">Sản phẩm</a>
-                    <a href="sanphamhot.php">Khuyến mãi</a>
+                    <a href="khuyenmai.php">Khuyến mãi</a>
                     <a href="themloaigiay.php">Loại giày</a>
                     <a href="themmaugiay.php">Màu giày</a>
                     <a href="themthuonghieu.php">Thương hiệu</a>
