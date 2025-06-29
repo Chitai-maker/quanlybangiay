@@ -13,6 +13,18 @@ if (isset($_GET['masanpham'])) {
     $magiay = $_GET['masanpham'];
     $makhachhang = mysqli_real_escape_string($conn, $_SESSION['makhachhang']);
 
+    // Kiểm tra khách hàng đã mua sản phẩm này chưa
+    $check_mua_sql = "SELECT ctdh.*
+                      FROM chitietdonhang ctdh
+                      JOIN donhang dh ON ctdh.ma_donhang = dh.ma_donhang
+                      WHERE dh.ma_khachhang = '$makhachhang' AND ctdh.ma_giay = '$magiay' AND dh.trangthai != 'Đã huỷ'";
+    $check_mua_result = mysqli_query($conn, $check_mua_sql);
+
+    if (mysqli_num_rows($check_mua_result) == 0) {
+        echo "<div class='container mt-5'><div class='alert alert-warning'>Bạn chỉ có thể đánh giá sản phẩm khi đã mua sản phẩm này.</div></div>";
+        exit;
+    }
+
     // Kiểm tra khách hàng đã đánh giá sản phẩm này chưa
     $check_sql = "SELECT * FROM danhgia WHERE magiay = '$magiay' AND ma_khachhang = '$makhachhang'";
     $check_result = mysqli_query($conn, $check_sql);
