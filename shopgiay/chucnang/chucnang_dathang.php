@@ -13,11 +13,11 @@
                     // đạt hàng
                     if (isset($_POST['dat_hang'])) {
                         $makhachhang = $_SESSION['makhachhang'];
-                        $ngaydat = date("Y-m-d");
+                        
                         $trangthai = "Đang xử lý";
 
                         // Thêm đơn hàng vào bảng `donhang`
-                        $query_donhang = "INSERT INTO donhang (ma_khachhang, ngaydat, trangthai) VALUES ('$makhachhang', '$ngaydat', '$trangthai')";
+                        $query_donhang = "INSERT INTO donhang (ma_khachhang, ngaydat, trangthai) VALUES ('$makhachhang', NOW(), '$trangthai')";
                         mysqli_query($conn, $query_donhang);
 
                         // Lấy mã đơn hàng vừa thêm

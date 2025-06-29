@@ -33,6 +33,7 @@ if (!isset($_SESSION['makhachhang']))
 
 <body>
     <?php
+    
     // Display session message if set
     if (isset($_SESSION['message'])) {
         echo "<div class='session-message text-center'>"; // Add a wrapper with a class
@@ -94,7 +95,13 @@ if (!isset($_SESSION['makhachhang']))
                                 echo number_format($final_price, 0, ',', '.') . " đ";
                                 ?>
                             </td>
-                            <td><?php echo $value["soluong"]; ?></td>
+                            <td>
+                                <form method="post" action="chucnang/chucnang_giohang.php" class="d-flex align-items-center">
+                                    <input type="hidden" name="magiay" value="<?php echo $value["magiay"]; ?>">
+                                    <input type="number" name="soluong" min="1" max="<?php echo $row['soluongtonkho']; ?>" value="<?php echo $value["soluong"]; ?>" class="form-control form-control-sm" style="width:70px;">
+                                    <button type="submit" name="capnhat" class="btn btn-sm btn-secondary ml-2">+/-</button>
+                                </form>
+                            </td>
                             <td><?php echo number_format($subtotal, 0, ',', '.'); ?> đ</td>
                             <td><a href="giohang.php?action=delete&magiay=<?php echo $value["magiay"]; ?>"><span class="text-danger">Xoá</span></a></td>
                         </tr>
@@ -121,9 +128,3 @@ if (!isset($_SESSION['makhachhang']))
             </table>
         </div>
     </div>
-
-    <?php
-    // ...existing code...
-
-
-    ?>

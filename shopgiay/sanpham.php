@@ -70,13 +70,14 @@ if (isset($_GET['masanpham'])) {
                             echo number_format($final_price, 0, ',', '.') . " VND"; 
                             ?>
                         </h4>
+                        <h5><?php echo $row['soluongtonkho'] ?> sản phẩm có sẵn</h5>
                         <!-- Nút mua ngay hoặc thông báo hết hàng -->
                         <?php if ($row['soluongtonkho'] > 0): ?>
                              <!-- Form thêm vào giỏ hàng -->
                         <form method="post" action="sanpham.php?action=add&magiay=<?php echo $row['magiay']; ?>">
                             <div class="form-group">
                                 <label for="soluong">Số lượng:</label>
-                                <input type="number" name="soluong" id="soluong" class="form-control" value="1" min="1">
+                                <input type="number" name="soluong" id="soluong" class="form-control-sm w-2" value="1" min="1" max="<?php echo $row['soluongtonkho']; ?>">
                             </div>
                             <input type="hidden" name="1_tengiay" value="<?php echo $row['tengiay']; ?>">
                             <input type="hidden" name="1_giaban" value="<?php echo $final_price; ?>">
