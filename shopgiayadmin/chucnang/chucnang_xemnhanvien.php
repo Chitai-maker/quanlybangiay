@@ -3,7 +3,7 @@
       <tr>
         <th>Tên Nhân Viên</th>
         <th>Email</th>
-        <th>SDT</th>
+        <th>SĐT</th>
         <th>Địa chỉ</th>
         <th>Ngày sinh</th>
         <th>Giới tính</th>

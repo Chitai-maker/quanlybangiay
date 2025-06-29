@@ -247,7 +247,7 @@ $saphethang_count = $row15['total'];
             <div class="card-value"><?= $kichco_count ?></div>
         </div>
     </a>
-    <a href="sanphamhot.php" class="dashboard-card">
+    <a href="khuyenmai.php" class="dashboard-card">
         <span class="dashboard-icon bg-orange"><i class="fa fa-fire"></i></span>
         <div>
             <div class="card-label">Khuyến mãi</div>

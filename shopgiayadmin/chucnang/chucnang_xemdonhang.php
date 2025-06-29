@@ -81,7 +81,7 @@ if (mysqli_num_rows($result) > 0) {
             <thead>
                 <tr>
                     <th>Tên khách hàng</th>
-                    <th>SDT</th>
+                    <th>SĐT</th>
                     <th>Mã đơn hàng</th>
                     <th>Ngày đặt</th>
                     <th>Trạng thái</th>                   
