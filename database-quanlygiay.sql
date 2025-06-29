@@ -59,7 +59,9 @@ CREATE TABLE khachhang (
     email VARCHAR(100) NOT NULL UNIQUE,
     sdt VARCHAR(100) NOT NULL UNIQUE,
     diachi VARCHAR(100) NOT NULL UNIQUE,
-    matkhau VARCHAR(255) NOT NULL -- dùng để lưu mật khẩu đã được hash (mã hóa)
+    matkhau VARCHAR(255) NOT NULL, -- dùng để lưu mật khẩu đã được hash (mã hóa)
+    reset_token VARCHAR(255) DEFAULT NULL,
+    reset_expire DATETIME DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 -- tạo bảng đơn hàng
 CREATE TABLE donhang (
