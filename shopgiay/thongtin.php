@@ -43,6 +43,7 @@ if (mysqli_num_rows($result) > 0) {
             <h3><strong>Địa chỉ:</strong> <?php echo $row['diachi']; ?></h3>
             <div class="text-center mt-4">
                 <a href="index.php" class="btn btn-primary">Quay lại trang chủ</a>
+                <a href="suathongtin.php" class="btn btn-secondary">Sửa thông tin</a>
             </div>
         </div>
     </div>
