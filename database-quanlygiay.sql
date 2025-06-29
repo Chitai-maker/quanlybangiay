@@ -87,6 +87,17 @@ CREATE TABLE sanphamhot (
     giakhuyenmai INT CHECK (giakhuyenmai BETWEEN 1 and 100),
     FOREIGN KEY (magiay) REFERENCES giay(magiay)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- tạo bảng danhgia
+CREATE TABLE danhgia (
+    ma_danhgia INT AUTO_INCREMENT PRIMARY KEY,
+    ma_khachhang INT NOT NULL,
+    magiay INT NOT NULL,
+    danhgia INT CHECK (danhgia BETWEEN 1 and 5),
+    binhluan TEXT,
+    ngaydanhgia DATETIME NOT NULL,
+    FOREIGN KEY (ma_khachhang) REFERENCES khachhang(ma_khachhang),
+    FOREIGN KEY (magiay) REFERENCES giay(magiay)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 -- dử liệu cho bảng nhanvien
 INSERT INTO `nhanvien` (`ma_nhanvien`, `ten_nhanvien`, `hash`, `email`, `sdt`, `diachi`, `gioitinh`, `ngaysinh`, `luong`, `quyen`) VALUES
 (1, 'Tài', '$2y$12$08D4RMoZWcjhPpTyItV0..m4xc4Ofp4kn/LDZZuLPdcw8UvGqNJkq', 'Admin@admin.com', '09113001001', '123123123', 'Nam', '0000-00-00', 1200000000, 0),

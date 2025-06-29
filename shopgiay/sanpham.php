@@ -62,6 +62,34 @@ if (isset($_GET['masanpham'])) {
                     <!-- Thông tin sản phẩm -->
                     <div class="col-md-6">
                         <h2><?php echo $row['tengiay']; ?></h2>
+                        <?php
+                        // Lấy số sao trung bình
+                        $avg_sql = "SELECT AVG(danhgia) as avg_star, COUNT(*) as total FROM danhgia WHERE magiay = '$magiay'";
+                        $avg_result = mysqli_query($conn, $avg_sql);
+                        $avg_data = mysqli_fetch_assoc($avg_result);
+                        $avg_star = $avg_data['avg_star'] ? round($avg_data['avg_star'], 1) : 0;
+                        $total = $avg_data['total'];
+                        ?>
+                        <p>
+                            
+                            <?php
+                            if ($total > 0) {
+                                // Hiển thị sao bằng icon
+                                for ($i = 1; $i <= 5; $i++) {
+                                    if ($i <= floor($avg_star)) {
+                                        echo '<span style="color: gold;">&#9733;</span>'; // sao đầy
+                                    } elseif ($i - $avg_star < 1) {
+                                        echo '<span style="color: gold;">&#9734;</span>'; // sao rỗng
+                                    } else {
+                                        echo '<span style="color: #ccc;">&#9734;</span>'; // sao rỗng xám
+                                    }
+                                }
+                                echo " ({$avg_star}/5 từ {$total} đánh giá)";
+                            } else {
+                                echo "Chưa có đánh giá";
+                            }
+                            ?>
+                        </p>
                         <h4 class="text-danger">
                             <?php 
                             if ($discount > 0) {
@@ -73,21 +101,91 @@ if (isset($_GET['masanpham'])) {
                         <h5><?php echo $row['soluongtonkho'] ?> sản phẩm có sẵn</h5>
                         <!-- Nút mua ngay hoặc thông báo hết hàng -->
                         <?php if ($row['soluongtonkho'] > 0): ?>
-                             <!-- Form thêm vào giỏ hàng -->
-                        <form method="post" action="sanpham.php?action=add&magiay=<?php echo $row['magiay']; ?>">
-                            <div class="form-group">
-                                <label for="soluong">Số lượng:</label>
-                                <input type="number" name="soluong" id="soluong" class="form-control-sm w-2" value="1" min="1" max="<?php echo $row['soluongtonkho']; ?>">
-                            </div>
-                            <input type="hidden" name="1_tengiay" value="<?php echo $row['tengiay']; ?>">
-                            <input type="hidden" name="1_giaban" value="<?php echo $final_price; ?>">
-                            <button type="submit" name="add" class="btn btn-success">Thêm vào giỏ hàng</button>
-                        </form>
-                        <?php else: ?>
-                            <span class="badge bg-danger">Hết hàng</span>
-                        <?php endif; ?>
-                        <p><?php echo $row['mota']; ?></p>
-                    </div>
+        <!-- Form thêm vào giỏ hàng -->
+        <form method="post" action="sanpham.php?action=add&magiay=<?php echo $row['magiay']; ?>">
+            <div class="form-group">
+                <label for="soluong">Số lượng:</label>
+                <input type="number" name="soluong" id="soluong" class="form-control-sm w-2" value="1" min="1" max="<?php echo $row['soluongtonkho']; ?>">
+            </div>
+            <input type="hidden" name="1_tengiay" value="<?php echo $row['tengiay']; ?>">
+            <input type="hidden" name="1_giaban" value="<?php echo $final_price; ?>">
+            <button type="submit" name="add" class="btn btn-success">Thêm vào giỏ hàng</button>
+        </form>
+        <?php
+        // Kiểm tra nếu khách đã đăng nhập và đã đánh giá chưa
+        $show_danhgia_btn = true;
+        if (isset($_SESSION['makhachhang'])) {
+            $makhachhang = mysqli_real_escape_string($conn, $_SESSION['makhachhang']);
+            $check_sql = "SELECT * FROM danhgia WHERE magiay = '$magiay' AND ma_khachhang = '$makhachhang'";
+            $check_result = mysqli_query($conn, $check_sql);
+            if (mysqli_num_rows($check_result) > 0) {
+                $show_danhgia_btn = false;
+            }
+        }
+        if ($show_danhgia_btn) {
+        ?>
+            <!-- Nút đánh giá -->
+            <a href="danhgia.php?masanpham=<?php echo $row['magiay']; ?>" class="btn btn-primary mt-2">Đánh giá sản phẩm</a>
+        <?php
+        } else {
+            echo "<span class='badge bg-info mt-2'>Bạn đã đánh giá sản phẩm này</span>";
+        }
+        ?>
+    <?php else: ?>
+        <span class="badge bg-danger">Hết hàng</span>
+        <?php
+        // Kiểm tra nếu khách đã đăng nhập và đã đánh giá chưa
+        $show_danhgia_btn = true;
+        if (isset($_SESSION['makhachhang'])) {
+            $makhachhang = mysqli_real_escape_string($conn, $_SESSION['makhachhang']);
+            $check_sql = "SELECT * FROM danhgia WHERE magiay = '$magiay' AND ma_khachhang = '$makhachhang'";
+            $check_result = mysqli_query($conn, $check_sql);
+            if (mysqli_num_rows($check_result) > 0) {
+                $show_danhgia_btn = false;
+            }
+        }
+        if ($show_danhgia_btn) {
+        ?>
+            <!-- Nút đánh giá vẫn hiển thị -->
+            <a href="danhgia.php?masanpham=<?php echo $row['magiay']; ?>" class="btn btn-primary mt-2">Đánh giá sản phẩm</a>
+        <?php
+        } else {
+            echo "<span class='badge bg-info mt-2'>Bạn đã đánh giá sản phẩm này</span>";
+        }
+        ?>
+    <?php endif; ?>
+    <p><?php echo $row['mota']; ?></p>
+
+<!-- Hiển thị bình luận -->
+<div class="mt-4">
+    <h5>Bình luận của khách hàng</h5>
+    <?php
+    $bl_query = "SELECT d.*, k.ten_khachhang FROM danhgia d 
+                 LEFT JOIN khachhang k ON d.ma_khachhang = k.ma_khachhang 
+                 WHERE d.magiay = '$magiay' ORDER BY d.ngaydanhgia DESC";
+    $bl_result = mysqli_query($conn, $bl_query);
+    if (mysqli_num_rows($bl_result) > 0) {
+        while ($bl = mysqli_fetch_assoc($bl_result)) {
+            echo '<div class="border rounded p-2 mb-2 bg-light">';
+            echo '<strong>' . htmlspecialchars($bl['ten_khachhang']) . '</strong> ';
+            // Hiển thị số sao
+            for ($i = 1; $i <= 5; $i++) {
+                if ($i <= $bl['danhgia']) {
+                    echo '<span style="color: gold; font-size:16px;">&#9733;</span>';
+                } else {
+                    echo '<span style="color: #ccc; font-size:16px;">&#9733;</span>';
+                }
+            }
+            echo '<br>';
+            echo nl2br(htmlspecialchars($bl['binhluan']));
+            echo '</div>';
+        }
+    } else {
+        echo '<div class="text-muted">Chưa có bình luận nào cho sản phẩm này.</div>';
+    }
+    ?>
+</div>
+</div>
                 </div>
             </div>
             <div class="container mt-5">

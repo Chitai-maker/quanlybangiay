@@ -80,6 +80,11 @@ $query15 = "SELECT COUNT(*) AS total FROM giay WHERE soluongtonkho < 5";
 $result15 = mysqli_query($conn, $query15);
 $row15 = mysqli_fetch_assoc($result15);
 $saphethang_count = $row15['total'];
+//đém số đánh giá
+$query16 = "SELECT COUNT(*) AS total FROM danhgia";
+$result16 = mysqli_query($conn, $query16);
+$row16 = mysqli_fetch_assoc($result16);
+$danhgia_count = $row16['total'];
 ?>
 <style>
     .dashboard-cards {
@@ -275,6 +280,13 @@ $saphethang_count = $row15['total'];
             <div class="card-value"><?= $saphethang_count ?></div>
         </div>
     </a>
+    <a href="danhgia.php" class="dashboard-card">
+        <span class="dashboard-icon bg-purple"><i class="fa fa-star"></i></span>
+        <div>
+            <div class="card-label">Đánh giá</div>
+            <div class="card-value"><?= $danhgia_count ?></div>
+        </div>
+    </a>
 </div>
 
 <div class="row mb-4">
@@ -371,7 +383,66 @@ $saphethang_count = $row15['total'];
         </div>
     </div>
 </div>
-
+<!-- bảng đánh giá mới -->
+<div class="col-md-12 mt-4">
+    <div class="card shadow-sm mb-4" style="max-width:100%;">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span><b>Đánh giá mới nhất</b></span>
+            <div class="dropdown">
+                <button class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fa fa-ellipsis-h"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="danhgia.php">Xem tất cả</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-body p-2">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th style="color:#b0b3b9;">Sản phẩm</th>
+                        <th style="color:#b0b3b9;">Khách hàng</th>
+                        <th style="color:#b0b3b9;">Số sao</th>
+                        <th style="color:#b0b3b9;">Bình luận</th>
+                        <th style="color:#b0b3b9;">Ngày đánh giá</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    // Lấy 5 đánh giá mới nhất
+                    $sql = "SELECT d.*, g.tengiay, k.ten_khachhang 
+                            FROM danhgia d
+                            LEFT JOIN giay g ON d.magiay = g.magiay
+                            LEFT JOIN khachhang k ON d.ma_khachhang = k.ma_khachhang
+                            ORDER BY d.ngaydanhgia DESC
+                            LIMIT 5";
+                    $result = mysqli_query($conn, $sql);
+                    while ($row = mysqli_fetch_assoc($result)):
+                    ?>
+                        <tr>
+                            <td><?= htmlspecialchars($row['tengiay']) ?></td>
+                            <td><?= htmlspecialchars($row['ten_khachhang']) ?></td>
+                            <td>
+                                <?php
+                                for ($i = 1; $i <= 5; $i++) {
+                                    if ($i <= $row['danhgia']) {
+                                        echo '<span style="color: gold;">&#9733;</span>';
+                                    } else {
+                                        echo '<span style="color: #ccc;">&#9733;</span>';
+                                    }
+                                }
+                                ?>
+                            </td>
+                            <td><?= nl2br(htmlspecialchars($row['binhluan'])) ?></td>
+                            <td><?= date('d/m/Y H:i', strtotime($row['ngaydanhgia'])) ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 <?php
 // Đóng kết nối
 mysqli_close($conn);
