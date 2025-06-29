@@ -18,6 +18,7 @@ if (session_id() == "") {
     <div class="header">
         <div class="menu">
             <a href="index.php">Home</a>
+            <a href="sanphamhot.php">Hot</a>
             <a href="tat.php">Tất</a>
             <a href="sandal.php">Giày Sandal</a>
             <a href="dep.php">Dép</a>

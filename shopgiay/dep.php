@@ -14,7 +14,50 @@ include "chucnang/connectdb.php";
     <style>
     </style>
 </head>
+<style>
+        .product {
+            width: 230px;
+            height: 340px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            margin: 16px auto;
+            padding: 16px 8px 8px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            transition: box-shadow 0.2s;
+        }
 
+        .product img {
+            width: 190px;
+            height: 200px;
+            object-fit: contain;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .product h6,
+        .product a,
+        .product span {
+            text-align: center;
+            width: 100%;
+            margin: 0;
+        }
+
+        .product-name {
+            display: block;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+            font-weight: 500;
+            margin-bottom: 8px;
+            min-height: 24px;
+        }
+    </style>
 <body>
     <!-- lọc màu -->
     <div class="container mt-5">
@@ -53,21 +96,41 @@ include "chucnang/connectdb.php";
         $result = mysqli_query($conn, $query);
 
         if (mysqli_num_rows($result) > 0) {
-            while ($row = mysqli_fetch_array($result)) { ?>
-               <div class="col-md-3" style="float: left;">
-                        <div class="product">
-                            <a href="sanpham.php?masanpham=<?php echo $row['magiay']; ?>">
-                                <img src="../shopgiayadmin/anhgiay/<?php echo $row["anhminhhoa"]; ?>" width="190px" height="200px" class="img-responsive" style="border-radius: 10px;">
-                            </a>
-                            <?php echo $row["tengiay"]; ?>
-                            <h6 class="text-danger">
-                                <a href="sanpham.php?masanpham=<?php echo $row['magiay']; ?>" style="text-decoration: none; color: #ff4d4d;">                                   
-                                    <?php echo number_format($row["giaban"], 0, ',', '.'); ?> đ
-                                </a>
-                            </h6>
-                        </div>
+        while ($row = mysqli_fetch_array($result)) {
+            // Lấy giá khuyến mãi nếu có
+            $magiay = $row['magiay'];
+            $query_discount = "SELECT giakhuyenmai FROM sanphamhot WHERE magiay = $magiay";
+            $result_discount = mysqli_query($conn, $query_discount);
+            $discount = 0;
+
+            if (mysqli_num_rows($result_discount) > 0) {
+                $discount_row = mysqli_fetch_assoc($result_discount);
+                $discount = $discount_row['giakhuyenmai'];
+            }
+
+            // Tính giá sau khi giảm
+            $original_price = $row["giaban"];
+            $final_price = $discount > 0 ? $original_price * (1 - $discount / 100) : $original_price;
+    ?>
+            <div class="col-md-3" style="float: left;">
+                <div class="product">
+                    <a href="sanpham.php?masanpham=<?php echo $row['magiay']; ?>">
+                        <img src="../shopgiayadmin/anhgiay/<?php echo $row["anhminhhoa"]; ?>" width="190px" height="200px" class="img-responsive" style="border-radius: 10px;">
+                    </a>
+                    <span class="product-name"><?php echo $row["tengiay"]; ?></span>
+                    <h6 class="text-danger">
+                        <a href="sanpham.php?masanpham=<?php echo $row['magiay']; ?>" style="text-decoration: none; color: #ff4d4d;">
+                            <?php 
+                            if ($discount > 0) {
+                                echo "<del>" . number_format($original_price, 0, ',', '.') . " đ</del> ";
+                            }
+                            echo number_format($final_price, 0, ',', '.') . " đ"; 
+                            ?>
+                        </a>
+                    </h6>
                 </div>
-        <?php }
+            </div>
+    <?php }
         } else {
             echo "<h4 class='text-center'>Không tìm thấy sản phẩm nào.</h4>";
         }

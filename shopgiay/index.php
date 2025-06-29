@@ -18,7 +18,50 @@ include "chucnang/connectdb.php";
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 </head>
+<style>
+        .product {
+            width: 230px;
+            height: 340px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            margin: 16px auto;
+            padding: 16px 8px 8px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            transition: box-shadow 0.2s;
+        }
 
+        .product img {
+            width: 190px;
+            height: 200px;
+            object-fit: contain;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .product h6,
+        .product a,
+        .product span {
+            text-align: center;
+            width: 100%;
+            margin: 0;
+        }
+
+        .product-name {
+            display: block;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-align: center;
+            font-weight: 500;
+            margin-bottom: 8px;
+            min-height: 24px;
+        }
+    </style>
 <body>
     <!--thanh tìm kiếm -->
 <div class="container mt-4">
@@ -37,7 +80,7 @@ include "chucnang/connectdb.php";
         $search = mysqli_real_escape_string($conn, $_GET['search']);
         $query = "SELECT * FROM giay WHERE tengiay LIKE '%$search%' ORDER BY magiay ASC";
     } else { ?>   
-        <h2 class="text-center mt-4">Sản Phẩm Giảm Giá<img src="anh/fire.gif" alt="HTML tutorial" style="width:42px;height:42px;"> </h2>
+        <h2 class="text-center mt-4">Sản Phẩm Giảm Giá <img src="anh/giamgia.gif" alt="HTML tutorial" style="width:42px;height:42px;"> </h2>
         <?php
         // Nếu không có tìm kiếm, hiển thị tất cả sản phẩm trong bảng sanphamhot
         $query = "SELECT giay.* 
@@ -70,7 +113,7 @@ include "chucnang/connectdb.php";
                 <a href="sanpham.php?masanpham=<?php echo $row['magiay']; ?>">
                     <img src="../shopgiayadmin/anhgiay/<?php echo $row["anhminhhoa"]; ?>" width="190px" height="200px" class="img-responsive" style="border-radius: 10px;">
                 </a>
-                <?php echo $row["tengiay"]; ?>
+                <span class="product-name"><?php echo $row["tengiay"]; ?></span>
                 <h6 class="text-danger">
                     <a href="sanpham.php?masanpham=<?php echo $row['magiay']; ?>" style="text-decoration: none; color: #ff4d4d;">
                         <?php 
