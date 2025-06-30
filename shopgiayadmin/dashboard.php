@@ -13,18 +13,22 @@ $query = "SELECT COUNT(*) AS total FROM donhang WHERE trangthai = 'Chờ xác nh
 $query2 = "SELECT COUNT(*) AS total FROM donhang WHERE trangthai = 'Đang giao hàng'";
 $query3 = "SELECT COUNT(*) AS total FROM donhang WHERE trangthai = 'Hoàn thành'";
 $query4 = "SELECT COUNT(*) AS total FROM donhang WHERE trangthai = 'Đã hủy'";
+$query18 = "SELECT COUNT(*) AS total FROM donhang WHERE trangthai = 'Chờ xác nhận thanh toán QR'";
 $result = mysqli_query($conn, $query);
 $result2 = mysqli_query($conn, $query2);
 $result3 = mysqli_query($conn, $query3);
 $result4 = mysqli_query($conn, $query4);
+$result18 = mysqli_query($conn, $query18);
 $row = mysqli_fetch_assoc($result);
 $row2 = mysqli_fetch_assoc($result2);
 $row3 = mysqli_fetch_assoc($result3);
 $row4 = mysqli_fetch_assoc($result4);
+$row18 = mysqli_fetch_assoc($result18);
 $donhang_chuaduyet = $row['total'];
 $donhang_danggiaohang = $row2['total'];
 $donhang_hoanthanh = $row3['total'];
 $donhang_huy = $row4['total'];
+$donhang_chuaxacnhan = $row18['total'];
 // Đếm số khách hàng
 $query5 = "SELECT COUNT(*) AS total FROM khachhang";
 $result5 = mysqli_query($conn, $query5);
@@ -91,6 +95,7 @@ AND ngaybatdau <= NOW()";
 $result17 = mysqli_query($conn, $query17);
 $row17 = mysqli_fetch_assoc($result17);
 $coupons_count = $row17['total'];
+//Đếm số 
 ?>
 <style>
     .dashboard-cards {
@@ -185,6 +190,13 @@ $coupons_count = $row17['total'];
         <div>
             <div class="card-label">Đơn đặt hàng</div>
             <div class="card-value"><?= $donhang_chuaduyet ?></div>
+        </div>
+    </a>
+    <a href="donhang.php?trangthai=Chờ+xác+nhận+thanh+toán+QR" class="dashboard-card">
+        <span class="dashboard-icon bg-orange"><i class="fa fa-qrcode"></i></span>
+        <div>
+            <div class="card-label">Đơn hàng chờ xác nhận thanh toán QR</div>
+            <div class="card-value"><?= $donhang_chuaxacnhan ?></div>
         </div>
     </a>
     <a href="donhang.php?trangthai=Đang+giao+hàng" class="dashboard-card">

@@ -176,11 +176,27 @@ $total = 0;
             </tr>
             <tr>
                 <td colspan="5" class="text-end">
-                    <form method="post" action="chucnang/chucnang_dathang.php">
+                    <form id="formDatHang" method="post" action="chucnang/chucnang_dathang.php">
                         <input type="hidden" name="tongtien" value="<?php echo isset($total_after) ? $total_after : $total; ?>">
                         <input type="hidden" name="diemdadung" value="<?php echo isset($giamgia_diem) ? intval($giamgia_diem) : 0; ?>">
+                        <div class="d-inline-block me-2">
+                            <select name="hinhthucthanhtoan" id="hinhthucthanhtoan" class="form-select form-select-sm" style="width:auto;display:inline-block;">
+                                <option value="cod">Thanh toán khi nhận hàng</option>
+                                <option value="qrpay">QR Pay</option>
+                            </select>
+                        </div>
                         <button type="submit" name="dathang" class="btn btn-success">Đặt hàng</button>
                     </form>
+                    <script>
+                    document.getElementById('formDatHang').addEventListener('submit', function(e) {
+                        var hinhthuc = document.getElementById('hinhthucthanhtoan').value;
+                        if (hinhthuc === 'qrpay') {
+                            this.action = 'chucnang/chucnang_dathang.php';
+                        } else {
+                            this.action = 'chucnang/chucnang_dathang.php';
+                        }
+                    });
+                    </script>
                 </td>
             </tr>
             <?php

@@ -55,8 +55,18 @@ if (isset($_POST['tongtien'])) {
     $tongtien = $total;
 }
 
+// Lấy hình thức thanh toán
+$hinhthucthanhtoan = isset($_POST['hinhthucthanhtoan']) && $_POST['hinhthucthanhtoan'] === 'qrpay' ? 'qr' : 'cod';
+
+// Nếu là QR thì trạng thái là "Chưa thanh toán", ngược lại là "Chờ xác nhận"
+if ($hinhthucthanhtoan === 'qr') {
+    $trangthai = "Chờ xác nhận thanh toán QR";
+} else {
+    $trangthai = "Chờ xác nhận";
+}
+
 // Thêm đơn hàng vào bảng donhang
-$sql_donhang = "INSERT INTO donhang (ma_khachhang, ngaydat, trangthai, tongtien) VALUES ('$ma_khachhang', now(), '$trangthai', '$tongtien')";
+$sql_donhang = "INSERT INTO donhang (ma_khachhang, ngaydat, trangthai, tongtien, hinhthucthanhtoan) VALUES ('$ma_khachhang', now(), '$trangthai', '$tongtien', '$hinhthucthanhtoan')";
 if (mysqli_query($conn, $sql_donhang)) {
     $ma_donhang = mysqli_insert_id($conn);
 
@@ -98,8 +108,17 @@ if (mysqli_query($conn, $sql_donhang)) {
     // Xóa giỏ hàng sau khi đặt hàng thành công
     unset($_SESSION["giohang"]);
 
-    echo "<script>alert('Đặt hàng thành công!');window.location='../index.php';</script>";
-    exit;
+    if ($hinhthucthanhtoan === 'qr') {
+        // Chuyển hướng sang trang thanh toán QR, truyền tổng tiền
+        echo '<form id="redirectForm" method="post" action="../thanhtoan.php">';
+        echo '<input type="hidden" name="tongtien" value="' . htmlspecialchars($tongtien) . '">';
+        echo '</form>';
+        echo '<script>document.getElementById("redirectForm").submit();</script>';
+        exit;
+    } else {
+        echo "<script>alert('Đặt hàng thành công!');window.location='../index.php';</script>";
+        exit;
+    }
 } else {
     echo "<script>alert('Có lỗi khi đặt hàng. Vui lòng thử lại!');window.location='../giohangv2.php';</script>";
     exit;

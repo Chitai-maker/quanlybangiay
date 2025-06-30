@@ -84,7 +84,8 @@ if (mysqli_num_rows($result) > 0) {
                     <th>SĐT</th>
                     <th>Mã đơn hàng</th>
                     <th>Ngày đặt</th>
-                    <th>Trạng thái</th>                   
+                    <th>Trạng thái</th>     
+                            
                     <th>Chức năng</th>
                 </tr>
             </thead>
@@ -96,6 +97,7 @@ if (mysqli_num_rows($result) > 0) {
                         <td><?php echo $maDonHang; ?></td>
                         <td><?php echo $order['ngaydat']; ?></td>
                         <td><?php echo $order['trangthai']; ?></td>
+                        
                         
                         <td>
                             <form method="POST" action="chucnang/chucnang_xoadonhang.php" class="d-inline form-no-border">

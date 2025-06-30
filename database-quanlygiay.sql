@@ -71,6 +71,7 @@ CREATE TABLE donhang (
     ngaydat DATETIME NOT NULL,
     trangthai VARCHAR(100) NOT NULL,
     tongtien INT NOT NULL,
+    hinhthucthanhtoan VARCHAR(100) NOT NULL
     FOREIGN KEY (ma_khachhang) REFERENCES khachhang(ma_khachhang)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 -- tạo bảng chi tiết đơn hàng
