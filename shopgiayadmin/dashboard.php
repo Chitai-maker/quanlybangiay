@@ -85,6 +85,12 @@ $query16 = "SELECT COUNT(*) AS total FROM danhgia";
 $result16 = mysqli_query($conn, $query16);
 $row16 = mysqli_fetch_assoc($result16);
 $danhgia_count = $row16['total'];
+//đếm sô lượng coupon còn hiệu lực
+$query17 = "SELECT COUNT(*) AS total FROM coupon WHERE ngayketthuc > NOW()
+AND ngaybatdau <= NOW()";
+$result17 = mysqli_query($conn, $query17);
+$row17 = mysqli_fetch_assoc($result17);
+$coupons_count = $row17['total'];
 ?>
 <style>
     .dashboard-cards {
@@ -285,6 +291,13 @@ $danhgia_count = $row16['total'];
         <div>
             <div class="card-label">Đánh giá</div>
             <div class="card-value"><?= $danhgia_count ?></div>
+        </div>
+    </a>
+    <a href="magiamgia.php" class="dashboard-card">
+        <span class="dashboard-icon bg-green"><i class="fa fa-ticket-alt"></i></span>
+        <div>
+            <div class="card-label">Số coupon hiệu lực</div>
+            <div class="card-value"><?= $coupons_count ?></div>
         </div>
     </a>
 </div>

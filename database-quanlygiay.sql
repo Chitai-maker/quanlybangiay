@@ -60,6 +60,7 @@ CREATE TABLE khachhang (
     sdt VARCHAR(100) NOT NULL UNIQUE,
     diachi VARCHAR(100) NOT NULL UNIQUE,
     matkhau VARCHAR(255) NOT NULL, -- dùng để lưu mật khẩu đã được hash (mã hóa)
+    diemthanhvien INT DEFAULT 0, -- điểm thành viên để tích lũy
     reset_token VARCHAR(255) DEFAULT NULL,
     reset_expire DATETIME DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -69,6 +70,7 @@ CREATE TABLE donhang (
     ma_khachhang INT NOT NULL,
     ngaydat DATETIME NOT NULL,
     trangthai VARCHAR(100) NOT NULL,
+    tongtien INT NOT NULL,
     FOREIGN KEY (ma_khachhang) REFERENCES khachhang(ma_khachhang)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 -- tạo bảng chi tiết đơn hàng
@@ -97,6 +99,14 @@ CREATE TABLE danhgia (
     ngaydanhgia DATETIME NOT NULL,
     FOREIGN KEY (ma_khachhang) REFERENCES khachhang(ma_khachhang),
     FOREIGN KEY (magiay) REFERENCES giay(magiay)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- tạo bảng coupon
+CREATE TABLE coupon (
+    ma_coupon  INT AUTO_INCREMENT PRIMARY KEY,
+    ten_coupon VARCHAR(100) NOT NULL UNIQUE,
+    giatri INT NOT NULL CHECK (giatri BETWEEN 1 and 100),
+    ngaybatdau DATETIME NOT NULL,
+    ngayketthuc DATETIME NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 -- dử liệu cho bảng nhanvien
 INSERT INTO `nhanvien` (`ma_nhanvien`, `ten_nhanvien`, `hash`, `email`, `sdt`, `diachi`, `gioitinh`, `ngaysinh`, `luong`, `quyen`) VALUES

@@ -1,46 +1,82 @@
 <?php
-                ///nut dat hang
-                if (!empty($_SESSION["giohang"])) {
-                    $total = 0;
-                    foreach ($_SESSION["giohang"] as $key => $value) {
-                        $total += $value["soluong"] * $value["giaban"];
-                    }
-                ?>
-                    
-                    
-                    <!-- filepath: c:\xampp\htdocs\shopgiay\giohang.php -->
-                    <?php
-                    // đạt hàng
-                    if (isset($_POST['dat_hang'])) {
-                        $makhachhang = $_SESSION['makhachhang'];
-                        
-                        $trangthai = "Đang xử lý";
+// filepath: c:\xampp\htdocs\quanlybangiay\shopgiay\chucnang\chucnang_dathang.php
+session_start();
+include "connectdb.php";
 
-                        // Thêm đơn hàng vào bảng `donhang`
-                        $query_donhang = "INSERT INTO donhang (ma_khachhang, ngaydat, trangthai) VALUES ('$makhachhang', NOW(), '$trangthai')";
-                        mysqli_query($conn, $query_donhang);
+// Kiểm tra đăng nhập
+if (!isset($_SESSION['makhachhang']) || empty($_SESSION["giohang"])) {
+    header("Location: ../giohangv2.php");
+    exit;
+}
 
-                        // Lấy mã đơn hàng vừa thêm
-                        $ma_donhang = mysqli_insert_id($conn);
+$ma_khachhang = $_SESSION['makhachhang'];
+$ngaydat = date('Y-m-d H:i:s');
+$trangthai = "Chờ xác nhận";
 
-                        // Thêm chi tiết đơn hàng vào bảng `chitietdonhang`
-                        foreach ($_SESSION["giohang"] as $key => $value) {
-                            $magiay = $value["magiay"];
-                            $soluong = $value["soluong"];
-                            $query_chitiet = "INSERT INTO chitietdonhang (ma_donhang, ma_giay, soluong) VALUES ('$ma_donhang', '$magiay', '$soluong')";
-                            mysqli_query($conn, $query_chitiet);
-                        }
+// Tính tổng tiền, giá từng sản phẩm (có khuyến mãi)
+$total = 0;
+$cart = $_SESSION["giohang"];
+$chitiet = [];
+foreach ($cart as $item) {
+    $magiay = $item["magiay"];
+    $soluong = $item["soluong"];
 
-                        // Xóa giỏ hàng sau khi đặt hàng
-                        unset($_SESSION["giohang"]);
+    // Lấy giá gốc
+    $sql = "SELECT giaban FROM giay WHERE magiay = '$magiay'";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+    $giaban = $row['giaban'];
 
-                        // Thông báo và chuyển hướng
-                        $_SESSION['message'] = "Đặt hàng thành công!";
-                        echo '<script>window.location="giohang.php"</script>';
-                        
-                    }
-                    ?>
+    // Lấy giảm giá nếu có
+    $query_discount = "SELECT giakhuyenmai FROM sanphamhot WHERE magiay = '$magiay'";
+    $result_discount = mysqli_query($conn, $query_discount);
+    $discount = 0;
+    if (mysqli_num_rows($result_discount) > 0) {
+        $discount_row = mysqli_fetch_assoc($result_discount);
+        $discount = $discount_row['giakhuyenmai'];
+    }
+    $final_price = $discount > 0 ? $giaban * (1 - $discount / 100) : $giaban;
+    $subtotal = $final_price * $soluong;
+    $total += $subtotal;
 
-                <?php
-                }
-                ?>
+    $chitiet[] = [
+        'magiay' => $magiay,
+        'soluong' => $soluong
+    ];
+}
+
+// Áp dụng mã giảm giá nếu có
+$giamgia = 0;
+if (isset($_POST['tongtien'])) {
+    // Nếu tổng tiền đã được tính sẵn từ form (sau khi áp dụng coupon)
+    $tongtien = intval($_POST['tongtien']);
+} else {
+    // Nếu không, dùng tổng đã tính ở trên
+    $tongtien = $total;
+}
+
+// Thêm đơn hàng vào bảng donhang
+$sql_donhang = "INSERT INTO donhang (ma_khachhang, ngaydat, trangthai, tongtien) VALUES ('$ma_khachhang', '$ngaydat', '$trangthai', '$tongtien')";
+if (mysqli_query($conn, $sql_donhang)) {
+    $ma_donhang = mysqli_insert_id($conn);
+
+    // Thêm chi tiết đơn hàng
+    foreach ($chitiet as $ct) {
+        $magiay = $ct['magiay'];
+        $soluong = $ct['soluong'];
+        mysqli_query($conn, "INSERT INTO chitietdonhang (ma_donhang, ma_giay, soluong) VALUES ('$ma_donhang', '$magiay', '$soluong')");
+
+        // Trừ số lượng tồn kho
+        mysqli_query($conn, "UPDATE giay SET soluongtonkho = soluongtonkho - $soluong WHERE magiay = '$magiay'");
+    }
+
+    // Xóa giỏ hàng sau khi đặt hàng thành công
+    unset($_SESSION["giohang"]);
+
+    echo "<script>alert('Đặt hàng thành công!');window.location='../index.php';</script>";
+    exit;
+} else {
+    echo "<script>alert('Có lỗi khi đặt hàng. Vui lòng thử lại!');window.location='../giohangv2.php';</script>";
+    exit;
+}
+?>

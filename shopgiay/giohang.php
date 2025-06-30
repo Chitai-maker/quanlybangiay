@@ -1,130 +1,163 @@
 <?php
-include "header.php";
+// filepath: c:\xampp\htdocs\quanlybangiay\shopgiay\giohangv2.php
+session_start();
 include "chucnang/connectdb.php";
-include "chucnang/chucnang_giohang.php";
+include "header.php";
 
+// Xử lý cập nhật số lượng
+if (isset($_POST['capnhat']) && isset($_POST['magiay']) && isset($_POST['soluong'])) {
+    $magiay = $_POST['magiay'];
+    $soluong = max(1, intval($_POST['soluong']));
+    foreach ($_SESSION["giohang"] as $key => $item) {
+        if ($item["magiay"] == $magiay) {
+            $_SESSION["giohang"][$key]["soluong"] = $soluong;
+            break;
+        }
+    }
+    header("Location: giohangv2.php");
+    exit;
+}
 
-if (!isset($_SESSION['makhachhang']))
-    header("location:login.php");
+// Xử lý coupon
+$giamgia = 0;
+$coupon_message = '';
+if (isset($_POST['ap_dung_coupon']) && !empty($_POST['coupon_code'])) {
+    $coupon_code = mysqli_real_escape_string($conn, $_POST['coupon_code']);
+    $now = date('Y-m-d H:i:s');
+    $sql_coupon = "SELECT * FROM coupon WHERE ten_coupon='$coupon_code'  AND ngayketthuc > '$now'";
+    $result_coupon = mysqli_query($conn, $sql_coupon);
+    if (mysqli_num_rows($result_coupon) > 0) {
+        $row_coupon = mysqli_fetch_assoc($result_coupon);
+        $giamgia = $row_coupon['giatri'];
+        $coupon_message = "<div class='alert alert-success mb-2'>Áp dụng thành công mã coupon! Giảm $giamgia% tổng tiền.</div>";
+    } else {
+        $coupon_message = "<div class='alert alert-danger mb-2'>Mã coupon không hợp lệ hoặc đã hết hạn.</div>";
+    }
+}
 
+// Tính tổng tiền
+$total = 0;
 ?>
 <!DOCTYPE html>
-
-<html lang="en">
-
+<html lang="vi">
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Giỏ hàng</title>
-
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-
-    <style>
-
-
-    </style>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 </head>
-
 <body>
-    <?php
-    
-    // Display session message if set
-    if (isset($_SESSION['message'])) {
-        echo "<div class='session-message text-center'>"; // Add a wrapper with a class
-        echo "<div class='alert alert-success alert-dismissible fade show d-inline-block' role='alert'>";
-        echo $_SESSION['message'];
-        echo "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
-        echo "</div>";
-        echo "</div>";
-        unset($_SESSION['message']); // Clear the message after displaying it
-    }
-    ?>
-    <div class="container" style="margin-top: 50px;">
-        <div style="clear: both"></div>
+<div class="container" style="margin-top: 50px;">
+    <h3 class="text-center mb-4">Giỏ Hàng</h3>
+    <?php if (!empty($coupon_message)) echo $coupon_message; ?>
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+            <tr>
+                <th width="30%">Sản phẩm</th>
+                <th width="13%">Đơn giá</th>
+                <th width="10%">Số lượng</th>
+                <th width="10%">Số tiền</th>
+                <th width="17%">Thao tác</th>
+            </tr>
+            <?php
+            if (!empty($_SESSION["giohang"])) {
+                foreach ($_SESSION["giohang"] as $key => $value) {
+                    $sql = "SELECT * FROM giay WHERE magiay = '" . $value["magiay"] . "'";
+                    $result = mysqli_query($conn, $sql);
+                    $row = mysqli_fetch_array($result);
 
-        <h3 class="title2" style="text-transform: uppercase;">Giỏ Hàng</h3>
-        <div class="table-responsive">
-            <table class="table table-bordered" style="font-family: monospace;">
-                <tr>
-                    <th width="30%">Sản phẩm</th>
-                    <th width="13%">Đơn giá</th>
-                    <th width="10%">Số lượng</th>
-                    <th width="10%">Số tiền</th>
-                    <th width="17%">Thao tác</th>
-                </tr>
-                <?php
-                // Kiểm tra nếu giỏ hàng không rỗng
-                if (!empty($_SESSION["giohang"])) {
-                    $total = 0;
-                    foreach ($_SESSION["giohang"] as $key => $value) {
-                        $sql = "SELECT * FROM giay WHERE magiay = '" . $value["magiay"] . "'";
-                        $result = mysqli_query($conn, $sql);
-                        $row = mysqli_fetch_array($result);
-                        // Kiểm tra nếu sản phẩm có trong bảng sanphamhot
-                        $magiay = $value['magiay'];
-                        $query_discount = "SELECT giakhuyenmai FROM sanphamhot WHERE magiay = '$magiay'";
-                        $result_discount = mysqli_query($conn, $query_discount);
-                        $discount = 0;
+                    // Lấy giảm giá nếu có
+                    $magiay = $value['magiay'];
+                    $query_discount = "SELECT giakhuyenmai FROM sanphamhot WHERE magiay = '$magiay'";
+                    $result_discount = mysqli_query($conn, $query_discount);
+                    $discount = 0;
+                    if (mysqli_num_rows($result_discount) > 0) {
+                        $discount_row = mysqli_fetch_assoc($result_discount);
+                        $discount = $discount_row['giakhuyenmai'];
+                    }
 
-                        if (mysqli_num_rows($result_discount) > 0) {
-                            $discount_row = mysqli_fetch_assoc($result_discount);
-                            $discount = $discount_row['giakhuyenmai'];
-                        }
-
-                        // Tính giá sau khi giảm
-                        $original_price =  $row["giaban"];
-                        $final_price = $discount > 0 ? $original_price * (1 - $discount / 100) : $original_price;
-
-                        // Tính tổng tiền
-                        $subtotal = $value["soluong"] * $final_price;
-                        $total += $subtotal;
-                ?>
-                        <tr>
-                            <td><a href="sanpham.php?masanpham=<?php echo $value['magiay']; ?>"><?php echo $value["tengiay"]; ?></a></td>
-                            <td>
-                                <?php
-                                if ($discount > 0) {
-                                    echo "<del>" . number_format($original_price, 0, ',', '.') . " đ</del> ";
-                                }
-                                echo number_format($final_price, 0, ',', '.') . " đ";
-                                ?>
-                            </td>
-                            <td>
-                                <form method="post" action="chucnang/chucnang_giohang.php" class="d-flex align-items-center">
-                                    <input type="hidden" name="magiay" value="<?php echo $value["magiay"]; ?>">
-                                    <input type="number" name="soluong" min="1" max="<?php echo $row['soluongtonkho']; ?>" value="<?php echo $value["soluong"]; ?>" class="form-control form-control-sm" style="width:70px;">
-                                    <button type="submit" name="capnhat" class="btn btn-sm btn-secondary ml-2">+/-</button>
-                                </form>
-                            </td>
-                            <td><?php echo number_format($subtotal, 0, ',', '.'); ?> đ</td>
-                            <td><a href="giohang.php?action=delete&magiay=<?php echo $value["magiay"]; ?>"><span class="text-danger">Xoá</span></a></td>
-                        </tr>
+                    // Tính giá sau khi giảm
+                    $original_price = $row["giaban"];
+                    $final_price = $discount > 0 ? $original_price * (1 - $discount / 100) : $original_price;
+                    $subtotal = $value["soluong"] * $final_price;
+                    $total += $subtotal;
+            ?>
+            <tr>
+                <td>
+                    <a href="sanpham.php?masanpham=<?php echo $value['magiay']; ?>">
+                        <?php echo htmlspecialchars($value["tengiay"]); ?>
+                    </a>
+                    <?php if ($discount > 0): ?>
+                        <br><span class="badge bg-danger">Giảm <?php echo $discount; ?>%</span>
+                    <?php endif; ?>
+                </td>
+                <td>
                     <?php
+                    if ($discount > 0) {
+                        echo "<del>" . number_format($original_price, 0, ',', '.') . " đ</del><br>";
+                        echo "<span class='text-success'>" . number_format($final_price, 0, ',', '.') . " đ</span>";
+                    } else {
+                        echo number_format($original_price, 0, ',', '.') . " đ";
                     }
                     ?>
-                    <tr>
-                        <td colspan="3" align="right"><strong>Tổng cộng:</strong></td>
-                        <td><?php echo number_format($total, 0, ',', '.'); ?> đ</td>
-                        <td align="right">
-                            <form method="post" action="">
-                                <button type="submit" name="dat_hang" class="btn btn-primary">Đặt hàng</button>
-                            </form>
-                        </td>
-                    </tr>
-                <?php
-                } else {
-                    echo "<tr><td colspan='5' class='text-center'>Giỏ hàng trống.</td></tr>";
+                </td>
+                <td>
+                    <form method="post" action="giohangv2.php" class="d-flex align-items-center">
+                        <input type="hidden" name="magiay" value="<?php echo $value["magiay"]; ?>">
+                        <input type="number" name="soluong" min="1" max="<?php echo $row['soluongtonkho']; ?>" value="<?php echo $value["soluong"]; ?>" class="form-control form-control-sm" style="width:70px;">
+                        <button type="submit" name="capnhat" class="btn btn-sm btn-secondary ms-2">Cập nhật</button>
+                    </form>
+                </td>
+                <td><?php echo number_format($subtotal, 0, ',', '.') . " đ"; ?></td>
+                <td>
+                    <a href="chucnang/chucnang_giohang.php?action=delete&magiay=<?php echo $value["magiay"]; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Xóa sản phẩm này khỏi giỏ hàng?')">Xóa</a>
+                </td>
+            </tr>
+            <?php
                 }
-                ?>
-                <?php
-                include "chucnang/chucnang_dathang.php";
-                ?>
-            </table>
-        </div>
+            ?>
+            <!-- Box nhập coupon -->
+            <tr>
+                <td colspan="3" align="right">
+                    <form method="post" action="">
+                        <div class="input-group">
+                            <input type="text" name="coupon_code" class="form-control form-control-sm" placeholder="Nhập mã coupon..." value="<?php echo isset($_POST['coupon_code']) ? htmlspecialchars($_POST['coupon_code']) : ''; ?>">
+                            <button type="submit" name="ap_dung_coupon" class="btn btn-info btn-sm">Áp dụng</button>
+                        </div>
+                    </form>
+                </td>
+                <td colspan="2"></td>
+            </tr>
+            <!-- Tổng tiền -->
+            <tr>
+                <td colspan="3" align="right"><strong>Tổng cộng:</strong></td>
+                <td colspan="2">
+                    <?php
+                    if ($giamgia > 0) {
+                        $total_discount = $total * $giamgia / 100;
+                        $total_after = $total - $total_discount;
+                        echo "<del>" . number_format($total, 0, ',', '.') . " đ</del><br>";
+                        echo "<span class='text-success'>" . number_format($total_after, 0, ',', '.') . " đ</span>";
+                    } else {
+                        echo number_format($total, 0, ',', '.') . " đ";
+                    }
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" class="text-end">
+                    <form method="post" action="chucnang/chucnang_dathang.php">
+                        <input type="hidden" name="tongtien" value="<?php echo isset($total_after) ? $total_after : $total; ?>">
+                        <button type="submit" name="dathang" class="btn btn-success">Đặt hàng</button>
+                    </form>
+                </td>
+            </tr>
+            <?php
+            } else {
+                echo '<tr><td colspan="5" class="text-center">Giỏ hàng trống.</td></tr>';
+            }
+            ?>
+        </table>
     </div>
+</div>
+</body>
+</html>
