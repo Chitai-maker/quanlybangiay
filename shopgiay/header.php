@@ -27,8 +27,9 @@ if (session_id() == "") {
             <a href="size.php">Size</a>
             <?php
             if (isset($_SESSION['tenkhachhang'])) { ?>
-
+                <a href="chatbox.php"><img src="anh/chat.png" alt="HTML tutorial" style="width:42px;height:42px;"></a>
                 <a href="giohang.php"><img src="anh/giohang.webp" alt="HTML tutorial" style="width:42px;height:42px;"></a>
+
                 <!-- filepath: c:\xampp\htdocs\shopgiay\header.php -->
                 <div class="float-end dropdown">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
