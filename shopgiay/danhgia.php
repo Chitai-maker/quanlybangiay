@@ -17,7 +17,7 @@ if (isset($_GET['masanpham'])) {
     $check_mua_sql = "SELECT ctdh.*
                       FROM chitietdonhang ctdh
                       JOIN donhang dh ON ctdh.ma_donhang = dh.ma_donhang
-                      WHERE dh.ma_khachhang = '$makhachhang' AND ctdh.ma_giay = '$magiay' AND dh.trangthai != 'Đã huỷ'";
+                      WHERE dh.ma_khachhang = '$makhachhang' AND ctdh.ma_giay = '$magiay' AND dh.trangthai != 'Đã huỷ' AND dh.trangthai = 'Hoàn thành'"; ;
     $check_mua_result = mysqli_query($conn, $check_mua_sql);
 
     if (mysqli_num_rows($check_mua_result) == 0) {
