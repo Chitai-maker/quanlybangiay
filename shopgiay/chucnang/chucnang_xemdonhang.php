@@ -95,7 +95,7 @@ if (mysqli_num_rows($result) > 0) {
                    WHERE ct.ma_donhang = '$ma_donhang'";
         $result_ct = mysqli_query($conn, $sql_ct);
         echo "<table class='table table-bordered mb-0'>";
-        echo "<tr class='table-light'><th>Ảnh</th><th>Tên sản phẩm</th><th>Số lượng</th></tr>";
+        echo "<tr class='table-light'><th>Ảnh</th><th>Tên sản phẩm</th><th>Số lượng</th><th>đánh giá</th></tr>";
         while ($ct = mysqli_fetch_assoc($result_ct)) {
             echo "<tr>";
             echo "<td><img src='../shopgiayadmin/anhgiay/" . htmlspecialchars($ct['anhminhhoa']) . "' style='width:60px;height:60px;object-fit:cover;'></td>";
@@ -103,6 +103,11 @@ if (mysqli_num_rows($result) > 0) {
             echo "<td><a href='../shopgiay/sanpham.php?masanpham=" . $ct['ma_giay'] . "' class='text-decoration-none'>" . htmlspecialchars($ct['tengiay']) . "</a></td>";
             
             echo "<td>" . $ct['soluong'] . "</td>";
+            echo "<td>
+                    <a href='../shopgiay/danhgia.php?masanpham=" . $ct['ma_giay'] . "' class='text-decoration-none' title='Đánh giá sản phẩm'>
+                        <span style='font-size:18px;'>&#9998;</span>
+                    </a>
+                  </td>";
             echo "</tr>";
         }
         echo "</table>";
