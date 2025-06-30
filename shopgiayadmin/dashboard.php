@@ -76,7 +76,7 @@ $result14 = mysqli_query($conn, $query14);
 $row14 = mysqli_fetch_assoc($result14);
 $hethang_count = $row14['total'];
 // Đếm số lượng sản phẩm sắp hết hàng
-$query15 = "SELECT COUNT(*) AS total FROM giay WHERE soluongtonkho < 5";
+$query15 = "SELECT COUNT(*) AS total FROM giay WHERE soluongtonkho < 5 and soluongtonkho > 0";
 $result15 = mysqli_query($conn, $query15);
 $row15 = mysqli_fetch_assoc($result15);
 $saphethang_count = $row15['total'];
