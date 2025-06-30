@@ -44,6 +44,39 @@ if (mysqli_num_rows($result) > 0) {
             echo '<button type="submit" name="huydon" class="btn btn-danger btn-sm">Huỷ đơn hàng</button>';
             echo '</form>';
         }
+        // Thanh quá trình đơn hàng (ẩn nếu đã huỷ)
+        if ($dh['trangthai'] != 'Đã huỷ') {
+            // Xác định bước hiện tại
+            $step = 1;
+            if ($dh['trangthai'] == 'Chờ xác nhận') $step = 1;
+            elseif ($dh['trangthai'] == 'Đang giao hàng') $step = 2;
+            elseif ($dh['trangthai'] == 'Hoàn thành') $step = 3;
+            echo '<div class="mt-2 mb-1">';
+            echo '<div class="progress" style="height: 22px;">';
+            // Chờ xác nhận
+            echo '<div class="progress-bar bg-info position-relative" role="progressbar" style="width:33%;" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100">';
+            echo '<span>';
+            echo ($step >= 1 ? '<b>Chờ xác nhận</b>' : 'Chờ xác nhận');
+            if ($step > 1) echo ' <span style="color:green;font-size:18px;">✔</span>';
+            echo '</span>';
+            echo '</div>';
+            // Đang giao hàng
+            echo '<div class="progress-bar ' . ($step >= 2 ? 'bg-warning' : 'bg-light text-dark') . ' position-relative" role="progressbar" style="width:34%;">';
+            echo '<span>';
+            echo ($step >= 2 ? '<b>Đang giao hàng</b>' : 'Đang giao hàng');
+            if ($step > 2) echo ' <span style="color:green;font-size:18px;">✔</span>';
+            echo '</span>';
+            echo '</div>';
+            // Hoàn thành
+            echo '<div class="progress-bar ' . ($step == 3 ? 'bg-success' : 'bg-light text-dark') . ' position-relative" role="progressbar" style="width:33%;">';
+            echo '<span>';
+            echo ($step == 3 ? '<b>Hoàn thành</b>' : 'Hoàn thành');
+            if ($step == 3) echo ' <span style="color:green;font-size:18px;">✔</span>';
+            echo '</span>';
+            echo '</div>';
+            echo '</div></div>';
+        }
+        
         echo "</div>";
         echo "<div class='card-body p-0'>";
         // Lấy chi tiết đơn hàng
