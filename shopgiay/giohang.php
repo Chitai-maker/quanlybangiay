@@ -1,5 +1,5 @@
 <?php
-// filepath: c:\xampp\htdocs\quanlybangiay\shopgiay\giohangv2.php
+
 session_start();
 include "chucnang/connectdb.php";
 include "header.php";
@@ -14,7 +14,7 @@ if (isset($_POST['capnhat']) && isset($_POST['magiay']) && isset($_POST['soluong
             break;
         }
     }
-    header("Location: giohangv2.php");
+    header("Location: giohang.php");
     exit;
 }
 
@@ -125,7 +125,7 @@ $total = 0;
                     ?>
                 </td>
                 <td>
-                    <form method="post" action="giohangv2.php" class="d-flex align-items-center">
+                    <form method="post" action="giohang.php" class="d-flex align-items-center">
                         <input type="hidden" name="magiay" value="<?php echo $value["magiay"]; ?>">
                         <input type="number" name="soluong" min="1" max="<?php echo $row['soluongtonkho']; ?>" value="<?php echo $value["soluong"]; ?>" class="form-control form-control-sm" style="width:70px;">
                         <button type="submit" name="capnhat" class="btn btn-sm btn-secondary ms-2">Cập nhật</button>

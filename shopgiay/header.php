@@ -37,6 +37,7 @@ if (session_id() == "") {
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                         <li><a class="dropdown-item text-black" href="thongtin.php">Thông tin cá nhân</a></li>
                         <li><a class="dropdown-item text-black" href="donhang.php">Đơn mua</a></li>
+                        <li><a class="dropdown-item text-black" href="chatbox.php">Liên hệ shop</a></li>
                         <li><a class="dropdown-item text-black" href="danhgiacuaban.php">Đánh giá của bạn</a></li>
                         <li>
                             <hr class="dropdown-divider">

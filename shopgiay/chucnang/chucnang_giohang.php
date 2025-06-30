@@ -78,7 +78,7 @@ if(isset($_GET["action"])){
             if($value["magiay"] == $_GET["magiay"]){
                 unset($_SESSION["giohang"][$keys]);
                 $_SESSION['message'] = "Xoá sản phẩm thành công";
-                echo '<script>window.location="giohang.php"</script>';
+                echo '<script>window.location="../giohang.php"</script>';
             }
         }
     }
