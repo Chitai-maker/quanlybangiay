@@ -5,6 +5,8 @@
         <th>Email</th>
         <th>SDT</th>
         <th>Địa chỉ</th>
+        <th>Điểm thành viên</th>
+        <th>Thao tác</th>
       </tr>
       <?php
       include_once("connectdb.php");
@@ -17,6 +19,7 @@
             <td><?= $KHACHHANG_SLQ['email']; ?></td>
             <td><?= $KHACHHANG_SLQ['sdt']; ?></td>
             <td><?= $KHACHHANG_SLQ['diachi']; ?></td>
+            <td><?= $KHACHHANG_SLQ['diemthanhvien']; ?></td>
             <td>
               <div class="button-group">
                 <form action="chucnang/chucnang_xoakhachhang.php" method="POST" class="d-inline form-no-border">

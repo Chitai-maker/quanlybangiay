@@ -31,7 +31,7 @@ $result5 = mysqli_query($conn, $query5);
 $row5 = mysqli_fetch_assoc($result5);
 $khachhang_count = $row5['total'];
 // Đếm tổng doanh thu
-$query6 = "SELECT SUM(chitietdonhang.soluong * giay.giaban) AS total FROM donhang JOIN chitietdonhang ON donhang.ma_donhang = chitietdonhang.ma_donhang JOIN giay ON chitietdonhang.ma_giay = giay.magiay WHERE donhang.trangthai = 'Hoàn thành'";
+$query6 = "SELECT SUM(tongtien) AS total FROM donhang WHERE trangthai = 'Hoàn thành'";
 $result6 = mysqli_query($conn, $query6);
 $row6 = mysqli_fetch_assoc($result6);
 $doanhthu_total = $row6['total'] ? number_format($row6['total'], 0, ',', '.') : '0';

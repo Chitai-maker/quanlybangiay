@@ -71,7 +71,7 @@ $res_ct = mysqli_query($conn, $sql_ct);
         $tong = 0; $i = 1;
         while ($row = mysqli_fetch_assoc($res_ct)): 
             $thanhtien = $row['giaban'] * $row['soluong'];
-            $tong += $thanhtien;
+            
         ?>
             <tr>
                 <td><?= $i++ ?></td>
@@ -86,7 +86,7 @@ $res_ct = mysqli_query($conn, $sql_ct);
         <tfoot>
             <tr>
                 <th colspan="5" class="text-end">Tổng cộng:</th>
-                <th><?= number_format($tong, 0, ',', '.') ?> VND</th>
+                <th><?= number_format($donhang['tongtien'], 0, ',', '.') ?> VND</th>
             </tr>
         </tfoot>
     </table>

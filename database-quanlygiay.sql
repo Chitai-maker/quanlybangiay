@@ -79,6 +79,7 @@ CREATE TABLE chitietdonhang (
     ma_donhang INT NOT NULL,
     ma_giay INT NOT NULL,
     soluong INT NOT NULL,
+    chitietdonhang ADD COLUMN giaban INT,
     FOREIGN KEY (ma_donhang) REFERENCES donhang(ma_donhang),
     FOREIGN KEY (ma_giay) REFERENCES giay(magiay)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

@@ -17,12 +17,15 @@ if ($to) $where[] = "dh.ngaydat <= '$to'";
 $where[] = "dh.trangthai = 'Hoàn thành'";
 $where_sql = count($where) ? "WHERE " . implode(" AND ", $where) : "";
 
-// Lấy doanh thu theo thương hiệu
+// Lấy doanh thu theo thương hiệu dựa trên tổng tongtien của đơn hàng hoàn thành
 $query = "
-SELECT th.tenthuonghieu, SUM(ct.soluong * g.giaban) AS doanhthu
+SELECT 
+    th.tenthuonghieu, 
+    SUM(dh.tongtien) AS doanhthu
 FROM donhang dh
-JOIN chitietdonhang ct ON dh.ma_donhang = ct.ma_donhang
-JOIN giay g ON ct.ma_giay = g.magiay
+JOIN giay g ON dh.ma_donhang IN (
+    SELECT ma_donhang FROM chitietdonhang WHERE ma_giay = g.magiay
+)
 JOIN thuonghieu th ON g.mathuonghieu = th.mathuonghieu
 $where_sql
 GROUP BY th.tenthuonghieu

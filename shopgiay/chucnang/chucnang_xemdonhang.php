@@ -18,6 +18,15 @@ if (isset($_POST['huydon']) && isset($_POST['ma_donhang'])) {
     $sql_check = "SELECT * FROM donhang WHERE ma_donhang='$ma_donhang' AND ma_khachhang='$ma_khachhang' AND trangthai='Chờ xác nhận'";
     $result_check = mysqli_query($conn, $sql_check);
     if (mysqli_num_rows($result_check) > 0) {
+        // Trả lại số lượng tồn kho cho từng sản phẩm trong đơn hàng
+        $sql_ct = "SELECT ma_giay, soluong FROM chitietdonhang WHERE ma_donhang = '$ma_donhang'";
+        $result_ct = mysqli_query($conn, $sql_ct);
+        while ($row_ct = mysqli_fetch_assoc($result_ct)) {
+            $magiay = $row_ct['ma_giay'];
+            $soluong = $row_ct['soluong'];
+            mysqli_query($conn, "UPDATE giay SET soluongtonkho = soluongtonkho + $soluong WHERE magiay = '$magiay'");
+        }
+        // Cập nhật trạng thái đơn hàng
         mysqli_query($conn, "UPDATE donhang SET trangthai='Đã huỷ' WHERE ma_donhang='$ma_donhang'");
         echo "<div class='alert alert-success'>Huỷ đơn hàng thành công!</div>";
     } else {

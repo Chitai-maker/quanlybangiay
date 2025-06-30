@@ -10,15 +10,13 @@ if ($_SESSION['quyen'] > 0) {
 // Lấy năm từ form hoặc mặc định là năm hiện tại
 $year = isset($_GET['year']) ? intval($_GET['year']) : date('Y');
 
-// Truy vấn thống kê doanh thu từng tháng trong năm
+// Truy vấn thống kê doanh thu từng tháng trong năm (dựa trên tongtien của donhang)
 $query = "
 SELECT 
-    MONTH(dh.ngaydat) AS thang,
-    SUM(ct.soluong * g.giaban) AS doanhthu
-FROM donhang dh
-JOIN chitietdonhang ct ON dh.ma_donhang = ct.ma_donhang
-JOIN giay g ON ct.ma_giay = g.magiay
-WHERE YEAR(dh.ngaydat) = $year AND dh.trangthai = 'Hoàn thành'
+    MONTH(ngaydat) AS thang,
+    SUM(tongtien) AS doanhthu
+FROM donhang
+WHERE YEAR(ngaydat) = $year AND trangthai = 'Hoàn thành'
 GROUP BY thang
 ORDER BY thang ASC
 ";

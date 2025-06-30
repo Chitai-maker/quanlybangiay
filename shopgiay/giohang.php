@@ -35,6 +35,30 @@ if (isset($_POST['ap_dung_coupon']) && !empty($_POST['coupon_code'])) {
     }
 }
 
+// Lấy điểm thành viên hiện tại
+$diemthanhvien = 0;
+if (isset($_SESSION['makhachhang'])) {
+    $makh = $_SESSION['makhachhang'];
+    $rs_diem = mysqli_query($conn, "SELECT diemthanhvien FROM khachhang WHERE ma_khachhang = '$makh'");
+    if ($row_diem = mysqli_fetch_assoc($rs_diem)) {
+        $diemthanhvien = intval($row_diem['diemthanhvien']);
+    }
+}
+
+// Xử lý giảm giá bằng điểm thành viên
+$giamgia_diem = 0;
+$diem_message = '';
+$diem_giam_toi_da = 90; // Giới hạn tối đa 90 điểm
+if (isset($_POST['ap_dung_diem']) && isset($_POST['so_diem_giam'])) {
+    $so_diem_giam = intval($_POST['so_diem_giam']);
+    if ($so_diem_giam > 0 && $so_diem_giam <= $diemthanhvien && $so_diem_giam <= $diem_giam_toi_da) {
+        $giamgia_diem = $so_diem_giam;
+        $diem_message = "<div class='alert alert-success mb-2'>Áp dụng thành công $giamgia_diem điểm thành viên! Giảm $giamgia_diem% tổng tiền.</div>";
+    } else {
+        $diem_message = "<div class='alert alert-danger mb-2'>Số điểm không hợp lệ (tối đa là " . min($diemthanhvien, $diem_giam_toi_da) . " điểm).</div>";
+    }
+}
+
 // Tính tổng tiền
 $total = 0;
 ?>
@@ -132,11 +156,18 @@ $total = 0;
                 <td colspan="3" align="right"><strong>Tổng cộng:</strong></td>
                 <td colspan="2">
                     <?php
-                    if ($giamgia > 0) {
-                        $total_discount = $total * $giamgia / 100;
+                    // Tính tổng phần trăm giảm giá
+                    $giamgia_coupon = isset($giamgia) && $giamgia > 0 ? $giamgia : 0;
+                    $giamgia_diem = isset($giamgia_diem) && $giamgia_diem > 0 ? $giamgia_diem : 0;
+                    $tong_giam = $giamgia_coupon + $giamgia_diem;
+                    if ($tong_giam > 100) $tong_giam = 100; // Không vượt quá 100%
+
+                    if ($tong_giam > 0) {
+                        $total_discount = $total * $tong_giam / 100;
                         $total_after = $total - $total_discount;
                         echo "<del>" . number_format($total, 0, ',', '.') . " đ</del><br>";
                         echo "<span class='text-success'>" . number_format($total_after, 0, ',', '.') . " đ</span>";
+                        echo "<br><small class='text-muted'>Đã giảm tổng cộng: $tong_giam%</small>";
                     } else {
                         echo number_format($total, 0, ',', '.') . " đ";
                     }
@@ -147,6 +178,7 @@ $total = 0;
                 <td colspan="5" class="text-end">
                     <form method="post" action="chucnang/chucnang_dathang.php">
                         <input type="hidden" name="tongtien" value="<?php echo isset($total_after) ? $total_after : $total; ?>">
+                        <input type="hidden" name="diemdadung" value="<?php echo isset($giamgia_diem) ? intval($giamgia_diem) : 0; ?>">
                         <button type="submit" name="dathang" class="btn btn-success">Đặt hàng</button>
                     </form>
                 </td>
@@ -157,6 +189,18 @@ $total = 0;
             }
             ?>
         </table>
+    </div>
+
+    <div class="mb-3">
+        <h5>Bạn đang có <span class="text-success"><?php echo $diemthanhvien; ?></span> điểm thành viên.</h5>
+        <form method="post" action="">
+            <div class="input-group" style="max-width:350px;">
+                <input type="number" min="1" max="<?php echo min($diemthanhvien, $diem_giam_toi_da); ?>" name="so_diem_giam" class="form-control" placeholder="Nhập số điểm muốn dùng (1 điểm = 1%)" required>
+                <button type="submit" name="ap_dung_diem" class="btn btn-primary">Dùng điểm giảm giá</button>
+            </div>
+            <small class="text-muted">Mỗi điểm giảm 1% tổng tiền, tối đa <?php echo $diem_giam_toi_da; ?> điểm cho 90%. Lưa ý không hoàn trả điểm khi đã đặt</small>
+        </form>
+        <?php if (!empty($diem_message)) echo $diem_message; ?>
     </div>
 </div>
 </body>

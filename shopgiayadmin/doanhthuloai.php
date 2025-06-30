@@ -17,9 +17,11 @@ if ($to) $where[] = "dh.ngaydat <= '$to'";
 $where[] = "dh.trangthai = 'Hoàn thành'";
 $where_sql = count($where) ? "WHERE " . implode(" AND ", $where) : "";
 
-// Lấy doanh thu theo loại giày
+// Lấy doanh thu theo loại giày dựa trên tổng tongtien của đơn hàng hoàn thành
 $query = "
-SELECT l.tenloaigiay, SUM(ct.soluong * g.giaban) AS doanhthu
+SELECT 
+    l.tenloaigiay, 
+    SUM(dh.tongtien) AS doanhthu
 FROM donhang dh
 JOIN chitietdonhang ct ON dh.ma_donhang = ct.ma_donhang
 JOIN giay g ON ct.ma_giay = g.magiay

@@ -1,4 +1,3 @@
-
 <?php
 include "sidebar.php";
 include_once("chucnang/connectdb.php");
@@ -18,13 +17,13 @@ if ($to) $where[] = "dh.ngaydat <= '$to'";
 $where[] = "dh.trangthai = 'Hoàn thành'";
 $where_sql = count($where) ? "WHERE " . implode(" AND ", $where) : "";
 
-// Lấy doanh thu theo khách hàng
+// Lấy doanh thu theo khách hàng (dựa trên tổng tongtien của đơn hàng hoàn thành)
 $query = "
-SELECT kh.email, SUM(ct.soluong * g.giaban) AS doanhthu
+SELECT 
+    kh.email, 
+    SUM(dh.tongtien) AS doanhthu
 FROM donhang dh
 JOIN khachhang kh ON dh.ma_khachhang = kh.ma_khachhang
-JOIN chitietdonhang ct ON dh.ma_donhang = ct.ma_donhang
-JOIN giay g ON ct.ma_giay = g.magiay
 $where_sql
 GROUP BY kh.email
 ORDER BY doanhthu DESC
