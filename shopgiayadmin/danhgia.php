@@ -4,7 +4,7 @@ include "sidebar.php";
 include "../shopgiay/chucnang/connectdb.php"; // Đường dẫn tùy vị trí file admin
 
 // Lấy tất cả đánh giá, join với bảng sản phẩm và khách hàng
-$sql = "SELECT d.*, g.tengiay, g.anhminhhoa,k.ten_khachhang 
+$sql = "SELECT d.*, g.tengiay, g.anhminhhoa,k.email
         FROM danhgia d
         LEFT JOIN giay g ON d.magiay = g.magiay
         LEFT JOIN khachhang k ON d.ma_khachhang = k.ma_khachhang
@@ -26,6 +26,9 @@ $result = mysqli_query($conn, $sql);
             echo '<a href="sanpham.php?masanpham=' . $row['magiay'] . '" class="text-decoration-none">';
 
             echo '<strong>Sản phẩm: ' . htmlspecialchars($row['tengiay']) . '</strong><br>';
+            //hiện thị tên khách hàng
+            echo '<small class="text-muted">' . htmlspecialchars($row['email']) . '</small><br>';
+            echo '</a>';
             // Hiển thị số sao
             for ($i = 1; $i <= 5; $i++) {
                 if ($i <= $row['danhgia']) {
