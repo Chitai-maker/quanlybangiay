@@ -99,7 +99,9 @@ if (mysqli_num_rows($result) > 0) {
         while ($ct = mysqli_fetch_assoc($result_ct)) {
             echo "<tr>";
             echo "<td><img src='../shopgiayadmin/anhgiay/" . htmlspecialchars($ct['anhminhhoa']) . "' style='width:60px;height:60px;object-fit:cover;'></td>";
-            echo "<td>" . htmlspecialchars($ct['tengiay']) . "</td>";
+            //nhấn vào tên sản phẩm sẽ chuyển đến trang chi tiết sản phẩm
+            echo "<td><a href='../shopgiay/sanpham.php?masanpham=" . $ct['ma_giay'] . "' class='text-decoration-none'>" . htmlspecialchars($ct['tengiay']) . "</a></td>";
+            
             echo "<td>" . $ct['soluong'] . "</td>";
             echo "</tr>";
         }
