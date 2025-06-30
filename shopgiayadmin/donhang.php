@@ -38,7 +38,7 @@ include "sidebar.php"; ?>
         <label for="trangthai" class="form-label">Lọc theo trạng thái:</label>
         <select name="trangthai" id="trangthai" class="form-control">
           <option value="">Tất cả</option>
-          <option value="Đang xử lý" <?= (isset($_GET['trangthai']) && $_GET['trangthai'] == 'Đang xử lý') ? 'selected' : '' ?>>Đang xử lý</option>
+          <option value="Chờ xác nhận" <?= (isset($_GET['trangthai']) && $_GET['trangthai'] == 'Chờ xác nhận') ? 'selected' : '' ?>>Chờ xác nhận</option>
           <option value="Đang giao hàng" <?= (isset($_GET['trangthai']) && $_GET['trangthai'] == 'Đang giao hàng') ? 'selected' : '' ?>>Đang giao hàng</option>
           <option value="Hoàn thành" <?= (isset($_GET['trangthai']) && $_GET['trangthai'] == 'Hoàn thành') ? 'selected' : '' ?>>Hoàn thành</option>
           <option value="Đã hủy" <?= (isset($_GET['trangthai']) && $_GET['trangthai'] == 'Đã hủy') ? 'selected' : '' ?>>Đã hủy</option>

@@ -9,7 +9,7 @@ if ($_SESSION['quyen'] > 0) {
 }
 
 // Đếm số đơn hàng theo trạng thái
-$query = "SELECT COUNT(*) AS total FROM donhang WHERE trangthai = 'Đang xử lý'";
+$query = "SELECT COUNT(*) AS total FROM donhang WHERE trangthai = 'Chờ xác nhận'";
 $query2 = "SELECT COUNT(*) AS total FROM donhang WHERE trangthai = 'Đang giao hàng'";
 $query3 = "SELECT COUNT(*) AS total FROM donhang WHERE trangthai = 'Hoàn thành'";
 $query4 = "SELECT COUNT(*) AS total FROM donhang WHERE trangthai = 'Đã hủy'";
@@ -180,7 +180,7 @@ $coupons_count = $row17['total'];
 <title>Dashboard - Quản trị Shop Giày</title>
 <h1>Bảng Tổng Hợp</h1>
 <div class="dashboard-cards">
-    <a href="donhang.php?trangthai=Đang+xử+lý" class="dashboard-card">
+    <a href="donhang.php?trangthai=Chờ+xác+nhận" class="dashboard-card">
         <span class="dashboard-icon bg-purple"><i class="fa fa-receipt"></i></span>
         <div>
             <div class="card-label">Đơn đặt hàng</div>
@@ -372,7 +372,7 @@ $coupons_count = $row17['total'];
                         // Lấy đơn hàng mới nhất
                         $sql = "SELECT ma_donhang, ngaydat, trangthai
                                 FROM donhang
-                                WHERE trangthai = 'Đang xử lý'
+                                WHERE trangthai = 'Chờ xác nhận'
                                 ORDER BY ma_donhang DESC
                                 LIMIT 3";
                         $result = mysqli_query($conn, $sql);

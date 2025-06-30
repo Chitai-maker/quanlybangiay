@@ -56,7 +56,7 @@ if (isset($_POST['tongtien'])) {
 }
 
 // Thêm đơn hàng vào bảng donhang
-$sql_donhang = "INSERT INTO donhang (ma_khachhang, ngaydat, trangthai, tongtien) VALUES ('$ma_khachhang', '$ngaydat', '$trangthai', '$tongtien')";
+$sql_donhang = "INSERT INTO donhang (ma_khachhang, ngaydat, trangthai, tongtien) VALUES ('$ma_khachhang', now(), '$trangthai', '$tongtien')";
 if (mysqli_query($conn, $sql_donhang)) {
     $ma_donhang = mysqli_insert_id($conn);
 
