@@ -64,12 +64,7 @@ include "chucnang/connectdb.php";
     </style>
 <body>
     <!--thanh tìm kiếm -->
-<div class="container mt-4">
-    <form method="get" action="index.php" class="d-flex justify-content-center">
-        <input type="text" name="search" class="form-control w-50" placeholder="Tìm kiếm sản phẩm..." value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
-        <button type="submit" class="btn btn-primary ml-2">Tìm kiếm</button>
-    </form>
-</div>
+
 
 <div class="container" style="margin-top: 50px;">
     <?php

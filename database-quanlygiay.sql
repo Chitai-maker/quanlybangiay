@@ -71,7 +71,7 @@ CREATE TABLE donhang (
     ngaydat DATETIME NOT NULL,
     trangthai VARCHAR(100) NOT NULL,
     tongtien INT NOT NULL,
-    hinhthucthanhtoan VARCHAR(100) NOT NULL
+    hinhthucthanhtoan VARCHAR(100) NOT NULL,
     FOREIGN KEY (ma_khachhang) REFERENCES khachhang(ma_khachhang)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 -- tạo bảng chi tiết đơn hàng
@@ -80,7 +80,7 @@ CREATE TABLE chitietdonhang (
     ma_donhang INT NOT NULL,
     ma_giay INT NOT NULL,
     soluong INT NOT NULL,
-    chitietdonhang ADD COLUMN giaban INT,
+    giaban INT,
     FOREIGN KEY (ma_donhang) REFERENCES donhang(ma_donhang),
     FOREIGN KEY (ma_giay) REFERENCES giay(magiay)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

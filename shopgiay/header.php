@@ -16,15 +16,16 @@ if (session_id() == "") {
 
 <body>
     <div class="header">
+        
         <div class="menu">
             <a href="index.php">Home</a>
-            <a href="sanphamhot.php">Hot</a>
-            <a href="tat.php">Tất</a>
-            <a href="sandal.php">Giày Sandal</a>
-            <a href="dep.php">Dép</a>
-            <a href="sneaker.php">Sneaker</a>
-            <a href="thuonghieu.php">Thương hiệu</a>
-            <a href="size.php">Size</a>
+            <a href="sanphamhot.php" class="ms-2">Hot</a>
+            <form method="get" action="index.php" class="d-inline-flex align-items-center ms-3" style="width:350px;max-width:50vw;">
+                <input type="text" name="search" class="form-control form-control-sm" placeholder="Tìm kiếm sản phẩm..." value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" style="width:70%;">
+                <button type="submit" class="btn btn-primary btn-sm ms-2">Tìm kiếm</button>
+            </form>
+            
+            
             <?php
             if (isset($_SESSION['tenkhachhang'])) { ?>
                 
@@ -38,7 +39,7 @@ if (session_id() == "") {
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                         <li><a class="dropdown-item text-black" href="thongtin.php">Thông tin cá nhân</a></li>
                         <li><a class="dropdown-item text-black" href="donhang.php">Đơn mua</a></li>
-                        <li><a class="dropdown-item text-black" href="chatbox.php">Liên hệ shop</a></li>
+                        
                         <li><a class="dropdown-item text-black" href="danhgiacuaban.php">Đánh giá của bạn</a></li>
                         <li>
                             <hr class="dropdown-divider">
@@ -52,6 +53,8 @@ if (session_id() == "") {
             <?php } ?>
 
         </div>
+        
+        
     </div>
     <style>
         .chat-btn {
