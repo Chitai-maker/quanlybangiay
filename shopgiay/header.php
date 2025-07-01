@@ -27,7 +27,7 @@ if (session_id() == "") {
             <a href="size.php">Size</a>
             <?php
             if (isset($_SESSION['tenkhachhang'])) { ?>
-                <a href="chatbox.php"><img src="anh/chat.png" alt="HTML tutorial" style="width:42px;height:42px;"></a>
+                
                 <a href="giohang.php"><img src="anh/giohang.webp" alt="HTML tutorial" style="width:42px;height:42px;"></a>
 
                 <!-- filepath: c:\xampp\htdocs\shopgiay\header.php -->
@@ -53,3 +53,91 @@ if (session_id() == "") {
 
         </div>
     </div>
+    <style>
+        .chat-btn {
+            display: inline-flex;
+            align-items: center;
+            background: #fff;
+            border-radius: 30px;
+            padding: 6px 18px 6px 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            text-decoration: none;
+            position: relative;
+            font-weight: 500;
+            color: #1a1a1a;
+            border: none;
+            transition: box-shadow 0.2s;
+        }
+
+        .chat-btn:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .chat-icon {
+            background: #d95363;
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            position: relative;
+        }
+
+        .chat-badge {
+            position: absolute;
+            left: 28px;
+            top: -6px;
+            background: #e74c3c;
+            color: #fff;
+            font-size: 15px;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            border: 2px solid #fff;
+        }
+
+        .chat-text {
+            font-size: 20px;
+            color: #1a1a1a;
+            margin-left: 5px;
+        }
+
+        .chat-fixed {
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            z-index: 9999;
+        }
+    </style>
+<!-- Nút chat cố định góc phải dưới -->
+<a href="javascript:void(0)" class="chat-btn chat-fixed" id="openChatBtn">
+    <span class="chat-icon">
+        <img src="anh/chat.png" alt="Chat" style="width:20px;height:20px;">
+    </span>
+    <span class="chat-text">Liên hệ shop</span>
+</a>
+
+<!-- Popup chatbox -->
+<div id="chatPopup" style="display:none; position:fixed; right:30px; bottom:90px; width:500px; max-width:98vw; background:#fff; border-radius:12px; box-shadow:0 4px 24px rgba(0,0,0,0.18); z-index:10000; overflow:hidden;">
+    <div style="background:#d95363; color:#fff; padding:10px 16px; font-weight:bold; display:flex; justify-content:space-between; align-items:center;">
+        Chat với shop
+        <span id="closeChatBtn" style="cursor:pointer; font-size:20px;">&times;</span>
+    </div>
+    <iframe src="chatbox.php" style="width:100%; height:400px; border:none;" id="chatFrame"></iframe>
+</div>
+
+<script>
+document.getElementById('openChatBtn').onclick = function() {
+    document.getElementById('chatPopup').style.display = 'block';
+};
+document.getElementById('closeChatBtn').onclick = function() {
+    document.getElementById('chatPopup').style.display = 'none';
+};
+</script>

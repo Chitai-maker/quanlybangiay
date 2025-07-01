@@ -2,7 +2,7 @@
 
 session_start();
 include "chucnang/connectdb.php";
-include "header.php";
+
 
 // Giả sử đã đăng nhập, lấy mã khách hàng
 $ma_khachhang = $_SESSION['makhachhang'] ?? 0;
@@ -25,7 +25,14 @@ $result = mysqli_query($conn, "SELECT * FROM chatbox WHERE ma_khachhang = '$ma_k
     <title>Chat với Shop</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <style>
-        .chatbox { max-width: 500px; margin: 40px auto; border: 1px solid #ccc; border-radius: 8px; padding: 16px; background: #fff;}
+        .chatbox { 
+            max-width: 500px; 
+            /* margin: 40px auto; */ /* XÓA hoặc comment dòng này */
+            border: 1px solid #ccc; 
+            border-radius: 8px; 
+            padding: 16px; 
+            background: #fff;
+        }
         .msg-khach { text-align: right; }
         .msg-shop { text-align: left; color: #0d6efd; }
         .msg { margin-bottom: 8px; }
@@ -34,8 +41,7 @@ $result = mysqli_query($conn, "SELECT * FROM chatbox WHERE ma_khachhang = '$ma_k
 </head>
 <body>
 <div class="chatbox">
-    <h5 class="mb-3 text-center">Nhân Viên Hổ Trợ</h5>
-    <div style="height:300px;overflow-y:auto;background:#f8f9fa;padding:10px;border-radius:6px;">
+    <div style="height:310px;overflow-y:auto;background:#f8f9fa;padding:10px;border-radius:6px;">
         <?php while ($row = mysqli_fetch_assoc($result)): ?>
             <div class="msg <?= $row['nguoigui']=='khach' ? 'msg-khach' : 'msg-shop' ?>">
                 <div><?= htmlspecialchars($row['noidung']) ?></div>
