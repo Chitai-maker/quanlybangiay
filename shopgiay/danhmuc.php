@@ -195,10 +195,34 @@ $where = $whereArr ? "WHERE " . implode(" AND ", $whereArr) : "";
                     </script>
                 </form>
             </div>
+            <!-- Thêm vào phía trên <h2 class="text-center mt-4">Tất cả sản phẩm</h2> -->
+            <form method="get" class="d-inline-block mb-3" id="sortForm">
+                <!-- Giữ các tham số lọc khác -->
+                <?php if($mathuonghieu): ?><input type="hidden" name="mathuonghieu" value="<?= $mathuonghieu ?>"><?php endif; ?>
+                <?php if($masize): ?><input type="hidden" name="masize" value="<?= $masize ?>"><?php endif; ?>
+                <?php if($mamaugiay): ?><input type="hidden" name="mamaugiay" value="<?= $mamaugiay ?>"><?php endif; ?>
+                <?php if($maloaigiay): ?><input type="hidden" name="maloaigiay" value="<?= $maloaigiay ?>"><?php endif; ?>
+                <label for="sort_price" class="me-2 fw-bold">Sắp xếp:</label>
+                <select name="sort_price" id="sort_price" class="form-select d-inline-block" style="width:160px;display:inline-block;">
+                    <option value="">-- Giá mặc định --</option>
+                    <option value="asc" <?= (isset($_GET['sort_price']) && $_GET['sort_price']=='asc') ? 'selected' : '' ?>>Giá từ thấp đến cao</option>
+                    <option value="desc" <?= (isset($_GET['sort_price']) && $_GET['sort_price']=='desc') ? 'selected' : '' ?>>Giá từ cao đến thấp</option>
+                </select>
+            </form>
+            <script>
+            document.getElementById('sort_price').onchange = function() {
+                document.getElementById('sortForm').submit();
+            };
+            </script>
             <h2 class="text-center mt-4">Tất cả sản phẩm</h2>
             <div class="row">
             <?php
-            $query = "SELECT * FROM giay $where ORDER BY magiay ASC";
+            $order = "ORDER BY magiay ASC";
+            if (isset($_GET['sort_price'])) {
+                if ($_GET['sort_price'] == 'asc') $order = "ORDER BY giaban ASC";
+                if ($_GET['sort_price'] == 'desc') $order = "ORDER BY giaban DESC";
+            }
+            $query = "SELECT * FROM giay $where $order";
             $result = mysqli_query($conn, $query);
 
             if (mysqli_num_rows($result) > 0) {
