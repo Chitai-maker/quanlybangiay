@@ -35,7 +35,10 @@ $result = mysqli_query($conn, "SELECT * FROM chatbox WHERE ma_khachhang = '$ma_k
         }
         .msg-khach { text-align: right; }
         .msg-shop { text-align: left; color: #0d6efd; }
-        .msg { margin-bottom: 8px; }
+        .msg { 
+            margin-bottom: 8px; 
+            word-break: break-word; /* Thêm dòng này */ 
+        }
         .msg-time { font-size: 11px; color: #888; }
     </style>
 </head>

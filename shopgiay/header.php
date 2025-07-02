@@ -20,8 +20,9 @@ if (session_id() == "") {
         <div class="menu">
             <a href="index.php">Home</a>
             <a href="sanphamhot.php" class="ms-2">Hot</a>
-            <form method="get" action="index.php" class="d-inline-flex align-items-center ms-3" style="width:350px;max-width:50vw;">
-                <input type="text" name="search" class="form-control form-control-sm" placeholder="Tìm kiếm sản phẩm..." value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" style="width:70%;">
+            <a href="doanhmuc.php"><img src="anh/doanhmuc.png" alt="HTML tutorial" ></a>
+            <form method="get" action="index.php" class="d-inline-flex align-items-center ms-3" style="width:500px;max-width:70vw;">
+                <input type="text" name="search" class="form-control form-control-sm" placeholder="Tìm kiếm sản phẩm..." value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" style="width:80%;">
                 <button type="submit" class="btn btn-primary btn-sm ms-2">Tìm kiếm</button>
             </form>
             
@@ -119,6 +120,7 @@ if (session_id() == "") {
             z-index: 9999;
         }
     </style>
+<?php if (isset($_SESSION['makhachhang'])): ?>
 <!-- Nút chat cố định góc phải dưới -->
 <a href="javascript:void(0)" class="chat-btn chat-fixed" id="openChatBtn">
     <span class="chat-icon">
@@ -135,7 +137,6 @@ if (session_id() == "") {
     </div>
     <iframe src="chatbox.php" style="width:100%; height:400px; border:none;" id="chatFrame"></iframe>
 </div>
-
 <script>
 document.getElementById('openChatBtn').onclick = function() {
     document.getElementById('chatPopup').style.display = 'block';
@@ -144,3 +145,4 @@ document.getElementById('closeChatBtn').onclick = function() {
     document.getElementById('chatPopup').style.display = 'none';
 };
 </script>
+<?php endif; ?>

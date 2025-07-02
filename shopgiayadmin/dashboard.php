@@ -195,7 +195,7 @@ $coupons_count = $row17['total'];
     <a href="donhang.php?trangthai=Chờ+xác+nhận+thanh+toán+QR" class="dashboard-card">
         <span class="dashboard-icon bg-orange"><i class="fa fa-qrcode"></i></span>
         <div>
-            <div class="card-label">Đơn hàng chờ xác nhận thanh toán QR</div>
+            <div class="card-label">Chờ xác nhận thanh toán QR</div>
             <div class="card-value"><?= $donhang_chuaxacnhan ?></div>
         </div>
     </a>

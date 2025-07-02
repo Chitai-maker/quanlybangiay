@@ -65,6 +65,7 @@ if (session_id() == "") {
                         </div>
                         <a href="dashboard.php">Bảng tổng hợp</a>
                         <a href="thongke.php">Thống kê</a>
+                        <a href="chatbox.php">CSKH</a>
                         <a href="index.php">Sản phẩm</a>
                         <a href="hangtonkho.php">Hàng tồn kho</a>
                         <a href="khuyenmai.php">Khuyến mãi</a>
@@ -108,10 +109,7 @@ if (session_id() == "") {
 
             </nav>
             <main class="col-10 p-4">
-                <!-- nút ẩn trang -->
-                <button class="btn btn-outline-secondary m-2" id="toggleSidebar">
-                    <i class="fa fa-bars"></i>
-                </button>
+                
                 <script>
                     document.getElementById('toggleSidebar').onclick = function() {
                         document.getElementById('sidebar').classList.toggle('hide');
