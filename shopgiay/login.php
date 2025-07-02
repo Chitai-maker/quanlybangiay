@@ -52,46 +52,41 @@ if (isset($_POST['forgot_submit'])) {
     }
 }
 ?>
-<style>
-    form {
-    width: 50%;
-    margin: auto;
-    border: 1px solid #cababa;
-    padding: 20px;
-    border-radius: 10px;    
-}
-</style>
+
 <div class="container">
-        <h1>Đăng nhập</h1>
-        <?php
+    <h1 class="text-center mb-4" style="font-weight:700; font-size:48px;">Đăng nhập</h1>
+    <div class="mx-auto" style="max-width:700px;">
+        <div style="border:1px solid #d2cccc; border-radius:14px; padding:32px 28px 18px 28px; background:#fff;">
+<?php
         $disp_email = !empty($email) ? $email : (isset($_COOKIE['cookie_email']) ? $_COOKIE['cookie_email'] : "");
 
         $checked = !empty($rem) ? "checked" : (isset($_COOKIE['cookie_rem']) ? "checked" : "");
         ?>
         <form action="" method="post">
-            <div class="mb-3">
-                <label for="email" class="form-label fw-bold">Email</label>
-                <input type="email" class="form-control" name="email" id="email" value="<?=$disp_email?>" placeholder="Nhập Email" />
-                <div class="text-danger"><?= $email_err?></div>
-            </div>
-            <div class="mb-3">
-                <label for="pwd" class="form-label fw-bold">Password</label>
-                <input type="password" class="form-control" name="pwd" id="pwd" placeholder="Nhập Password" />
-                <div class="text-danger"><?= $pwd_err?></div>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="1" id="" name="remember" <?= $checked?>/>
-                <label class="form-check-label" for=""> Nhớ tôi </label>
-            </div>
-            
-            <div class="register-btn text-center">
-                <button type="submit" class="btn btn-success" name="submit">Đăng nhập</button>
-                <button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#forgotModal">Quên mật khẩu?</button>
-            </div>
-        </form>
+                <div class="mb-3">
+                    <label for="email" class="form-label fw-bold">Email</label>
+                    <input type="email" class="form-control" name="email" id="email" value="<?=$disp_email?>" placeholder="Nhập Email" />
+                    <div class="text-danger"><?= $email_err?></div>
+                </div>
+                <div class="mb-3">
+                    <label for="pwd" class="form-label fw-bold">Password</label>
+                    <input type="password" class="form-control" name="pwd" id="pwd" placeholder="Nhập Password" />
+                    <div class="text-danger"><?= $pwd_err?></div>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" value="1" id="remember" name="remember" <?= $checked?>/>
+                    <label class="form-check-label" for="remember"> Nhớ tôi </label>
+                </div>
+                <div class="register-btn d-flex align-items-center" style="gap:16px;">
+                    <button type="submit" class="btn btn-success" name="submit">Đăng nhập</button>
+                    <button type="button" class="btn btn-link p-0" data-bs-toggle="modal" data-bs-target="#forgotModal">Quên mật khẩu?</button>
+                </div>
+            </form>
+        </div>
     </div>
+</div>
 
-    <!-- Modal Quên mật khẩu -->
+<!-- Modal Quên mật khẩu -->
 <div class="modal fade" id="forgotModal" tabindex="-1" aria-labelledby="forgotModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <form method="post" action="" class="modal-content">

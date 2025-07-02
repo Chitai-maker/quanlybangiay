@@ -18,10 +18,18 @@ if (session_id() == "") {
     <div class="header">
         
         <div class="menu">
-            <a href="index.php">Home</a>
-            <a href="sanphamhot.php" class="ms-2">Hot</a>
-            <a href="danhmuc.php"><img src="anh/danhmuc.png" alt="HTML tutorial" ></a>
-            <form method="get" action="index.php" class="d-inline-flex align-items-center ms-3" style="width:500px;max-width:70vw;">
+            <a href="index.php"  class="btn-danhmuc">Home</a>
+            
+            <a href="danhmuc.php" class="btn-danhmuc">
+                <span class="menu-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+                <span class="menu-text">Danh mục</span>
+            </a>
+            <a href="sale.php"><img src="anh/sale.webp" style="width:auto;height:42px;"></a>
+            <form method="get" action="index.php" class="d-inline-flex align-items-center" style="width:500px;max-width:70vw;">
                 <input type="text" name="search" class="form-control form-control-sm" placeholder="Tìm kiếm sản phẩm..." value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" style="width:80%;">
                 <button type="submit" class="btn btn-primary btn-sm ms-2">Tìm kiếm</button>
             </form>
@@ -118,6 +126,50 @@ if (session_id() == "") {
             right: 30px;
             bottom: 30px;
             z-index: 9999;
+        }
+
+        .menu {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* căn giữa ngang */
+        }
+        .btn-danhmuc {
+            display: inline-flex;
+            align-items: center;
+            background:rgb(16, 132, 200);
+            color: #fff !important;
+            font-weight: 600;
+            border-radius: 5px;
+            padding: 4px 12px 4px 8px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background 0.2s;
+            border: none;
+            margin-left: 10px;
+            height: 34px;
+            min-width: 0;
+        }
+        .btn-danhmuc:hover {
+            background:rgb(13, 40, 161);
+            color: #fff;
+            text-decoration: none;
+        }
+        .menu-icon {
+            display: inline-flex;
+            flex-direction: column;
+            justify-content: center;
+            margin-right: 7px;
+        }
+        .menu-icon span {
+            display: block;
+            width: 16px;
+            height: 2px;
+            background: #fff;
+            margin: 2px 0;
+            border-radius: 2px;
+        }
+        .menu-text {
+            font-size: 15px;
         }
     </style>
 <?php if (isset($_SESSION['makhachhang'])): ?>
