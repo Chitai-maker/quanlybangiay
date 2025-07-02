@@ -202,20 +202,20 @@ $where = $whereArr ? "WHERE " . implode(" AND ", $whereArr) : "";
                 <?php if($mamaugiay): ?><input type="hidden" name="mamaugiay" value="<?= $mamaugiay ?>"><?php endif; ?>
                 <?php if($maloaigiay): ?><input type="hidden" name="maloaigiay" value="<?= $maloaigiay ?>"><?php endif; ?>
                 
-                <select name="sort_price" id="sort_price" class="form-select d-inline-block" style="width:160px;display:inline-block;">
+                <select name="sort_price" id="sort_price" class="form-select d-inline-block" style="width:220px;display:inline-block;">
                     <option value="">-- Giá mặc định --</option>
                     <option value="asc" <?= (isset($_GET['sort_price']) && $_GET['sort_price']=='asc') ? 'selected' : '' ?>>Giá từ thấp đến cao</option>
                     <option value="desc" <?= (isset($_GET['sort_price']) && $_GET['sort_price']=='desc') ? 'selected' : '' ?>>Giá từ cao đến thấp</option>
                 </select>
             </form>
             </div>
-            <!-- Thêm vào phía trên <h2 class="text-center mt-4">Tất cả sản phẩm</h2> -->
+            
             <script>
             document.getElementById('sort_price').onchange = function() {
                 document.getElementById('sortForm').submit();
             };
             </script>
-            <h2 class="text-center mt-4">Tất cả sản phẩm</h2>
+            
             <div class="row">
             <?php
             $order = "ORDER BY magiay ASC";
