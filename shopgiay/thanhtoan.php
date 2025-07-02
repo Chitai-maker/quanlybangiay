@@ -1,6 +1,22 @@
 <?php
-include "header.php";
+// kiểm tra nếu không có parameter 'tongtien' thì trả về trang chủ
+if (!isset($_POST['tongtien']) || empty($_POST['tongtien'])) {
+    header("Location: index.php");
+    exit();
+}
+// Xử lý xác nhận thanh toán
+if (isset($_POST['xacnhan'])) {
+    // Lưu trạng thái đơn hàng vào DB hoặc session, ví dụ:
+    // $_SESSION['thanhtoan'] = 'pending';
+    //hiện thị thông báo session message
+    session_start();
+    $_SESSION['message'] = "Cảm ơn bạn đã thanh toán. Đơn hàng của bạn sẽ được xác nhận sau khi kiểm tra giao dịch.";
+    header("Location: index.php");
 
+    exit();
+  }
+
+include "header.php";
 // Thông tin tài khoản nhận tiền
 $accountNo = "1017770113"; // Số tài khoản ngân hàng
 $accountName = "NGUYEN DINH HUNG"; // Tên tài khoản
@@ -27,7 +43,7 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
     "Content-Type: application/json",
     "x-client-id: c0898476-841e-4a50-83ea-2b0833c8ae84",
-    "x-api-key: 34e4d413-7302-4d53-b3ff-3705411c3f1f"
+    "x-api-key: 34e4d413-7302-4d53-b3ff-37054111c3f1f"
 ]);
 
 $response = curl_exec($ch);
@@ -52,11 +68,22 @@ if (isset($result["code"]) && $result["code"] == 0) {
 <html>
 <head><meta charset="UTF-8"><title>QR Chuyển Khoản</title></head>
 <body>
+  <!----căn lề giửa trang---->
+<div class="text-center">
   <h2>Quét mã QR để thanh toán</h2>
   <?php if ($qrImage): ?>
     <img src="<?= $qrImage ?>" alt="QR Code" />
+    <form method="post" action="thanhtoan.php">
+        <input type="hidden" name="tongtien" value="<?= htmlspecialchars($amount) ?>">
+        <button type="submit" name="xacnhan" class="btn btn-success mt-3">Tôi đã thanh toán</button>
+    </form>
   <?php else: ?>
     <p><?= htmlspecialchars($errorMsg) ?></p>
   <?php endif; ?>
+
+  <?php
+
+?>
+</div>
 </body>
 </html>

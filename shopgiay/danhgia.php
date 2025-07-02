@@ -1,10 +1,12 @@
 <?php
-include "header.php";
+session_start();
+
 include "chucnang/connectdb.php";
 // Thêm dòng này nếu chưa có
 
 if (!isset($_SESSION['makhachhang'])) {
     // Nếu chưa đăng nhập, chuyển hướng hoặc thông báo
+     include "header.php";
     echo "<div class='container mt-5'><div class='alert alert-warning'>Bạn cần <a href='login.php'>đăng nhập</a> để đánh giá sản phẩm.</div></div>";
     exit;
 }
@@ -21,6 +23,7 @@ if (isset($_GET['masanpham'])) {
     $check_mua_result = mysqli_query($conn, $check_mua_sql);
 
     if (mysqli_num_rows($check_mua_result) == 0) {
+        include "header.php";
         echo "<div class='container mt-5'><div class='alert alert-warning'>Bạn chỉ có thể đánh giá sản phẩm khi đã mua sản phẩm này.</div></div>";
         exit;
     }
@@ -30,6 +33,7 @@ if (isset($_GET['masanpham'])) {
     $check_result = mysqli_query($conn, $check_sql);
 
     if (mysqli_num_rows($check_result) > 0) {
+        include "header.php";
         echo "<div class='container mt-5'><div class='alert alert-info'>Bạn đã đánh giá sản phẩm này rồi.</div></div>";
     } else {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -46,6 +50,8 @@ if (isset($_GET['masanpham'])) {
                 echo "<div class='container mt-5'><div class='alert alert-danger'>Lỗi: Không thể lưu đánh giá.</div></div>";
             }
         }
+
+  include "header.php";     
 ?>
     <div class="container mt-5">
         <h3>Đánh giá sản phẩm</h3>

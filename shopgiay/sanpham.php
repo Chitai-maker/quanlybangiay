@@ -1,5 +1,16 @@
 <!-- filepath: c:\xampp\htdocs\shopgiay\sanpham.php -->
 <?php
+session_start();
+// Xử lý thêm vào giỏ hàng
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add'])) {
+    if (!isset($_SESSION['makhachhang'])) {
+        // Chưa đăng nhập, chuyển hướng sang trang đăng nhập
+        header("Location: login.php?msg=login_required");
+        exit();
+    }
+    // Đã đăng nhập, xử lý thêm vào giỏ hàng như bình thường
+    // ... (code thêm vào giỏ hàng của bạn ở đây)
+}
 include "header.php";
 include "chucnang/connectdb.php";
 include "chucnang/chucnang_giohang.php";
@@ -41,17 +52,17 @@ if (isset($_GET['masanpham'])) {
 
         <body>
             <?php
-        // Display session message if set
-        if (isset($_SESSION['message'])) {
-            echo "<div class='session-message text-center'>"; // Add a wrapper with a class
-            echo "<div class='alert alert-success alert-dismissible fade show d-inline-block' role='alert'>";
-            echo $_SESSION['message'];
-            echo "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
-            echo "</div>";
-            echo "</div>";
-            unset($_SESSION['message']); // Clear the message after displaying it
-        }
-        ?>
+            // Display session message if set
+            if (isset($_SESSION['message'])) {
+                echo "<div class='session-message text-center'>"; // Add a wrapper with a class
+                echo "<div class='alert alert-success alert-dismissible fade show d-inline-block' role='alert'>";
+                echo $_SESSION['message'];
+                echo "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
+                echo "</div>";
+                echo "</div>";
+                unset($_SESSION['message']); // Clear the message after displaying it
+            }
+            ?>
             <div class="container mt-5">
                 <div class="row">
                     <!-- Hình ảnh sản phẩm -->
@@ -71,7 +82,7 @@ if (isset($_GET['masanpham'])) {
                         $total = $avg_data['total'];
                         ?>
                         <p>
-                            
+
                             <?php
                             if ($total > 0) {
                                 // Hiển thị sao bằng icon
@@ -91,133 +102,132 @@ if (isset($_GET['masanpham'])) {
                             ?>
                         </p>
                         <h4 class="text-danger">
-                            <?php 
+                            <?php
                             if ($discount > 0) {
                                 echo "<del>" . number_format($original_price, 0, ',', '.') . " VND</del> ";
                             }
-                            echo number_format($final_price, 0, ',', '.') . " VND"; 
+                            echo number_format($final_price, 0, ',', '.') . " VND";
                             ?>
                         </h4>
                         <h5><?php echo $row['soluongtonkho'] ?> sản phẩm có sẵn</h5>
                         <!-- Nút mua ngay hoặc thông báo hết hàng -->
                         <?php if ($row['soluongtonkho'] > 0): ?>
-        <!-- Form thêm vào giỏ hàng -->
-        <form method="post" action="sanpham.php?action=add&magiay=<?php echo $row['magiay']; ?>">
-            <div class="form-group">
-                <label for="soluong">Số lượng:</label>
-                <input type="number" name="soluong" id="soluong" class="form-control-sm w-2" value="1" min="1" max="<?php echo $row['soluongtonkho']; ?>">
-            </div>
-            <input type="hidden" name="1_tengiay" value="<?php echo $row['tengiay']; ?>">
-            <input type="hidden" name="1_giaban" value="<?php echo $final_price; ?>">
-            <button type="submit" name="add" class="btn btn-success">Thêm vào giỏ hàng</button>
-        </form>
-        <?php
-        // Kiểm tra nếu khách đã đăng nhập và đã đánh giá chưa
-        $show_danhgia_btn = true;
-        if (isset($_SESSION['makhachhang'])) {
-            $makhachhang = mysqli_real_escape_string($conn, $_SESSION['makhachhang']);
-            $check_sql = "SELECT * FROM danhgia WHERE magiay = '$magiay' AND ma_khachhang = '$makhachhang'";
-            $check_result = mysqli_query($conn, $check_sql);
-            if (mysqli_num_rows($check_result) > 0) {
-                $show_danhgia_btn = false;
-            }
-        }
-        if ($show_danhgia_btn) {
-        ?>
-            <!-- Nút đánh giá -->
-            <a href="danhgia.php?masanpham=<?php echo $row['magiay']; ?>" class="btn btn-primary mt-2">Đánh giá sản phẩm</a>
-        <?php
-        } else {
-            echo "<span class='badge bg-info mt-2'>Bạn đã đánh giá sản phẩm này</span>";
-        }
-        ?>
-    <?php else: ?>
-        <span class="badge bg-danger">Hết hàng</span>
-        <?php
-        // Kiểm tra nếu khách đã đăng nhập và đã đánh giá chưa
-        $show_danhgia_btn = true;
-        if (isset($_SESSION['makhachhang'])) {
-            $makhachhang = mysqli_real_escape_string($conn, $_SESSION['makhachhang']);
-            $check_sql = "SELECT * FROM danhgia WHERE magiay = '$magiay' AND ma_khachhang = '$makhachhang'";
-            $check_result = mysqli_query($conn, $check_sql);
-            if (mysqli_num_rows($check_result) > 0) {
-                $show_danhgia_btn = false;
-            }
-        }
-        if ($show_danhgia_btn) {
-        ?>
-            <!-- Nút đánh giá vẫn hiển thị -->
-            <a href="danhgia.php?masanpham=<?php echo $row['magiay']; ?>" class="btn btn-primary mt-2">Đánh giá sản phẩm</a>
-        <?php
-        } else {
-            echo "<span class='badge bg-info mt-2'>Bạn đã đánh giá sản phẩm này</span>";
-        }
-        ?>
-    <?php endif; ?>
-    <p><?php echo $row['mota']; ?></p>
+                            <!-- Form thêm vào giỏ hàng -->
+                            <form method="post" action="sanpham.php?action=add&magiay=<?php echo $row['magiay']; ?>">
+                                <div class="form-group">
+                                    <label for="soluong">Số lượng:</label>
+                                    <input type="number" name="soluong" id="soluong" class="form-control-sm w-2" value="1" min="1" max="<?php echo $row['soluongtonkho']; ?>">
+                                </div>
+                                <input type="hidden" name="1_tengiay" value="<?php echo $row['tengiay']; ?>">
+                                <input type="hidden" name="1_giaban" value="<?php echo $final_price; ?>">
+                                <button type="submit" name="add" class="btn btn-success">Thêm vào giỏ hàng</button>
+                            </form>
+                            <?php
+                            // Kiểm tra nếu khách đã đăng nhập và đã đánh giá chưa
+                            $show_danhgia_btn = true;
+                            if (isset($_SESSION['makhachhang'])) {
+                                $makhachhang = mysqli_real_escape_string($conn, $_SESSION['makhachhang']);
+                                $check_sql = "SELECT * FROM danhgia WHERE magiay = '$magiay' AND ma_khachhang = '$makhachhang'";
+                                $check_result = mysqli_query($conn, $check_sql);
+                                if (mysqli_num_rows($check_result) > 0) {
+                                    $show_danhgia_btn = false;
+                                }
+                            }
+                            if ($show_danhgia_btn) {
+                            ?>
+                                <!-- Nút đánh giá -->
+                                <a href="danhgia.php?masanpham=<?php echo $row['magiay']; ?>" class="btn btn-primary mt-2">Đánh giá sản phẩm</a>
+                            <?php
+                            } else {
+                                echo "<span class='badge bg-info mt-2'>Bạn đã đánh giá sản phẩm này</span>";
+                            }
+                            ?>
+                        <?php else: ?>
+                            <span class="badge bg-danger">Hết hàng</span>
+                            <?php
+                            // Kiểm tra nếu khách đã đăng nhập và đã đánh giá chưa
+                            $show_danhgia_btn = true;
+                            if (isset($_SESSION['makhachhang'])) {
+                                $makhachhang = mysqli_real_escape_string($conn, $_SESSION['makhachhang']);
+                                $check_sql = "SELECT * FROM danhgia WHERE magiay = '$magiay' AND ma_khachhang = '$makhachhang'";
+                                $check_result = mysqli_query($conn, $check_sql);
+                                if (mysqli_num_rows($check_result) > 0) {
+                                    $show_danhgia_btn = false;
+                                }
+                            }
+                            if ($show_danhgia_btn) {
+                            ?>
+                                <!-- Nút đánh giá vẫn hiển thị -->
+                                <a href="danhgia.php?masanpham=<?php echo $row['magiay']; ?>" class="btn btn-primary mt-2">Đánh giá sản phẩm</a>
+                            <?php
+                            } else {
+                                echo "<span class='badge bg-info mt-2'>Bạn đã đánh giá sản phẩm này</span>";
+                            }
+                            ?>
+                        <?php endif; ?>
+                        <p><?php echo $row['mota']; ?></p>
 
-<!-- Hiển thị bình luận -->
-<div class="mt-4">
-    <h5>Bình luận của khách hàng</h5>
-    <?php
-    $bl_query = "SELECT d.*, k.ten_khachhang FROM danhgia d 
+                        <!-- Hiển thị bình luận -->
+                        <div class="mt-4">
+                            <h5>Bình luận của khách hàng</h5>
+                            <?php
+                            $bl_query = "SELECT d.*, k.ten_khachhang FROM danhgia d 
                  LEFT JOIN khachhang k ON d.ma_khachhang = k.ma_khachhang 
                  WHERE d.magiay = '$magiay' ORDER BY d.ngaydanhgia DESC";
-    $bl_result = mysqli_query($conn, $bl_query);
-    if (mysqli_num_rows($bl_result) > 0) {
-        while ($bl = mysqli_fetch_assoc($bl_result)) {
-            echo '<div class="border rounded p-2 mb-2 bg-light">';
-            echo '<strong>' . htmlspecialchars($bl['ten_khachhang']) . '</strong> ';
-            // Hiển thị số sao
-            for ($i = 1; $i <= 5; $i++) {
-                if ($i <= $bl['danhgia']) {
-                    echo '<span style="color: gold; font-size:16px;">&#9733;</span>';
-                } else {
-                    echo '<span style="color: #ccc; font-size:16px;">&#9733;</span>';
-                }
-            }
-            echo '<br>';
-            echo nl2br(htmlspecialchars($bl['binhluan']));
-            echo '</div>';
-        }
-    } else {
-        echo '<div class="text-muted">Chưa có bình luận nào cho sản phẩm này.</div>';
-    }
-    ?>
-</div>
-</div>
-                </div>
-            </div>
-            <div class="container mt-5">
-                <h3 class="text-center">Sản phẩm liên quan</h3>
-                <div class="row">
-                    <?php
-                    // Truy vấn sản phẩm liên quan dựa trên maloaigiay
-                    $related_query = "SELECT * FROM giay WHERE maloaigiay = '" . $row['maloaigiay'] . "' AND magiay != '" . $magiay . "' LIMIT 4";
-                    $related_result = mysqli_query($conn, $related_query);
-
-                    if (mysqli_num_rows($related_result) > 0) {
-                        while ($related_row = mysqli_fetch_assoc($related_result)) {
+                            $bl_result = mysqli_query($conn, $bl_query);
+                            if (mysqli_num_rows($bl_result) > 0) {
+                                while ($bl = mysqli_fetch_assoc($bl_result)) {
+                                    echo '<div class="border rounded p-2 mb-2 bg-light">';
+                                    echo '<strong>' . htmlspecialchars($bl['ten_khachhang']) . '</strong> ';
+                                    // Hiển thị số sao
+                                    for ($i = 1; $i <= 5; $i++) {
+                                        if ($i <= $bl['danhgia']) {
+                                            echo '<span style="color: gold; font-size:16px;">&#9733;</span>';
+                                        } else {
+                                            echo '<span style="color: #ccc; font-size:16px;">&#9733;</span>';
+                                        }
+                                    }
+                                    echo '<br>';
+                                    echo nl2br(htmlspecialchars($bl['binhluan']));
+                                    echo '</div>';
+                                }
+                            } else {
+                                echo '<div class="text-muted">Chưa có bình luận nào cho sản phẩm này.</div>';
+                            }
                             ?>
-                            <div class="col-md-3" style="float: left;">
-                                <div class="product">
-                                    <a href="sanpham.php?masanpham=<?php echo $related_row['magiay']; ?>">
-                                        <img src="../shopgiayadmin/anhgiay/<?php echo $related_row['anhminhhoa']; ?>" width="190px" height="200px" class="img-responsive" style="border-radius: 10px;">
-                                    </a>
-                                    <h6><?php echo $related_row['tengiay']; ?></h6>
-                                    <h6 class="text-danger">
-                                        <?php echo number_format($related_row['giaban'], 0, ',', '.'); ?> đ
-                                    </h6>
-                                </div>
-                            </div>
-                            <?php
-                        }
-                    } else {
-                        echo "<p class='text-center'>Không có sản phẩm liên quan.</p>";
-                    }
-                    ?>
+                        </div>
+                    </div>
                 </div>
-            </div>
+                <div class="container mt-5">
+                    <h3 class="text-center">Sản phẩm liên quan</h3>
+                    <div class="row">
+                        <?php
+                        // Truy vấn sản phẩm liên quan dựa trên maloaigiay
+                        $related_query = "SELECT * FROM giay WHERE maloaigiay = '" . $row['maloaigiay'] . "' AND magiay != '" . $magiay . "' LIMIT 4";
+                        $related_result = mysqli_query($conn, $related_query);
+
+                        if (mysqli_num_rows($related_result) > 0) {
+                            while ($related_row = mysqli_fetch_assoc($related_result)) {
+                        ?>
+                                <div class="col-md-3" style="float: left;">
+                                    <div class="product">
+                                        <a href="sanpham.php?masanpham=<?php echo $related_row['magiay']; ?>">
+                                            <img src="../shopgiayadmin/anhgiay/<?php echo $related_row['anhminhhoa']; ?>" width="190px" height="200px" class="img-responsive" style="border-radius: 10px;">
+                                        </a>
+                                        <h6><?php echo $related_row['tengiay']; ?></h6>
+                                        <h6 class="text-danger">
+                                            <?php echo number_format($related_row['giaban'], 0, ',', '.'); ?> đ
+                                        </h6>
+                                    </div>
+                                </div>
+                        <?php
+                            }
+                        } else {
+                            echo "<p class='text-center'>Không có sản phẩm liên quan.</p>";
+                        }
+                        ?>
+                    </div>
+                </div>
         </body>
 
         </html>

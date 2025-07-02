@@ -64,7 +64,18 @@ include "chucnang/connectdb.php";
 </head>
 
 <body>
-    
+    <?php
+            // Display session message if set
+            if (isset($_SESSION['message'])) {
+                echo "<div class='session-message text-center'>"; // Add a wrapper with a class
+                echo "<div class='alert alert-success alert-dismissible fade show d-inline-block' role='alert'>";
+                echo $_SESSION['message'];
+                echo "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
+                echo "</div>";
+                echo "</div>";
+                unset($_SESSION['message']); // Clear the message after displaying it
+            }
+            ?>
 
     <div class="container" style="margin-top: 50px;">
         <?php

@@ -2,7 +2,7 @@
 
 session_start();
 include "chucnang/connectdb.php";
-include "header.php";
+
 
 // Xử lý cập nhật số lượng
 if (isset($_POST['capnhat']) && isset($_POST['magiay']) && isset($_POST['soluong'])) {
@@ -61,6 +61,7 @@ if (isset($_POST['ap_dung_diem']) && isset($_POST['so_diem_giam'])) {
 
 // Tính tổng tiền
 $total = 0;
+include "header.php";
 ?>
 <!DOCTYPE html>
 <html lang="vi">
