@@ -102,6 +102,15 @@ CREATE TABLE danhgia (
     FOREIGN KEY (ma_khachhang) REFERENCES khachhang(ma_khachhang),
     FOREIGN KEY (magiay) REFERENCES giay(magiay)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- tạo bảng chatbox
+CREATE TABLE chatbox (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ma_khachhang INT(11) NOT NULL,
+    noidung TEXT NOT NULL,
+    nguoigui ENUM('khach', 'shop') NOT NULL,
+    thoigian DATETIME NOT NULL,
+    FOREIGN KEY (ma_khachhang) REFERENCES khachhang(ma_khachhang)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 -- tạo bảng coupon
 CREATE TABLE coupon (
     ma_coupon  INT AUTO_INCREMENT PRIMARY KEY,
