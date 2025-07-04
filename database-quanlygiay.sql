@@ -110,6 +110,20 @@ CREATE TABLE coupon (
     ngaybatdau DATETIME NOT NULL,
     ngayketthuc DATETIME NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+--  tạp bảng bannner ad
+CREATE TABLE banner (
+    ma_banner INT AUTO_INCREMENT PRIMARY KEY,
+    ten_banner VARCHAR(100) NOT NULL UNIQUE,
+    link_banner VARCHAR(200) NOT NULL,
+    anh_banner VARCHAR(200) NOT NULL,
+    trang_thai BOOLEAN DEFAULT TRUE -- TRUE: hiển thị, FALSE: ẩn
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- dử liệu cho bảng banner
+INSERT INTO banner (ten_banner, link_banner, anh_banner, trang_thai) VALUES
+('Banner 1', 'https://example.com', 'ad.jpg', 1),
+('Banner 2', 'https://example.com', 'ad2.jpg', 1),
+('Banner 3', 'https://example.com', 'ad3.jpg', 1),
+('Banner 4', 'https://example.com', 'ad4.jpg', 1);
 -- dử liệu cho bảng nhanvien
 INSERT INTO `nhanvien` (`ma_nhanvien`, `ten_nhanvien`, `hash`, `email`, `sdt`, `diachi`, `gioitinh`, `ngaysinh`, `luong`, `quyen`) VALUES
 (1, 'Tài', '$2y$12$08D4RMoZWcjhPpTyItV0..m4xc4Ofp4kn/LDZZuLPdcw8UvGqNJkq', 'Admin@admin.com', '09113001001', '123123123', 'Nam', '0000-00-00', 1200000000, 0),

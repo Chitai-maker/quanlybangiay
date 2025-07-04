@@ -60,22 +60,69 @@ include "chucnang/connectdb.php";
             margin-bottom: 8px;
             min-height: 24px;
         }
+
+        /* Đổi màu nền và màu mũi tên của nút chuyển banner */
+        .carousel-control-prev-icon,
+        .carousel-control-prev,
+        .carousel-control-next {
+            width: 60px; /* Tăng vùng bấm nếu muốn */
+            opacity: 1;
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            filter: invert(1); /* Màu mũi tên trắng */
+        }
     </style>
 </head>
 
 <body>
     <?php
-            // Display session message if set
-            if (isset($_SESSION['message'])) {
-                echo "<div class='session-message text-center'>"; // Add a wrapper with a class
-                echo "<div class='alert alert-success alert-dismissible fade show d-inline-block' role='alert'>";
-                echo $_SESSION['message'];
-                echo "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
-                echo "</div>";
-                echo "</div>";
-                unset($_SESSION['message']); // Clear the message after displaying it
-            }
-            ?>
+    // Lấy banner đang hiển thị
+    $banner_query = mysqli_query($conn, "SELECT * FROM banner WHERE trang_thai = 1 ORDER BY ma_banner ASC");
+    $banners = [];
+    while ($row = mysqli_fetch_assoc($banner_query)) {
+        $banners[] = $row;
+    }
+    if (count($banners) > 0):
+    ?>
+        <div id="bannerCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <?php foreach ($banners as $i => $banner): ?>
+                    <div class="carousel-item <?= $i == 0 ? 'active' : '' ?>">
+                        <a href="<?= htmlspecialchars($banner['link_banner']) ?>" target="_blank">
+                            <img src="anh/<?= htmlspecialchars($banner['anh_banner']) ?>"
+                                class="d-block mx-auto"
+                                style="max-width:100%;height: 400px;;object-fit:contain;"
+                                alt="<?= htmlspecialchars($banner['ten_banner']) ?>">
+                        </a>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <?php if (count($banners) > 1): ?>
+                <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
+    <?php
+    // Display session message if set
+    if (isset($_SESSION['message'])) {
+        echo "<div class='session-message text-center'>"; // Add a wrapper with a class
+        echo "<div class='alert alert-success alert-dismissible fade show d-inline-block' role='alert'>";
+        echo $_SESSION['message'];
+        echo "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
+        echo "</div>";
+        echo "</div>";
+        unset($_SESSION['message']); // Clear the message after displaying it
+    }
+    ?>
 
     <div class="container" style="margin-top: 50px;">
         <?php
@@ -141,4 +188,5 @@ include "chucnang/connectdb.php";
         }
         ?>
     </div>
+
 </body>
