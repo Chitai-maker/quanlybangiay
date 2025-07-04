@@ -21,11 +21,18 @@ $where_sql = count($where) ? "WHERE " . implode(" AND ", $where) : "";
 // Lấy doanh thu theo mặt hàng
 $query = "
 SELECT 
-    g.tengiay, 
-    SUM(ct.soluong * ct.giaban) AS doanhthu
+    g.tengiay,
+    SUM(
+        (ct.soluong / tong.tong_soluong) * dh.tongtien
+    ) AS doanhthu
 FROM donhang dh
 JOIN chitietdonhang ct ON dh.ma_donhang = ct.ma_donhang
 JOIN giay g ON ct.ma_giay = g.magiay
+JOIN (
+    SELECT ma_donhang, SUM(soluong) AS tong_soluong
+    FROM chitietdonhang
+    GROUP BY ma_donhang
+) tong ON tong.ma_donhang = dh.ma_donhang
 $where_sql
 GROUP BY g.tengiay
 ORDER BY doanhthu DESC
