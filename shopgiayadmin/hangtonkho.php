@@ -35,6 +35,7 @@ include_once("chucnang/connectdb.php");
                 <th>Hình ảnh</th>
                 <th>Tên giày</th>
                 <th>Số lượng tồn kho</th>
+            <th>Thao tác</th>
             </tr>
         </thead>
         <tbody>
@@ -56,8 +57,15 @@ include_once("chucnang/connectdb.php");
                     </td>
                     <td><?= htmlspecialchars($row['tengiay']) ?></td>
                     <td><?= (int)$row['soluongtonkho'] ?></td>
+                    <td>
+                        <a href="themhang.php?magiay=<?= (int)$row['magiay'] ?>" class="btn btn-success">Cộng thêm</a>
+                        <form action="chucnang/chucnang_xoagiay.php" method="POST" class="d-inline form-no-border">
+                  <button type="submit" name="xoa_giay" value="<?= $row['magiay']; ?>" class="btn btn-danger btn-sm"onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">Xoá</button>
+                </form>
+                    </td>
                 </tr>
             <?php endwhile; ?>
+           
         </tbody>
     </table>
 </div>

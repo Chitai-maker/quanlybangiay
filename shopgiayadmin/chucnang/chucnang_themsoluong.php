@@ -9,6 +9,8 @@ if (isset($_POST['magiay']) && isset($_POST['soluong'])) {
         $sql = "UPDATE giay SET soluongtonkho = soluongtonkho + $soluong WHERE magiay = $magiay";
         if (mysqli_query($conn, $sql)) {
             $_SESSION['message'] = "Đã cộng thêm $soluong vào tồn kho cho mã giày $magiay.";
+            // Redirect back to the previous page
+            header("Location: ../hangtonkho.php");
             echo "<script>window.history.back();</script>";
             exit;
         } else {
