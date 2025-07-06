@@ -14,6 +14,18 @@ include_once("chucnang/connectdb.php");
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+    <?php
+        // Display session message if set
+        if (isset($_SESSION['message'])) {
+            echo "<div class='session-message text-center'>"; // Add a wrapper with a class
+            echo "<div class='alert alert-success alert-dismissible fade show d-inline-block' role='alert'>";
+            echo $_SESSION['message'];
+            echo "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
+            echo "</div>";
+            echo "</div>";
+            unset($_SESSION['message']); // Clear the message after displaying it
+        }
+        ?>
 <div class="container mt-4 d-flex justify-content-center align-items-center" style="border:none; box-shadow:none;">
     <h2 class="mb-4">Danh sách tồn kho giày</h2>
     <form method="get" action="hangtonkho.php" class="d-flex flex-grow-1 justify-content-center" style="border:none; box-shadow:none;">

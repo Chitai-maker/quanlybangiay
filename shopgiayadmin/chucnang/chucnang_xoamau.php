@@ -8,7 +8,13 @@ if (!isset($_SESSION['name'])) {
 if(isset($_POST['xoa_mau']))
 {
     $mamau = mysqli_real_escape_string($conn, $_POST['xoa_mau']);
-
+    // Kiểm tra ràng buộc: nếu màu đang được dùng trong bảng giay thì không cho xoá
+    $check_giay = mysqli_query($conn, "SELECT 1 FROM giay WHERE mamaugiay='$mamau' LIMIT 1");
+    if (mysqli_num_rows($check_giay) > 0) {
+        $_SESSION['message'] = "Không thể xoá: Màu này đang được sử dụng cho sản phẩm!";
+        header("Location: ../themmaugiay.php");
+        exit(0);
+    }
     $query = "DELETE FROM maugiay WHERE mamaugiay ='$mamau'";
     $query_run = mysqli_query($conn, $query);
     if($query_run)

@@ -3,6 +3,15 @@
 include "sidebar.php";
 include "../shopgiay/chucnang/connectdb.php"; // Đường dẫn tùy vị trí file admin
 
+// Xử lý xoá đánh giá
+if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
+    $ma_danhgia = intval($_GET['delete']);
+    mysqli_query($conn, "DELETE FROM danhgia WHERE ma_danhgia = $ma_danhgia");
+    // Sau khi xoá, chuyển hướng để tránh xoá lại khi refresh
+    header("Location: danhgia.php");
+    exit();
+}
+
 // Lấy tất cả đánh giá, join với bảng sản phẩm và khách hàng
 $sql = "SELECT d.*, g.tengiay, g.anhminhhoa,k.email
         FROM danhgia d

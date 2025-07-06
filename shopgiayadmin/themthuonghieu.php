@@ -15,6 +15,18 @@ include "sidebar.php";?>
     <title>Thêm màu giầy</title>
 </head>
 <body>
+    <?php
+    // Display session message if set
+    if (isset($_SESSION['message'])) {
+        echo "<div class='session-message text-center'>"; // Add a wrapper with a class
+        echo "<div class='alert alert-success alert-dismissible fade show d-inline-block' role='alert'>";
+        echo $_SESSION['message'];
+        echo "<button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>";
+        echo "</div>";
+        echo "</div>";
+        unset($_SESSION['message']); // Clear the message after displaying it
+    }
+    ?>
     <div class="container mt-5">
         <form action="chucnang/chucnang_themthuonghieu.php" method="post" enctype="multipart/form-data">
         <h2>Thêm thương hiệu</h2>
