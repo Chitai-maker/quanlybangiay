@@ -127,6 +127,23 @@ CREATE TABLE banner (
     anh_banner VARCHAR(200) NOT NULL,
     trang_thai BOOLEAN DEFAULT TRUE -- TRUE: hiển thị, FALSE: ẩn
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- tạo bảng lịch sử thanh toán lương
+CREATE TABLE lichsuthanhtoanluong (
+    ma_lichsuthanhtoan INT AUTO_INCREMENT PRIMARY KEY,
+    ma_nhanvien INT NOT NULL,
+    ngaythanhtoan DATETIME NOT NULL,
+    luong INT NOT NULL,
+    FOREIGN KEY (ma_nhanvien) REFERENCES nhanvien(ma_nhanvien)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- tạo bảng thông tin ngân hàng
+CREATE TABLE thongtinnganhang (
+    ma_thongtinnganhang INT AUTO_INCREMENT PRIMARY KEY,
+    ma_nhanvien INT NOT NULL,
+    ten_chutaikhoan VARCHAR(100) NOT NULL,
+    so_taikhoan VARCHAR(100) NOT NULL UNIQUE,
+    ma_nganhang VARCHAR(100) NOT NULL ,
+    FOREIGN KEY (ma_nhanvien) REFERENCES nhanvien(ma_nhanvien)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 -- dử liệu cho bảng banner
 INSERT INTO banner (ten_banner, link_banner, anh_banner, trang_thai) VALUES
 ('Banner 1', 'https://example.com', 'ad.jpg', 1),
