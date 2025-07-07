@@ -19,7 +19,14 @@ include "sidebar.php"; ?>
 
 <body>
   <h1 class="text-center mt-5">Danh Sách Khách Hàng</h1>
-
+<form method="GET" class="mb-3">
+  <label for="sort">Sắp xếp theo:</label>
+  <select name="sort" id="sort" class="form-select w-auto d-inline">
+    <option value="newest" <?= (isset($_GET['sort']) && $_GET['sort'] == 'newest') ? 'selected' : '' ?>>Mới nhất</option>
+    <option value="oldest" <?= (isset($_GET['sort']) && $_GET['sort'] == 'oldest') ? 'selected' : '' ?>>Cũ nhất</option>
+  </select>
+  <button type="submit" class="btn btn-primary btn-sm">Lọc</button>
+</form>
   <?php
   // Display session message if set
   if (isset($_SESSION['message'])) {
@@ -33,7 +40,22 @@ include "sidebar.php"; ?>
   }
   include_once("chucnang/chucnang_xemkhachhang.php");
   ?>
-  
+  <script>
+function searchCustomer() {
+  let input = document.getElementById("searchInput");
+  let filter = input.value.toLowerCase();
+  let table = document.querySelector("table");
+  let tr = table.getElementsByTagName("tr");
+
+  for (let i = 1; i < tr.length; i++) {
+    let td = tr[i].getElementsByTagName("td")[0]; // Tên khách hàng nằm ở cột đầu
+    if (td) {
+      let textValue = td.textContent || td.innerText;
+      tr[i].style.display = textValue.toLowerCase().includes(filter) ? "" : "none";
+    }
+  }
+}
+</script>
 </body>
 
 </html>
