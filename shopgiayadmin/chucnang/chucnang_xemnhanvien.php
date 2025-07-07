@@ -1,13 +1,14 @@
 <div class="container mt-5">
+  <input type="text" id="searchNhanVien" class="form-control mb-3" placeholder="Tìm tên nhân viên..." onkeyup="filterNhanVien()">
   <table>
     <tr>
       <th>Tên Nhân Viên</th>
       
       
       <th>Quyền</th>
-      <th></th>
-      <th></th>
-      <th></th>
+      <th>Ngân hàng</th>
+      <th>Lương</th>
+      <th>Chi tiết</th>
       <th></th>
     </tr>
     <?php

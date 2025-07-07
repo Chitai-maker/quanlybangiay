@@ -33,6 +33,22 @@ include "sidebar.php"; ?>
   }
   include_once("chucnang/chucnang_xemnhanvien.php");
   ?>
-  
+  <script>
+function filterNhanVien() {
+  const input = document.getElementById("searchNhanVien");
+  const filter = input.value.toLowerCase();
+  const table = document.querySelector("table");
+  const tr = table.getElementsByTagName("tr");
+
+  for (let i = 1; i < tr.length; i++) { // Bỏ dòng tiêu đề
+    const td = tr[i].getElementsByTagName("td")[0]; // Cột tên nhân viên
+    if (td) {
+      const textValue = td.textContent || td.innerText;
+      tr[i].style.display = textValue.toLowerCase().includes(filter) ? "" : "none";
+    }
+  }
+}
+</script>
+
 </body>
 </html>
