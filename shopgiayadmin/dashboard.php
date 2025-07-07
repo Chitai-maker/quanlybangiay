@@ -95,7 +95,24 @@ AND ngaybatdau <= NOW()";
 $result17 = mysqli_query($conn, $query17);
 $row17 = mysqli_fetch_assoc($result17);
 $coupons_count = $row17['total'];
-//Đếm số 
+//Đếm số banner
+$query19 = "SELECT COUNT(*) AS total FROM banner WHERE trang_thai = 1";
+$result19 = mysqli_query($conn, $query19);
+$row19 = mysqli_fetch_assoc($result19);
+$banner_count = $row19['total'];
+//đếm số nhân viên chưa thanh toán lương
+$query20 = "SELECT COUNT(*) AS so_nhanvien_chua_thanhtoan
+FROM nhanvien nv
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM lichsuthanhtoanluong l
+    WHERE l.ma_nhanvien = nv.ma_nhanvien
+      AND MONTH(l.ngaythanhtoan) = MONTH(CURDATE())
+      AND YEAR(l.ngaythanhtoan) = YEAR(CURDATE())
+);";
+$result20 = mysqli_query($conn, $query20);
+$row20 = mysqli_fetch_assoc($result20);
+$nhanvien_chua_thanhtoan = $row20['so_nhanvien_chua_thanhtoan'];
 ?>
 <style>
     .dashboard-cards {
@@ -310,6 +327,20 @@ $coupons_count = $row17['total'];
         <div>
             <div class="card-label">Số coupon hiệu lực</div>
             <div class="card-value"><?= $coupons_count ?></div>
+        </div>
+    </a>
+    <a href="banner.php" class="dashboard-card">
+        <span class="dashboard-icon bg-cyan"><i class="fa fa-image"></i></span>
+        <div>
+            <div class="card-value"><?= $banner_count ?></div>
+            <div class="card-label">Banner đang hiểm thị</div>           
+        </div>
+    </a>
+    <a href="nhanvien.php?chua_thanhtoan=1" class="dashboard-card">
+        <span class="dashboard-icon bg-orange"><i class="fa fa-money-bill-wave"></i></span>
+        <div>
+            <div class="card-label">Nhân viên chưa thanh toán lương</div>
+            <div class="card-value"><?= $nhanvien_chua_thanhtoan ?></div>
         </div>
     </a>
 </div>

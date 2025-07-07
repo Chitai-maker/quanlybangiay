@@ -61,11 +61,11 @@ if (session_id() == "") {
                     ?>
                         <div class="welcome">
                             Welcome, <?= $_SESSION['name'] ?>
-
                         </div>
                         <a href="dashboard.php">Bảng tổng hợp</a>
                         <a href="thongke.php">Thống kê</a>
                         <a href="chatbox.php">CSKH</a>
+                        <a href="banner.php">Banner</a>
                         <a href="index.php">Sản phẩm</a>
                         <a href="hangtonkho.php">Hàng tồn kho</a>
                         <a href="khuyenmai.php">Khuyến mãi</a>
