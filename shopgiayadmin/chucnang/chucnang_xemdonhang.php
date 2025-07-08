@@ -94,7 +94,7 @@ if (mysqli_num_rows($result) > 0) {
             <tbody>
                 <?php foreach ($orders as $maDonHang => $order) { ?>
                     <tr>
-                        <td><?php echo $order['ma_khachhang']; ?></td>
+                        
                         <td><?php echo $order['TenKhachHang']; ?></td>
                         <td><?php echo $order['SDT']; ?></td>
                         <td><?php echo $maDonHang; ?></td>
