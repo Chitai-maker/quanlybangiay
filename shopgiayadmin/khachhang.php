@@ -19,14 +19,7 @@ include "sidebar.php"; ?>
 
 <body>
   <h1 class="text-center mt-5">Danh Sách Khách Hàng</h1>
-<form method="GET" class="mb-3">
-  <label for="sort">Sắp xếp theo:</label>
-  <select name="sort" id="sort" class="form-select w-auto d-inline">
-    <option value="newest" <?= (isset($_GET['sort']) && $_GET['sort'] == 'newest') ? 'selected' : '' ?>>Mới nhất</option>
-    <option value="oldest" <?= (isset($_GET['sort']) && $_GET['sort'] == 'oldest') ? 'selected' : '' ?>>Cũ nhất</option>
-  </select>
-  <button type="submit" class="btn btn-primary btn-sm">Lọc</button>
-</form>
+
   <?php
   // Display session message if set
   if (isset($_SESSION['message'])) {

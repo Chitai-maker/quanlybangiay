@@ -1,5 +1,14 @@
 <div class="container mt-5">
+  <form method="GET"  class="text-center  mb-3">
+  <label for="sort">Sắp xếp theo:</label>
+  <select name="sort" id="sort" class="form-select w-auto d-inline">
+    <option value="newest" <?= (isset($_GET['sort']) && $_GET['sort'] == 'newest') ? 'selected' : '' ?>>Mới nhất</option>
+    <option value="oldest" <?= (isset($_GET['sort']) && $_GET['sort'] == 'oldest') ? 'selected' : '' ?>>Cũ nhất</option>
+  </select>
+  <button type="submit" class="btn btn-primary btn-sm">Lọc</button>
+</form>
   <input type="text" id="searchInput" class="form-control mb-3" placeholder="Tìm tên khách hàng..." onkeyup="searchCustomer()">
+  
   <table>
     <tr>
       <th>Tên khách hàng</th>
@@ -28,7 +37,7 @@
               <form action="chucnang/chucnang_xoakhachhang.php" method="POST" class="d-inline form-no-border">
                 <button type="submit" name="xoa_khachhang" value="<?= $KHACHHANG_SLQ['ma_khachhang']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có chắc chắn muốn xóa khách hàng này?');">Xoá</button>
               </form>
-              <a href="chatbox.php?ma_khachhang=<?= $KHACHHANG_SLQ['ma_khachhang']; ?>" class="btn btn-info btn-sm">CSKH</a>
+              
             </div>
           </td>
         </tr>

@@ -10,6 +10,7 @@ if ($trangthai_filter != '') {
 
 $query = "
    SELECT 
+    khachhang.ma_khachhang AS MaKhachHang,
     khachhang.ten_khachhang AS TenKhachHang,
     khachhang.sdt AS SDT,
     donhang.ma_donhang AS MaDonHang,
@@ -57,6 +58,7 @@ if (mysqli_num_rows($result) > 0) {
         $maDonHang = $row['MaDonHang'];
         if (!isset($orders[$maDonHang])) {
             $orders[$maDonHang] = [
+                'ma_khachhang' => $row['MaKhachHang'], // Thêm mã khách hàng
                 'TenKhachHang' => $row['TenKhachHang'], // Thêm tên khách hàng
                 'SDT' => $row['SDT'], // Thêm số điện thoại
                 'ngaydat' => $row['ngaydat'],
@@ -92,20 +94,19 @@ if (mysqli_num_rows($result) > 0) {
             <tbody>
                 <?php foreach ($orders as $maDonHang => $order) { ?>
                     <tr>
+                        <td><?php echo $order['ma_khachhang']; ?></td>
                         <td><?php echo $order['TenKhachHang']; ?></td>
                         <td><?php echo $order['SDT']; ?></td>
                         <td><?php echo $maDonHang; ?></td>
                         <td><?php echo $order['ngaydat']; ?></td>
                         <td><?php echo $order['trangthai']; ?></td>
+
                         
                         
                         <td>
-                            <form method="POST" action="chucnang/chucnang_xoadonhang.php" class="d-inline form-no-border">
-                                <input type="hidden" name="ma_donhang" value="<?php echo $maDonHang; ?>">
-                                <a href="chitietdonhang.php?ma_donhang=<?= $maDonHang ?>" class="btn btn-info btn-sm">Xem chi tiết</a>
-                                <button style="border:none" type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này?');">Xóa</button>
-                                
-                            </form>
+                            <a href="chatbox.php?ma_khachhang=<?= $order['ma_khachhang']; ?>" class="btn btn-success">Chat</a>
+
+                            
                             <?php if ($order['trangthai'] !== 'Hoàn thành' && $order['trangthai'] !== 'Đã hủy') { ?>
                                 <form method="POST" action="chucnang/chucnang_capnhattrangthai.php" class="d-inline form-no-border">
                                     <input type="hidden" name="ma_donhang" value="<?php echo $maDonHang; ?>">
@@ -118,6 +119,12 @@ if (mysqli_num_rows($result) > 0) {
                                     <?php } ?>
                                 </form>
                             <?php } ?>
+                            <form method="POST" action="chucnang/chucnang_xoadonhang.php" class="d-inline form-no-border">
+                                <input type="hidden" name="ma_donhang" value="<?php echo $maDonHang; ?>">
+                                <a href="chitietdonhang.php?ma_donhang=<?= $maDonHang ?>" class="btn btn-info btn-sm">Xem chi tiết</a>
+                                <button style="border:none" type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa đơn hàng này?');">Xóa</button>
+                                
+                            </form>
                         </td>
                     </tr>
             <?php }

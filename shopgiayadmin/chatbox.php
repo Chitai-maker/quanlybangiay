@@ -17,6 +17,9 @@ $khach_query = mysqli_query($conn, "
     ORDER BY last_time DESC
 ");
 
+// Lấy toàn bộ khách hàng
+$all_khach_query = mysqli_query($conn, "SELECT ma_khachhang, ten_khachhang FROM khachhang ORDER BY ten_khachhang ASC");
+
 // Xác định khách đang chọn
 $ma_khachhang = isset($_GET['ma_khachhang']) ? intval($_GET['ma_khachhang']) : 0;
 
@@ -167,15 +170,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $ma_khachhang && !empty($_POST['noi
                 <input type="text" class="form-control mb-3" placeholder="Tìm khách...">
             </div>
             <div>
-                <?php while ($row = mysqli_fetch_assoc($khach_query)): ?>
-                    <a href="?ma_khachhang=<?= $row['ma_khachhang'] ?>" class="chat-list-item<?= ($ma_khachhang == $row['ma_khachhang']) ? ' active' : '' ?>">
-                        <div class="avatar"></div>
-                        <div>
-                            <div class="name"><?= htmlspecialchars($row['ten_khachhang']) ?></div>
-                            <div class="time"><?= $row['last_time'] ? date('H:i d/m', strtotime($row['last_time'])) : '' ?></div>
-                        </div>
-                    </a>
-                <?php endwhile; ?>
+                <div id="chat-list-default">
+                    <?php while ($row = mysqli_fetch_assoc($khach_query)): ?>
+                        <a href="?ma_khachhang=<?= $row['ma_khachhang'] ?>" class="chat-list-item<?= ($ma_khachhang == $row['ma_khachhang']) ? ' active' : '' ?>">
+                            <div class="avatar"></div>
+                            <div>
+                                <div class="name"><?= htmlspecialchars($row['ten_khachhang']) ?></div>
+                                <div class="time"><?= $row['last_time'] ? date('H:i d/m', strtotime($row['last_time'])) : '' ?></div>
+                            </div>
+                        </a>
+                    <?php endwhile; ?>
+                </div>
+                <div id="chat-list-all" style="display:none;">
+                    <?php while ($row = mysqli_fetch_assoc($all_khach_query)): ?>
+                        <a href="?ma_khachhang=<?= $row['ma_khachhang'] ?>" class="chat-list-item<?= ($ma_khachhang == $row['ma_khachhang']) ? ' active' : '' ?>">
+                            <div class="avatar"></div>
+                            <div>
+                                <div class="name"><?= htmlspecialchars($row['ten_khachhang']) ?></div>
+                            </div>
+                        </a>
+                    <?php endwhile; ?>
+                </div>
             </div>
         </div>
         <!-- Main chat -->
@@ -227,17 +242,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $ma_khachhang && !empty($_POST['noi
         var chatDiv = document.getElementById('chatBody');
         if (chatDiv) chatDiv.scrollTop = chatDiv.scrollHeight;
     }
-    <?php if ($ma_khachhang): ?>
     var isTyping = false;
     var isSearching = false;
     var inputField = document.querySelector('.chat-footer input');
     var searchField = document.querySelector('.form-control[placeholder="Tìm khách..."]');
+    var chatListDefault = document.getElementById('chat-list-default');
+    var chatListAll = document.getElementById('chat-list-all');
 
-    inputField.addEventListener('focus', function() { isTyping = true; });
-    inputField.addEventListener('blur', function() { isTyping = false; });
+    if (inputField) {
+        inputField.addEventListener('focus', function() { isTyping = true; });
+        inputField.addEventListener('blur', function() { isTyping = false; });
+    }
 
-    searchField.addEventListener('focus', function() { isSearching = true; });
-    searchField.addEventListener('blur', function() { isSearching = false; });
+    if (searchField) {
+        searchField.addEventListener('focus', function() {
+            isSearching = true;
+            chatListDefault.style.display = 'none';
+            chatListAll.style.display = '';
+            // Hiện tất cả khách khi vừa focus
+            chatListAll.querySelectorAll('.chat-list-item').forEach(function(item) {
+                item.style.display = '';
+            });
+        });
+        searchField.addEventListener('blur', function() {
+            setTimeout(function() { // Đợi sự kiện click trên danh sách
+                isSearching = false;
+                if (searchField.value.trim() === '') {
+                    chatListDefault.style.display = '';
+                    chatListAll.style.display = 'none';
+                }
+            }, 200);
+        });
+        searchField.addEventListener('input', function() {
+            var keyword = this.value.toLowerCase();
+            chatListAll.querySelectorAll('.chat-list-item').forEach(function(item) {
+                var name = item.querySelector('.name').textContent.toLowerCase();
+                if (name.indexOf(keyword) !== -1) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    }
 
     function autoReloadChat() {
         if (!isTyping && !isSearching) {
@@ -245,18 +292,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $ma_khachhang && !empty($_POST['noi
         }
     }
     setInterval(autoReloadChat, 5000);
-    <?php endif; ?>
-    document.querySelector('.form-control[placeholder="Tìm khách..."]').addEventListener('input', function() {
-        var keyword = this.value.toLowerCase();
-        document.querySelectorAll('.chat-list-item').forEach(function(item) {
-            var name = item.querySelector('.name').textContent.toLowerCase();
-            if (name.indexOf(keyword) !== -1) {
-                item.style.display = '';
-            } else {
-                item.style.display = 'none';
-            }
-        });
-    });
 </script>
 </body>
 </html>
