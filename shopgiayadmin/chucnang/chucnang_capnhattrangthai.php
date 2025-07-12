@@ -11,6 +11,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $conn->prepare($updateQuery);
     $stmt->bind_param("si", $trangThai, $maDonHang);
     $stmt->execute();
+    // thêm vào bảng lịch sử nhân viên
+    $ma_nhanvien = $_SESSION['ma_nhanvien'];
+    $noidung = "Cập nhật trạng thái đơn hàng: $maDonHang sang $trangThai";
+    $sql_lichsu = "INSERT INTO lichsunhanvien (ma_nhanvien, noidung, thoigian) VALUES (?, ?, now())";
+    $stmt_lichsu = $conn->prepare($sql_lichsu);
+    $stmt_lichsu->bind_param("is", $ma_nhanvien, $noidung);
+    $stmt_lichsu->execute();
 
     // Nếu trạng thái là "Hoàn thành" thì cộng 1 điểm cho khách hàng
     if ($trangThai === 'Hoàn thành') {

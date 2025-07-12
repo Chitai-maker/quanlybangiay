@@ -144,6 +144,14 @@ CREATE TABLE thongtinnganhang (
     ma_nganhang VARCHAR(100) NOT NULL ,
     FOREIGN KEY (ma_nhanvien) REFERENCES nhanvien(ma_nhanvien)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- tạo bảng lịch sử nhân viên
+CREATE TABLE lichsunhanvien (
+    ma_lichsunhanvien INT AUTO_INCREMENT PRIMARY KEY,
+    ma_nhanvien INT NOT NULL,
+    noidung TEXT NOT NULL,
+    thoigian DATETIME NOT NULL,
+    FOREIGN KEY (ma_nhanvien) REFERENCES nhanvien(ma_nhanvien)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 -- dử liệu cho bảng banner
 INSERT INTO banner (ten_banner, link_banner, anh_banner, trang_thai) VALUES
 ('Banner 1', 'https://example.com', 'ad.jpg', 1),

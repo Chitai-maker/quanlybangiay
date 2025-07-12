@@ -27,6 +27,14 @@ if (isset($_POST["submit"])) {
             $query = "UPDATE `giay` SET `tengiay`='$TENGIAY',`maloaigiay`='$MALOAIGIAY',`mathuonghieu`='$MATHUONGHIEU',`mamaugiay`='$MAMAUGIAY',`donvitinh`='$DONVITINH',`giaban`='$GIABAN',`anhminhhoa`='$ANHMINHHOA',`mota`='$MOTA' WHERE magiay = '$MAGIAY'";
             if (mysqli_query($conn, $query)) {
                 echo "Update successful.";
+                 // viết vào bảng lịch sử nhân viên
+                $ma_nhanvien = $_SESSION['ma_nhanvien'];
+                $noidung = "edit giày: $TENGIAY";
+
+                $sql_lichsu = "INSERT INTO lichsunhanvien (ma_nhanvien, noidung, thoigian) VALUES (?, ?, now())";
+                $stmt_lichsu = $conn->prepare($sql_lichsu);
+                $stmt_lichsu->bind_param("is", $ma_nhanvien, $noidung);
+                $stmt_lichsu->execute();
                 header("Location: ../index.php");
                 exit;
             } else {

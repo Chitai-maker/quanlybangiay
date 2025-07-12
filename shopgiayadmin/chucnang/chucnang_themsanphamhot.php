@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($result->num_rows > 0) {
         $_SESSION['message'] = "Sản phẩm này đã có trong danh sách sản phẩm hot.";
-        header("Location: ../sanphamhot.php");
+        header("Location: ../khuyenmai.php");
         exit;
     }
 
@@ -25,9 +25,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bind_param("ii", $magiay, $giakhuyenmai);
 
     if ($stmt->execute()) {
-        $_SESSION['message'] = "Thêm sản phẩm hot thành công.";
+        $_SESSION['message'] = "Thêm khuyến mãi thành công.";
+        // Viết vào bảng lịch sử nhân viên
+        $ma_nhanvien = $_SESSION['ma_nhanvien'];
+        $noidung = "Thêm khuyến mãi: Mã giày $magiay với giá khuyến mãi $giakhuyenmai";
+        $sql_lichsu = "INSERT INTO lichsunhanvien (ma_nhanvien, noidung, thoigian) VALUES (?, ?, now())";
+        $stmt_lichsu = $conn->prepare($sql_lichsu);
+        $stmt_lichsu->bind_param("is", $ma_nhanvien, $noidung);
+        $stmt_lichsu->execute();
+        $stmt_lichsu->close();
+        mysqli_close($conn);
     } else {
-        $_SESSION['message'] = "Thêm sản phẩm hot thất bại. Vui lòng thử lại.";
+        $_SESSION['message'] = "Thêm khuyến mãi thất bại. Vui lòng thử lại.";
     }
 
     header("Location: ../khuyenmai.php");

@@ -28,6 +28,15 @@ if (isset($_POST['xoa_giay'])) {
     $query_run = mysqli_query($conn, $query);
     if ($query_run) {
         $_SESSION['message'] = "Xoá sản phẩm thành công";
+        // Viết vào bảng lịch sử nhân viên
+        $ma_nhanvien = $_SESSION['ma_nhanvien'];
+        $noidung = "Xoá giày: Mã giày $magiay";
+        $sql_lichsu = "INSERT INTO lichsunhanvien (ma_nhanvien, noidung, thoigian) VALUES (?, ?, now())";
+        $stmt_lichsu = $conn->prepare($sql_lichsu);
+        $stmt_lichsu->bind_param("is", $ma_nhanvien, $noidung);
+        $stmt_lichsu->execute();
+        $stmt_lichsu->close();
+        mysqli_close($conn);
         echo "<script>window.history.back();</script>";
         exit;
     } else {

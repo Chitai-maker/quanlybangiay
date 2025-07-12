@@ -20,6 +20,15 @@ if(isset($_POST['xoa_mau']))
     if($query_run)
     {
         $_SESSION['message'] = "Xoá thành công";
+        // Viết vào bảng lịch sử nhân viên
+        $ma_nhanvien = $_SESSION['ma_nhanvien'];
+        $noidung = "Xoá màu: Mã màu $mamau";
+        $sql_lichsu = "INSERT INTO lichsunhanvien (ma_nhanvien, noidung, thoigian) VALUES (?, ?, now())";
+        $stmt_lichsu = $conn->prepare($sql_lichsu);
+        $stmt_lichsu->bind_param("is", $ma_nhanvien, $noidung);
+        $stmt_lichsu->execute();
+        $stmt_lichsu->close();
+        mysqli_close($conn);
         header("Location: ../themmaugiay.php");
         exit(0);
     }

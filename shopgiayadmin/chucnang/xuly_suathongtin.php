@@ -17,6 +17,17 @@ if ($ma_nhanvien && $ten_nhanvien && $email && $sdt && $diachi && $gioitinh && $
     $stmt->bind_param("ssssssdii", $ten_nhanvien, $email, $sdt, $diachi, $gioitinh, $ngaysinh, $luong, $quyen, $ma_nhanvien);
     $stmt->execute();
     $stmt->close();
+    $_SESSION['message'] = "Cập nhật thông tin nhân viên thành công.";
+    // Viết vào bảng lịch sử nhân viên
+    session_start();
+    $ma_nhanvien_session = $_SESSION['ma_nhanvien'];
+    $noidung = "Cập nhật thông tin nhân viên: Mã nhân viên $ma_nhanvien";
+    $sql_lichsu = "INSERT INTO lichsunhanvien (ma_nhanvien, noidung, thoigian) VALUES (?, ?, now())";
+    $stmt_lichsu = $conn->prepare($sql_lichsu);
+    $stmt_lichsu->bind_param("is", $ma_nhanvien_session, $noidung);
+    $stmt_lichsu->execute();
+    $stmt_lichsu->close();
+    mysqli_close($conn);
     header("Location: ../nhanvien.php?msg=update_success");
     exit();
 } else {

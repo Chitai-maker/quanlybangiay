@@ -43,6 +43,15 @@ if($_SERVER["REQUEST_METHOD"]==="POST") {
     $query = "INSERT INTO `nhanvien`(`ten_nhanvien`, `email`, `sdt`, `diachi`, `ngaysinh`, `gioitinh`, `luong`, `quyen`, `hash`) VALUES ('$TEN_NHANVIEN','$EMAIL','$SDT','$DIACHI','$NGAYSINH','$GIOITINH','$LUONG','$QUYEN','$hash_pass')";
             //$query = "INSERT INTO `nhanvien`(`ten_nhanvien`, `email`, `hash`) VALUES ('$TEN_NHANVIEN','$EMAIL','$hash_pass')";
             if(mysqli_query($conn, $query)){
+                
+                // viết vào bảng lịch sử nhân viên
+                session_start();
+                $ma_nhanvien = $_SESSION['ma_nhanvien'];
+                $noidung = "Thêm nhân viên mới: " . $TEN_NHANVIEN;
+                $sql_lichsu = "INSERT INTO lichsunhanvien (ma_nhanvien, noidung, thoigian) VALUES (?, ?, now())";
+                $stmt_lichsu = $conn->prepare($sql_lichsu);
+                $stmt_lichsu->bind_param("is", $ma_nhanvien, $noidung);
+                $stmt_lichsu->execute();
                 header("Location: nhanvien.php");
             }
         }

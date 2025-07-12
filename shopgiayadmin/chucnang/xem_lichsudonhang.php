@@ -3,14 +3,9 @@
 
 include "connectdb.php";
 
-// Kiểm tra đăng nhập
-if (!isset($_SESSION['makhachhang'])) {
-    echo "<div class='alert alert-danger'>Bạn cần đăng nhập để xem đơn hàng!</div>";
-    exit;
-}
 
-$ma_khachhang = $_SESSION['makhachhang'];
 
+$ma_khachhang = $_GET['ma_khachhang'] ;
 // Xử lý huỷ đơn hàng
 if (isset($_POST['huydon']) && isset($_POST['ma_donhang'])) {
     $ma_donhang = intval($_POST['ma_donhang']);
@@ -39,7 +34,7 @@ $sql = "SELECT * FROM donhang WHERE ma_khachhang = '$ma_khachhang' ORDER BY ngay
 $result = mysqli_query($conn, $sql);
 
 echo "<div class='container mt-4'>";
-echo "<h3 class='mb-4'>Đơn hàng của bạn</h3>";
+echo "<h3 class='mb-4'>Đơn hàng của Khách hàng #".$ma_khachhang." </h3>";
 
 if (mysqli_num_rows($result) > 0) {
     while ($dh = mysqli_fetch_assoc($result)) {
@@ -95,7 +90,7 @@ if (mysqli_num_rows($result) > 0) {
                    WHERE ct.ma_donhang = '$ma_donhang'";
         $result_ct = mysqli_query($conn, $sql_ct);
         echo "<table class='table table-bordered mb-0'>";
-        echo "<tr class='table-light'><th>Ảnh</th><th>Tên sản phẩm</th><th>Số lượng</th><th>đánh giá</th></tr>";
+        echo "<tr class='table-light'><th>Ảnh</th><th>Tên sản phẩm</th><th>Số lượng</th></tr>";
         while ($ct = mysqli_fetch_assoc($result_ct)) {
             echo "<tr>";
             echo "<td><img src='../shopgiayadmin/anhgiay/" . htmlspecialchars($ct['anhminhhoa']) . "' style='width:60px;height:60px;object-fit:cover;'></td>";
@@ -103,11 +98,7 @@ if (mysqli_num_rows($result) > 0) {
             echo "<td><a href='../shopgiay/sanpham.php?masanpham=" . $ct['ma_giay'] . "' class='text-decoration-none'>" . htmlspecialchars($ct['tengiay']) . "</a></td>";
             
             echo "<td>" . $ct['soluong'] . "</td>";
-            echo "<td>
-                    <a href='../shopgiay/danhgia.php?masanpham=" . $ct['ma_giay'] . "' class='text-decoration-none' title='Đánh giá sản phẩm'>
-                        <span style='font-size:18px;'>&#9998;</span>
-                    </a>
-                  </td>";
+
             echo "</tr>";
         }
         echo "</table>";
@@ -115,7 +106,7 @@ if (mysqli_num_rows($result) > 0) {
         echo "</div>";
     }
 } else {
-    echo "<div class='alert alert-info'>Bạn chưa có đơn hàng nào.</div>";
+    echo "<div class='alert alert-info'> Chưa có đơn hàng nào.</div>";
 }
 echo "</div>";
 ?>

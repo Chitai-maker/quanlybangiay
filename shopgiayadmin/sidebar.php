@@ -76,6 +76,7 @@ if (session_id() == "") {
                         <a href="donhang.php">Đơn hàng</a>
                         <a href="khachhang.php">Khách hàng</a>
                         <a href="nhanvien.php">Nhân viên</a>
+                        <a href="lichsunhanvien.php">Log</a>
                         <a href="logout.php" class="logout"><img src="anh/logout.png" alt="Logout"
                                 style="width:32px;height:32px;"></a>
                     <?php elseif ($_SESSION['quyen'] == 1): // Nhân viên kho 
