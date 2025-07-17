@@ -109,6 +109,7 @@ CREATE TABLE chatbox (
     noidung TEXT NOT NULL,
     nguoigui ENUM('khach', 'shop') NOT NULL,
     thoigian DATETIME NOT NULL,
+    trang_thai ENUM('chua_doc', 'da_doc') DEFAULT 'chua_doc',
     FOREIGN KEY (ma_khachhang) REFERENCES khachhang(ma_khachhang)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 -- tạo bảng coupon

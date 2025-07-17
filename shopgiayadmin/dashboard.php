@@ -113,6 +113,16 @@ WHERE NOT EXISTS (
 $result20 = mysqli_query($conn, $query20);
 $row20 = mysqli_fetch_assoc($result20);
 $nhanvien_chua_thanhtoan = $row20['so_nhanvien_chua_thanhtoan'];
+//Đếm số tin nhắn từ khách hàng với trạng thái chưa đọc
+$query21 = "SELECT COUNT(*) AS so_tinnhan_chuadoc
+FROM chatbox
+WHERE nguoigui = 'khach'
+    AND trang_thai = 'chua_doc';";
+$result21 = mysqli_query($conn, $query21);
+$row21 = mysqli_fetch_assoc($result21);
+$tinnhan_chuadoc =   $row21['so_tinnhan_chuadoc'];
+
+
 ?>
 <style>
     .dashboard-cards {
@@ -341,6 +351,13 @@ $nhanvien_chua_thanhtoan = $row20['so_nhanvien_chua_thanhtoan'];
         <div>
             <div class="card-label">Nhân viên chưa thanh toán lương</div>
             <div class="card-value"><?= $nhanvien_chua_thanhtoan ?></div>
+        </div>
+    </a>
+    <a href="chatbox.php" class="dashboard-card">
+        <span class="dashboard-icon bg-green"><i class="fa-solid fa-comments"></i></span>
+        <div>
+            <div class="card-label">Tin nhắn chưa đọc</div>
+            <div class="card-value"><?= $tinnhan_chuadoc ?></div>
         </div>
     </a>
 </div>

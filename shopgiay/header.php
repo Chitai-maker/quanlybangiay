@@ -2,6 +2,19 @@
 if (session_id() == "") {
     session_start();
 }
+$unreadCount = 0;
+if (isset($_SESSION['makhachhang'])) {
+    // Kết nối CSDL
+    $conn = mysqli_connect("localhost", "root", "", "quanlybangiay");
+    if ($conn) {
+        $makhachhang = $_SESSION['makhachhang'];
+        $sql = "SELECT COUNT(*) AS total FROM chatbox WHERE ma_khachhang = '$makhachhang' AND nguoigui = 'shop' AND trang_thai = 'chua_doc'";
+        $result = mysqli_query($conn, $sql);
+        if ($row = mysqli_fetch_assoc($result)) {
+            $unreadCount = $row['total'];
+        }
+    }
+}
 ?>
 <!DOCTYPE html>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -99,22 +112,15 @@ if (session_id() == "") {
 
         .chat-badge {
             position: absolute;
-            left: 28px;
-            top: -6px;
-            background: #e74c3c;
+            top: -5px;
+            right: -5px;
+            background: #ff0000;
             color: #fff;
-            font-size: 15px;
-            font-weight: bold;
             border-radius: 50%;
-            width: 22px;
-            height: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-            border: 2px solid #fff;
+            padding: 2px 6px;
+            font-size: 12px;
+            font-weight: bold;
         }
-
         .chat-text {
             font-size: 20px;
             color: #1a1a1a;
@@ -177,6 +183,9 @@ if (session_id() == "") {
 <a href="javascript:void(0)" class="chat-btn chat-fixed" id="openChatBtn">
     <span class="chat-icon">
         <img src="anh/chat.png" alt="Chat" style="width:20px;height:20px;">
+        <?php if ($unreadCount > 0): ?>
+            <span class="chat-badge"><?= $unreadCount ?></span>
+        <?php endif; ?>
     </span>
     <span class="chat-text">Liên hệ shop</span>
 </a>
@@ -187,11 +196,15 @@ if (session_id() == "") {
         Chat với shop
         <span id="closeChatBtn" style="cursor:pointer; font-size:20px;">&times;</span>
     </div>
-    <iframe src="chatbox.php" style="width:100%; height:400px; border:none;" id="chatFrame"></iframe>
+    <iframe style="width:100%; height:400px; border:none;" id="chatFrame"></iframe>
 </div>
 <script>
 document.getElementById('openChatBtn').onclick = function() {
     document.getElementById('chatPopup').style.display = 'block';
+    var chatFrame = document.getElementById('chatFrame');
+    if (!chatFrame.src) {
+        chatFrame.src = 'chatbox.php';
+    }
 };
 document.getElementById('closeChatBtn').onclick = function() {
     document.getElementById('chatPopup').style.display = 'none';

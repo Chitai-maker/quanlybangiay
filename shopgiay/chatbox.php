@@ -8,11 +8,16 @@ include "chucnang/connectdb.php";
 $ma_khachhang = $_SESSION['makhachhang'] ?? 0;
 
 // Gửi tin nhắn
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['noidung'])) {
     $noidung = mysqli_real_escape_string($conn, $_POST['noidung']);
-    mysqli_query($conn, "INSERT INTO chatbox (ma_khachhang, noidung, nguoigui) VALUES ('$ma_khachhang', '$noidung', 'khach')");
+    mysqli_query($conn, "INSERT INTO chatbox (ma_khachhang, noidung, nguoigui, thoigian) VALUES ('$ma_khachhang', '$noidung', 'khach', NOW())");
     header("Location: chatbox.php");
     exit;
+}
+// nếu đã xem tin nhắn của shop thì cập nhật trạng thái
+if ($ma_khachhang) {
+    mysqli_query($conn, "UPDATE chatbox SET trang_thai='da_doc' WHERE ma_khachhang='$ma_khachhang' AND nguoigui='shop' AND trang_thai='chua_doc'");
 }
 
 // Lấy lịch sử chat
@@ -48,7 +53,7 @@ $result = mysqli_query($conn, "SELECT * FROM chatbox WHERE ma_khachhang = '$ma_k
         <?php while ($row = mysqli_fetch_assoc($result)): ?>
             <div class="msg <?= $row['nguoigui']=='khach' ? 'msg-khach' : 'msg-shop' ?>">
                 <div><?= htmlspecialchars($row['noidung']) ?></div>
-                <div class="msg-time"><?= date('H:i d/m', strtotime($row['thoigian'])) ?> <?= $row['nguoigui']=='khach' ? '(Bạn)' : '(Shop)' ?></div>
+                <div class="msg-time"><?= date('H:i d/m', strtotime($row['thoigian'])) ?> <?= $row['nguoigui']=='khach' ? '(Bạn)' : '(Shop)' ?><?= $row['trang_thai']=='chua_doc' ? 'Chưa đọc' : 'Đã đọc' ?></div>
             </div>
         <?php endwhile; ?>
     </div>
