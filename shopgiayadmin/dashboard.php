@@ -121,7 +121,13 @@ WHERE nguoigui = 'khach'
 $result21 = mysqli_query($conn, $query21);
 $row21 = mysqli_fetch_assoc($result21);
 $tinnhan_chuadoc =   $row21['so_tinnhan_chuadoc'];
-
+//đếm số yêu cầu đổi trả
+$query22 = "SELECT COUNT(*) AS so_doitra
+FROM doitrahang
+WHERE trangthai = 'đang xử lý';";
+$result22 = mysqli_query($conn, $query22);
+$row22 = mysqli_fetch_assoc($result22);
+$doitra_count = $row22['so_doitra'];
 
 ?>
 <style>
@@ -358,6 +364,13 @@ $tinnhan_chuadoc =   $row21['so_tinnhan_chuadoc'];
         <div>
             <div class="card-label">Tin nhắn chưa đọc</div>
             <div class="card-value"><?= $tinnhan_chuadoc ?></div>
+        </div>
+    </a>
+    <a href="doitra.php" class="dashboard-card">
+        <span class="dashboard-icon bg-red"><i class="fa fa-exchange-alt"></i></span>
+        <div>
+            <div class="card-label">Yêu cầu đổi trả</div>
+            <div class="card-value"><?= $doitra_count ?></div>
         </div>
     </a>
 </div>

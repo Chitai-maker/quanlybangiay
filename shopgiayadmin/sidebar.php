@@ -64,6 +64,7 @@
                         <a href="donhang.php?trangthai=Chờ+xác+nhận">Chờ xác nhận</a>
                         <a href="donhang.php?trangthai=Chờ+xác+nhận+thanh+toán+QR">Chờ xác nhận thanh toán QR</a>
                         <a href="donhang.php?trangthai=Đang+giao+hàng">Bàn giao vận chuyển</a>
+                        <a href="doitra.php">Yêu Cầu Đổi Trả</a>
                         <b><p>Quản lý sản phẩm</p></b>
                         <a href="index.php">Tất cả sản phẩm</a>
                         <a href="themgiay.php">Thêm sản phẩm</a>

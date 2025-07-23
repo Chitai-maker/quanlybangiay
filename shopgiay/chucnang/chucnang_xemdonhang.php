@@ -45,7 +45,11 @@ if (mysqli_num_rows($result) > 0) {
     while ($dh = mysqli_fetch_assoc($result)) {
         echo "<div class='card mb-4'>";
         echo "<div class='alert alert-info'>";
-        echo "Mã đơn hàng: <strong>{$dh['ma_donhang']}</strong> | Ngày đặt: {$dh['ngaydat']} | Trạng thái: <span class='fw-bold'>{$dh['trangthai']}</span> | Tổng tiền: <span class='text-danger fw-bold'>" . number_format($dh['tongtien'], 0, ',', '.') . " đ</span>";
+        echo "Mã đơn hàng: <strong>{$dh['ma_donhang']}</strong> | Ngày đặt: {$dh['ngaydat']} | Trạng thái: <span class='fw-bold'>{$dh['trangthai']}</span> | Tổng tiền: <span class='text-danger fw-bold'>" . number_format($dh['tongtien'], 0, ',', '.') . " đ </span>";
+        //nút đổi trả hàng nếu trạng thái là "Đã giao hàng"
+        if ($dh['trangthai'] == 'Hoàn thành') {
+            echo '<a href="doitra.php?ma_donhang=' . $dh['ma_donhang'] . '" class="btn btn-warning ms-3">Yêu cầu đổi trả</a>';
+        }
         // Nút huỷ đơn hàng nếu trạng thái là "Chờ xác nhận"
         if ($dh['trangthai'] == 'Chờ xác nhận') {
             echo '<form method="post" action="" class="d-inline ms-3" onsubmit="return confirm(\'Bạn chắc chắn muốn huỷ đơn hàng này?\')">';

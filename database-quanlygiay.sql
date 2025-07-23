@@ -165,6 +165,16 @@ CREATE TABLE lichsunhanvien (
     thoigian DATETIME NOT NULL,
     FOREIGN KEY (ma_nhanvien) REFERENCES nhanvien(ma_nhanvien)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- tạo bảng đổi trả hàng
+CREATE TABLE doitrahang (
+    ma_doitrahang INT AUTO_INCREMENT PRIMARY KEY,
+    ma_donhang INT NOT NULL,
+    anh VARCHAR(200) NOT NULL,
+    lydo TEXT NOT NULL,
+    trangthai ENUM('đang xử lý', 'Đã xác nhận đổi trả', 'Từ chối đổi trả') DEFAULT 'đang xử lý',
+    thoigian DATETIME NOT NULL,
+    FOREIGN KEY (ma_donhang) REFERENCES donhang(ma_donhang)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 -- dử liệu cho bảng banner
 INSERT INTO banner (ten_banner, link_banner, anh_banner, trang_thai) VALUES
 ('Banner 1', 'https://example.com', 'ad.jpg', 1),

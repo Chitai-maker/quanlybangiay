@@ -1,4 +1,5 @@
 <?php
+session_start();
 include "sidebar.php";
 include_once("chucnang/connectdb.php");
 
