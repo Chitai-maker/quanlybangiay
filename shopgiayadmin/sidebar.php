@@ -1,8 +1,4 @@
-<?php
-if (session_id() == "") {
-    session_start();
-}
-?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -57,24 +53,31 @@ if (session_id() == "") {
         <div class="row">
             <nav class="sidebar" id="sidebar" style="width:190px;">
                 <?php if (isset($_SESSION['name'])): ?>
-                    <?php if ($_SESSION['quyen'] == 0): // ADMIN 
-                    ?>
+                    <?php if ($_SESSION['quyen'] == 0): // ADMIN ?>
                         <div class="welcome">
-                            Welcome, <?= $_SESSION['name'] ?>
+                        Welcome, <?= $_SESSION['name'] ?>
                         </div>
                         <a href="dashboard.php">Bảng tổng hợp</a>
                         <a href="thongke.php">Thống kê</a>
-                        <a href="chatbox.php">CSKH</a>
-                        <a href="banner.php">Banner</a>
-                        <a href="index.php">Sản phẩm</a>
+                        <b><p>Quản lý đơn hàng</p></b>
+                        <a href="donhang.php">Tất cả</a>
+                        <a href="donhang.php?trangthai=Chờ+xác+nhận">Chờ xác nhận</a>
+                        <a href="donhang.php?trangthai=Chờ+xác+nhận+thanh+toán+QR">Chờ xác nhận thanh toán QR</a>
+                        <a href="donhang.php?trangthai=Đang+giao+hàng">Bàn giao vận chuyển</a>
+                        <b><p>Quản lý sản phẩm</p></b>
+                        <a href="index.php">Tất cả sản phẩm</a>
+                        <a href="themgiay.php">Thêm sản phẩm</a>
+                        <a href="hangmuc.php">Quản lý danh mục</a>
                         <a href="hangtonkho.php">Hàng tồn kho</a>
+                        <b><p>Chăm sóc khách hàng</p></b>
+                        <a href="chatbox.php">Quản lý Chat</a>
+                        <a href="danhgia.php">Quản lý Đánh giá</a>
+                        <a href="khachhang.php">Danh sách khách hàng</a>
+                        <b><p>Quản lý marketing</p></b>
+                        <a href="banner.php">Banner</a>
                         <a href="khuyenmai.php">Khuyến mãi</a>
-                        <a href="themloaigiay.php">Loại giày</a>
-                        <a href="themmaugiay.php">Màu giày</a>
-                        <a href="themthuonghieu.php">Thương hiệu</a>
-                        <a href="themsize.php">Size</a>
-                        <a href="donhang.php">Đơn hàng</a>
-                        <a href="khachhang.php">Khách hàng</a>
+                        <a href="magiamgia.php">Mã giảm giá</a>
+                        <b><p>Quản lý nhân viên</p></b>
                         <a href="nhanvien.php">Nhân viên</a>
                         <a href="lichsunhanvien.php">Log</a>
                         <a href="logout.php" class="logout"><img src="anh/logout.png" alt="Logout"
@@ -110,7 +113,7 @@ if (session_id() == "") {
 
             </nav>
             <main class="col-10 p-4">
-                
+
                 <script>
                     document.getElementById('toggleSidebar').onclick = function() {
                         document.getElementById('sidebar').classList.toggle('hide');

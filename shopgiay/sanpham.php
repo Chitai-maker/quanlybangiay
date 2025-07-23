@@ -189,6 +189,24 @@ if (isset($_GET['masanpham'])) {
                                     }
                                     echo '<br>';
                                     echo nl2br(htmlspecialchars($bl['binhluan']));
+
+                                    // Truy vấn phản hồi của người bán cho đánh giá này
+                                    $madanhgia = $bl['ma_danhgia'];
+                                    $reply_sql = "SELECT b.*, n.ten_nhanvien FROM binhluandanhgia b
+                                                LEFT JOIN nhanvien n ON b.ma_nhanvien = n.ma_nhanvien
+                                                WHERE b.ma_danhgia = '$madanhgia'
+                                                ORDER BY b.thoigian ASC";
+                                    $reply_result = mysqli_query($conn, $reply_sql);
+                                    if (mysqli_num_rows($reply_result) > 0) {
+                                        while ($reply = mysqli_fetch_assoc($reply_result)) {
+                                            echo '<div class="mt-2 p-2" style="background:#f8f9fa;border-radius:5px;">';
+                                            echo '<strong>Phản hồi của người bán</strong><br>';
+                                            echo '<span style="color:#333;">' . nl2br(htmlspecialchars($reply['noidung'])) . '</span>';
+                                            echo '<br><small class="text-muted">(' . htmlspecialchars($reply['ten_nhanvien'] ?? 'Admin') . ' - ' . $reply['thoigian'] . ')</small>';
+                                            echo '</div>';
+                                        }
+                                    }
+
                                     echo '</div>';
                                 }
                             } else {

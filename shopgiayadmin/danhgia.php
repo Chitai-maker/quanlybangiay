@@ -1,13 +1,20 @@
 <?php
+session_start();
 
-include "sidebar.php";
-include "../shopgiay/chucnang/connectdb.php"; // Đường dẫn tùy vị trí file admin
+include "../shopgiay/chucnang/connectdb.php";
 
 // Xử lý xoá đánh giá
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     $ma_danhgia = intval($_GET['delete']);
     mysqli_query($conn, "DELETE FROM danhgia WHERE ma_danhgia = $ma_danhgia");
-    // Sau khi xoá, chuyển hướng để tránh xoá lại khi refresh
+    header("Location: danhgia.php");
+    exit();
+}
+
+// Xử lý xoá bình luận trả lời
+if (isset($_GET['delete_reply']) && is_numeric($_GET['delete_reply'])) {
+    $ma_binhluan = intval($_GET['delete_reply']);
+    mysqli_query($conn, "DELETE FROM binhluandanhgia WHERE ma_binhluan = $ma_binhluan");
     header("Location: danhgia.php");
     exit();
 }
@@ -19,6 +26,7 @@ $sql = "SELECT d.*, g.tengiay, g.anhminhhoa,k.email
         LEFT JOIN khachhang k ON d.ma_khachhang = k.ma_khachhang
         ORDER BY d.ngaydanhgia DESC";
 $result = mysqli_query($conn, $sql);
+include "sidebar.php";
 ?>
 
 <div class="container mt-5">
@@ -50,9 +58,28 @@ $result = mysqli_query($conn, $sql);
             echo nl2br(htmlspecialchars($row['binhluan']));
             echo '<br><small class="text-muted">Ngày đánh giá: ' . $row['ngaydanhgia'] . '</small>';
             echo ' <a href="?delete=' . $row['ma_danhgia'] . '" class="btn btn-danger btn-sm ms-2" onclick="return confirm(\'Bạn có chắc muốn xoá đánh giá này?\')">Xoá</a>';
+            echo ' <a href="traloidanhgia.php?madanhgia=' . $row['ma_danhgia'] . '" class="btn btn-danger btn-sm ms-2" >Trả lời</a>';
 
             echo '</div>'; // ms-3
+
             echo '</div>'; // d-flex
+            // Hiển thị các bình luận trả lời nếu có
+            $madanhgia = $row['ma_danhgia'];
+            $reply_sql = "SELECT b.*, n.ten_nhanvien FROM binhluandanhgia b
+                                                LEFT JOIN nhanvien n ON b.ma_nhanvien = n.ma_nhanvien
+                                                WHERE b.ma_danhgia = '$madanhgia'
+                                                ORDER BY b.thoigian ASC";
+            $reply_result = mysqli_query($conn, $reply_sql);
+            if (mysqli_num_rows($reply_result) > 0) {
+                while ($reply = mysqli_fetch_assoc($reply_result)) {
+                    echo '<div class="mt-2 p-2" style="background:#f8f9fa;border-radius:5px;">';
+                    echo '<strong>Phản hồi của người bán</strong><br>';
+                    echo '<span style="color:#333;">' . nl2br(htmlspecialchars($reply['noidung'])) . '</span>';
+                    echo '<br><small class="text-muted">(' . htmlspecialchars($reply['ten_nhanvien'] ?? 'Admin') . ' - ' . $reply['thoigian'] . ')</small>';
+                    echo ' <a href="?delete_reply=' . $reply['ma_binhluan'] . '" class="btn btn-danger btn-sm ms-2" onclick="return confirm(\'Bạn có chắc muốn xoá bình luận này?\')">Xoá</a>';
+                    echo '</div>';
+                }
+            }
             echo '</div>'; // border rounded
         }
     } else {

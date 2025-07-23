@@ -102,6 +102,18 @@ CREATE TABLE danhgia (
     FOREIGN KEY (ma_khachhang) REFERENCES khachhang(ma_khachhang),
     FOREIGN KEY (magiay) REFERENCES giay(magiay)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+-- tạo bảng bình luận đánh giá
+CREATE TABLE binhluandanhgia (
+    ma_binhluan INT AUTO_INCREMENT PRIMARY KEY,
+    ma_danhgia INT NOT NULL,
+    ma_nhanvien INT,
+    ma_khachhang INT,
+    noidung TEXT NOT NULL,
+    thoigian DATETIME NOT NULL,
+    FOREIGN KEY (ma_danhgia) REFERENCES danhgia(ma_danhgia),
+    FOREIGN KEY (ma_nhanvien) REFERENCES nhanvien(ma_nhanvien),
+    FOREIGN KEY (ma_khachhang) REFERENCES khachhang(ma_khachhang)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 -- tạo bảng chatbox
 CREATE TABLE chatbox (
     id INT AUTO_INCREMENT PRIMARY KEY,
