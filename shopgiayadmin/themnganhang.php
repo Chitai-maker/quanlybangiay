@@ -1,4 +1,5 @@
 <?php
+session_start();
 include "sidebar.php";
 $ma_nhanvien = isset($_GET['ma_nhanvien']) ? intval($_GET['ma_nhanvien']) : 0;
 $ten_nhanvien = isset($_GET['ten_nhanvien']) ? htmlspecialchars($_GET['ten_nhanvien']) : "";

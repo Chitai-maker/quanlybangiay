@@ -2,7 +2,7 @@
 session_start();
 if (!isset($_SESSION['name']))
   header("location:login.php");
-if($_SESSION['quyen'] > 1){
+if($_SESSION['quyen'] > 1){// Chỉ cho phép nhân viên kho và quản lý truy cập
   header("location:dangnhap_quyencaohon.php");
 }
 include "sidebar.php"; ?>

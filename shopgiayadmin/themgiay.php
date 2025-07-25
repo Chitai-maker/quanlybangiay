@@ -2,7 +2,7 @@
 session_start();
 if (!isset($_SESSION['name']))
     header("location:login.php");
-    if($_SESSION['quyen'] > 1){
+    if($_SESSION['quyen'] > 1){// Nhân viên kho trở lên
         header("location:dangnhap_quyencaohon.php");     
     }   
 include "sidebar.php";

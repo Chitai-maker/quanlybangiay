@@ -3,7 +3,7 @@
 session_start();
 if (!isset($_SESSION['name']))
     header("location:login.php");
-  if($_SESSION['quyen'] > 0){
+  if($_SESSION['quyen'] > 0){// Chỉ cho phép ADMIN 
     header("location:dangnhap_quyencaohon.php");
   
   }   

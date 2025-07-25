@@ -38,24 +38,27 @@ if ($email && $token) {
 <head>
     <meta charset="UTF-8">
     <title>Đặt lại mật khẩu</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <style>
-        form { max-width: 400px; margin: 40px auto; border: 1px solid #cababa; padding: 24px; border-radius: 10px;}
-    </style>
+    
 </head>
 <body>
 <?= $message ?>
 <?php if ($show_form): ?>
-<form method="post">
-    <h4 class="mb-3 text-center">Đặt lại mật khẩu</h4>
-    <div class="mb-3">
-        <label class="form-label">Mật khẩu mới</label>
-        <input type="password" name="newpass" class="form-control" required minlength="6">
+    <div class="container">
+        <div class="mx-auto" style="max-width:700px;">
+            <div style="border:1px solid #d2cccc; border-radius:14px; padding:32px 28px 18px 28px; background:#fff;">
+                <form method="post">
+                    <h4 class="mb-3 text-center">Đặt lại mật khẩu</h4>
+                    <div class="mb-3">
+                        <label class="form-label">Mật khẩu mới</label>
+                        <input type="password" name="newpass" class="form-control" required minlength="6">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Nhập lại mật khẩu</label>
+                        <input type="password" name="renewpass" class="form-control" required minlength="6">
+                    </div>
+                    <button type="submit" name="reset_submit" class="btn btn-primary w-100">Đặt lại mật khẩu</button>
+                </form>
+            </div>
+        </div>
     </div>
-    <div class="mb-3">
-        <label class="form-label">Nhập lại mật khẩu</label>
-        <input type="password" name="renewpass" class="form-control" required minlength="6">
-    </div>
-    <button type="submit" name="reset_submit" class="btn btn-primary w-100">Đặt lại mật khẩu</button>
-</form>
 <?php endif; ?>

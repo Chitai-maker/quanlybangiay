@@ -1,5 +1,5 @@
 <?php
-// filepath: c:\xampp\htdocs\quanlybangiay\shopgiayadmin\thongke.php
+session_start();
 include "sidebar.php";
 include_once("chucnang/connectdb.php");
 if (!isset($_SESSION['name']))

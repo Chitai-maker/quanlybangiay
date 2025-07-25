@@ -1,4 +1,5 @@
 <?php
+session_start();
 // kiểm tra nếu không có parameter 'tongtien' thì trả về trang chủ
 if (!isset($_POST['tongtien']) || empty($_POST['tongtien'])) {
     header("Location: index.php");

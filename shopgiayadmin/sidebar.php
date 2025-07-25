@@ -58,7 +58,7 @@
                         Welcome, <?= $_SESSION['name'] ?>
                         </div>
                         <a href="dashboard.php">Bảng tổng hợp</a>
-                        <a href="thongke.php">Thống kê</a>
+                        
                         <b><p>Quản lý đơn hàng</p></b>
                         <a href="donhang.php">Tất cả</a>
                         <a href="donhang.php?trangthai=Chờ+xác+nhận">Chờ xác nhận</a>
@@ -68,13 +68,14 @@
                         <b><p>Quản lý sản phẩm</p></b>
                         <a href="index.php">Tất cả sản phẩm</a>
                         <a href="themgiay.php">Thêm sản phẩm</a>
-                        <a href="hangmuc.php">Quản lý danh mục</a>
+                        <a href="hangmuc.php">Quản lý Hạng mục</a>
                         <a href="hangtonkho.php">Hàng tồn kho</a>
                         <b><p>Chăm sóc khách hàng</p></b>
                         <a href="chatbox.php">Quản lý Chat</a>
                         <a href="danhgia.php">Quản lý Đánh giá</a>
                         <a href="khachhang.php">Danh sách khách hàng</a>
                         <b><p>Quản lý marketing</p></b>
+                        <a href="thongke.php">Thống kê</a>
                         <a href="banner.php">Banner</a>
                         <a href="khuyenmai.php">Khuyến mãi</a>
                         <a href="magiamgia.php">Mã giảm giá</a>
@@ -87,24 +88,40 @@
                     ?>
                         <div class="welcome">
                             Welcome, <?= $_SESSION['name'] ?>
-
                         </div>
-                        <a href="index.php">Giày</a>
-                        <a href="khuyenmai.php">Sản phẩm hot</a>
-                        <a href="themloaigiay.php">Thêm loại giày</a>
-                        <a href="themmaugiay.php">Thêm màu giày</a>
-                        <a href="themthuonghieu.php">Thêm thương hiệu</a>
-                        <a href="themgiay.php">Thêm giày</a>
-                        <a href="themsize.php">Thêm size</a>
-                        <a href="donhang.php">Đơn hàng</a>
+                        <b><p>Quản lý đơn hàng</p></b>
+                        <a href="donhang.php">Tất cả</a>
+                        <a href="donhang.php?trangthai=Chờ+xác+nhận">Chờ xác nhận</a>
+                        <a href="donhang.php?trangthai=Chờ+xác+nhận+thanh+toán+QR">Chờ xác nhận thanh toán QR</a>
+                        <a href="donhang.php?trangthai=Đang+giao+hàng">Vận chuyển</a>
+                        <a href="doitra.php">Yêu Cầu Đổi Trả</a>
+                        <b><p>Quản lý sản phẩm</p></b>
+                        <a href="index.php">Tất cả sản phẩm</a>
+                        <a href="themgiay.php">Thêm sản phẩm</a>
+                        <a href="hangmuc.php">Quản lý Hạng mục</a>
+                        <a href="hangtonkho.php">Hàng tồn kho</a>
+                        <b><p>Chăm sóc khách hàng</p></b>
+                        <a href="chatbox.php">Quản lý Chat</a>
+                        <a href="danhgia.php">Quản lý Đánh giá</a>
+                        <a href="khachhang.php">Danh sách khách hàng</a>
                         <a href="logout.php" class="logout"><img src="anh/logout.png" alt="Logout"
                                 style="width:32px;height:32px;"></a>
                     <?php elseif ($_SESSION['quyen'] == 2): // Nhân viên bán hàng 
                     ?>
                         <div class="welcome">
-                            Welcome, <?= $_SESSION['name'] ?>
-                        </div>
-                        <a href="index.php">Giày</a>
+                            Welcome, <?= $_SESSION['name'] ?>   
+                        </div> 
+                        <b><p>Quản lý sản phẩm</p></b>
+                        <a href="index.php">Tất cả sản phẩm</a>
+                        <b><p>Chăm sóc khách hàng</p></b>
+                        <a href="chatbox.php">Quản lý Chat</a>
+                        <a href="danhgia.php">Quản lý Đánh giá</a>
+                        <a href="khachhang.php">Danh sách khách hàng</a>
+                        <b><p>Quản lý marketing</p></b>
+                        <a href="thongke.php">Thống kê</a>
+                        <a href="banner.php">Banner</a>
+                        <a href="khuyenmai.php">Khuyến mãi</a>
+                        <a href="magiamgia.php">Mã giảm giá</a>
                         <a href="logout.php" class="logout"><img src="anh/logout.png" alt="Logout"
                                 style="width:32px;height:32px;"></a>
                     <?php endif; ?>
