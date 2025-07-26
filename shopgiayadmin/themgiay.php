@@ -32,7 +32,25 @@ include_once("chucnang/chucnang_showFK.php");
             <label>Mô tả</label>
             <textarea name="mota" class="form-control" style="resize: none; overflow: hidden;" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"></textarea>
             <label>Ảnh sản phẩm</label>
-            <input class="form-control mt-4" type="file" name="anhminhhoa" id="">
+            <input class="form-control mt-4" type="file" name="anhminhhoa" id="anhminhhoa" accept="image/*" onchange="previewImage(event)">
+            <img id="preview" src="#" alt="Ảnh xem trước" style="display:none; max-width:150px; margin-top:10px; border-radius:8px;">
+            <script>
+            function previewImage(event) {
+                const input = event.target;
+                const preview = document.getElementById('preview');
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                } else {
+                    preview.src = "#";
+                    preview.style.display = 'none';
+                }
+            }
+            </script>
             <select class="form-control mt-4" name="loaigiay">
                     <option value="">-- Chọn loại giầy --</option>
                 <?php while($row = $result_loai->fetch_assoc()): ?>
