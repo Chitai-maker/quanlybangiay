@@ -2,7 +2,6 @@
 session_start();
 if (!isset($_SESSION['name']))
     header("location:login.php");
-
 include "sidebar.php";
 include "chucnang/connectdb.php";
 ?>
@@ -23,12 +22,14 @@ include "chucnang/connectdb.php";
                 <select class="form-control" name="magiay" id="magiay" required>
                     <option value="">-- Chọn sản phẩm --</option>
                     <?php
+                    $selected_magiay = isset($_GET['magiay']) ? intval($_GET['magiay']) : 0;
                     // Lấy danh sách giày từ bảng giay
                     $query = "SELECT magiay, tengiay FROM giay";
                     $result = mysqli_query($conn, $query);
                     if (mysqli_num_rows($result) > 0) {
                         while ($row = mysqli_fetch_assoc($result)) {
-                            echo "<option value='" . $row['magiay'] . "'>" . htmlspecialchars($row['tengiay']) . "</option>";
+                            $selected = ($selected_magiay == $row['magiay']) ? 'selected' : '';
+                            echo "<option value='" . $row['magiay'] . "' $selected>" . htmlspecialchars($row['tengiay']) . "</option>";
                         }
                     } else {
                         echo "<option value=''>Không có sản phẩm</option>";

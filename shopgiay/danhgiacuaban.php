@@ -1,7 +1,6 @@
 <?php
-
-include "header.php";
 include "chucnang/connectdb.php";
+session_start();
 
 if (!isset($_SESSION['makhachhang'])) {
     echo "<div class='container mt-5'><div class='alert alert-warning'>Bạn cần <a href='login.php'>đăng nhập</a> để xem đánh giá của mình.</div></div>";
@@ -9,21 +8,23 @@ if (!isset($_SESSION['makhachhang'])) {
 }
 
 // Xử lý xoá đánh giá
-if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
-    $delete_id = intval($_GET['delete']);
+if (isset($_GET['an']) && is_numeric($_GET['an'])) {
+    $hide_id = intval($_GET['an']);
     $makhachhang = mysqli_real_escape_string($conn, $_SESSION['makhachhang']);
-    // Chỉ cho phép xoá đánh giá của chính mình
-    $del_sql = "DELETE FROM danhgia WHERE ma_danhgia = $delete_id AND ma_khachhang = '$makhachhang'";
-    mysqli_query($conn, $del_sql);
-    // Sau khi xoá, load lại trang để cập nhật danh sách
+    $hide_sql = "UPDATE danhgia SET an = true WHERE ma_danhgia = $hide_id AND ma_khachhang = '$makhachhang'";
+    mysqli_query($conn, $hide_sql);
     header("Location: danhgiacuaban.php");
     exit;
 }
 
+include "header.php";
+
 $makhachhang = mysqli_real_escape_string($conn, $_SESSION['makhachhang']);
-$sql = "SELECT d.*, g.tengiay,g.anhminhhoa FROM danhgia d 
-        LEFT JOIN giay g ON d.magiay = g.magiay 
-        WHERE d.ma_khachhang = '$makhachhang' ORDER BY d.ngaydanhgia DESC";
+$sql = "SELECT d.*, g.tengiay, g.anhminhhoa 
+FROM danhgia d 
+LEFT JOIN giay g ON d.magiay = g.magiay 
+WHERE d.ma_khachhang = '$makhachhang' AND d.an = 0 
+ORDER BY d.ngaydanhgia DESC";
 $result = mysqli_query($conn, $sql);
 ?>
 
@@ -52,7 +53,7 @@ $result = mysqli_query($conn, $sql);
             echo '<br>';
             echo nl2br(htmlspecialchars($row['binhluan']));
             echo '<br><small class="text-muted">Ngày đánh giá: ' . $row['ngaydanhgia'] . '</small>';
-            echo ' <a href="?delete=' . $row['ma_danhgia'] . '" class="btn btn-danger btn-sm ms-2" onclick="return confirm(\'Bạn có chắc muốn xoá đánh giá này?\')">Xoá</a>';
+            echo ' <a href="?an=' . $row['ma_danhgia'] . '" class="btn btn-danger btn-sm ms-2" onclick="return confirm(\'Bạn có chắc muốn xoá đánh giá này?\')">Xoá</a>';
 
             echo '</div>'; // ms-3
             echo '</div>'; // d-flex

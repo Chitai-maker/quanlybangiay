@@ -17,7 +17,12 @@ include "sidebar.php"; ?>
 include_once("chucnang/chucnang_showFK.php");
 if(isset($_GET['magiay']))
         $magiay = mysqli_real_escape_string($conn, $_GET['magiay']);
-        $query = "SELECT * FROM giay WHERE magiay='$magiay' ";
+        $query = "SELECT giay.*, loaigiay.tenloaigiay, maugiay.tenmaugiay, thuonghieu.tenthuonghieu 
+          FROM giay 
+          LEFT JOIN loaigiay ON giay.maloaigiay = loaigiay.maloaigiay
+          LEFT JOIN maugiay ON giay.mamaugiay = maugiay.mamaugiay
+          LEFT JOIN thuonghieu ON giay.mathuonghieu = thuonghieu.mathuonghieu
+          WHERE magiay='$magiay'";
         $query_run = mysqli_query($conn, $query);
 
         if(mysqli_num_rows($query_run) > 0)
@@ -31,7 +36,10 @@ if(isset($_GET['magiay']))
                 <label>Tên sản phẩm</label>
                 <input type="text" name="tengiay" value="<?=$giay['tengiay'];?>" class="form-control">
                 <label>Ảnh sản phẩm</label>
-                <input class="form-control mt-4" type="file" name="anhminhhoa" id=""value="<?=$giay['anhminhhoa'];?>">
+                <div class="mb-2">
+                    <img src="anhgiay/<?= htmlspecialchars($giay['anhminhhoa']) ?>" alt="Ảnh hiện tại" style="max-width:120px;max-height:120px;border-radius:8px;">
+                </div>
+                <input class="form-control mt-2" type="file" name="anhminhhoa" id=""value="<?=$giay['anhminhhoa'];?>">
                 <label>Giá</label>
                 <input type="number" name="giaban" value="<?=$giay['giaban'];?>" class="form-control">
                 <label>Đơn vị tính</label>
@@ -40,25 +48,39 @@ if(isset($_GET['magiay']))
                 <textarea name="mota" class="form-control" style="resize: none; overflow: hidden;" oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px';"><?=$giay['mota'];?></textarea>
                 <label>Loại</label>
                 <select class="form-control mt-4" name="loaigiay">
-                    <option value="<?=$giay['maloaigiay'];?>">loai giay</option>
-                        <?php while($row = $result_loai->fetch_assoc()): ?>
-                    <option value="<?php echo $row['maloaigiay']; ?>"><?php echo $row['tenloaigiay']; ?></option>
-                        <?php endwhile; ?>
+                    <option value="<?=$giay['maloaigiay'];?>" selected>
+                        <?= htmlspecialchars($giay['maloaigiay']) . ' - ' . htmlspecialchars($giay['tenloaigiay'] ?? 'Loại hiện tại') ?>
+                    </option>
+                    <?php while($row = $result_loai->fetch_assoc()): ?>
+                        <?php if($row['maloaigiay'] != $giay['maloaigiay']): ?>
+                            <option value="<?php echo $row['maloaigiay']; ?>"><?php echo $row['tenloaigiay']; ?></option>
+                        <?php endif; ?>
+                    <?php endwhile; ?>
                 </select>
+
                 <label>Màu</label>
                 <select class="form-control mt-4" name="maugiay">
-                    <option value="<?=$giay['mamaugiay'];?>">-- Chọn màu --</option>
-                        <?php while($row = $result_mau->fetch_assoc()): ?>
-                    <option value="<?php echo $row['mamaugiay']; ?>"><?php echo $row['tenmaugiay']; ?></option>
-                        <?php endwhile; ?>
+                    <option value="<?=$giay['mamaugiay'];?>" selected>
+                        <?= htmlspecialchars($giay['mamaugiay']) . ' - ' . htmlspecialchars($giay['tenmaugiay'] ?? 'Màu hiện tại') ?>
+                    </option>
+                    <?php while($row = $result_mau->fetch_assoc()): ?>
+                        <?php if($row['mamaugiay'] != $giay['mamaugiay']): ?>
+                            <option value="<?php echo $row['mamaugiay']; ?>"><?php echo $row['tenmaugiay']; ?></option>
+                        <?php endif; ?>
+                    <?php endwhile; ?>
                 </select>
+
                 <label>Thương hiệu</label>
                 <select class="form-control mt-4" name="thuonghieu">
-                    <option value="<?=$giay['mathuonghieu'];?>">-- Chọn thương hiệu --</option>
-                        <?php while($row = $result_thuonghieu->fetch_assoc()): ?>
-                <option value="<?php echo $row['mathuonghieu']; ?>"><?php echo $row['tenthuonghieu']; ?></option>
-                <?php endwhile; ?>
-                
+                    <option value="<?=$giay['mathuonghieu'];?>" selected>
+                        <?= htmlspecialchars($giay['mathuonghieu']) . ' - ' . htmlspecialchars($giay['tenthuonghieu'] ?? 'Thương hiệu hiện tại') ?>
+                    </option>
+                    <?php while($row = $result_thuonghieu->fetch_assoc()): ?>
+                        <?php if($row['mathuonghieu'] != $giay['mathuonghieu']): ?>
+                            <option value="<?php echo $row['mathuonghieu']; ?>"><?php echo $row['tenthuonghieu']; ?></option>
+                        <?php endif; ?>
+                    <?php endwhile; ?>
+                </select>
                 </form>
         <?php }else {
     echo "<p>No product found with the given ID.</p>";

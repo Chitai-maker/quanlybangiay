@@ -6,6 +6,13 @@ if (!isset($_SESSION['name'])) {
 }
 if ($_POST["submit"]) {
     $TENLOAIGIAY = $_POST["tenloaigiay"];
+    $check_query = "SELECT * FROM loaigiay WHERE tenloaigiay = '$TENLOAIGIAY'";
+    $check_result = mysqli_query($conn, $check_query);
+    if (mysqli_num_rows($check_result) > 0) {
+        $_SESSION['message'] = "Loại giày đã tồn tại.";
+        header("Location: ../themloaigiay.php");
+        exit();
+    }
             $query = "INSERT INTO loaigiay (tenloaigiay) VALUES ('$TENLOAIGIAY')";
             if(mysqli_query($conn, $query)){
                 echo "Thêm loại giày thành công.";

@@ -1,5 +1,6 @@
 <!-- filepath: c:\xampp\htdocs\shopgiay\sanpham.php -->
 <?php
+session_start();
 include "sidebar.php";
 include "chucnang/connectdb.php";
 
@@ -41,14 +42,14 @@ if (isset($_GET['masanpham'])) {
 
         <body>
             <?php
-        
-        
-        ?>
+
+
+            ?>
             <div class="container mt-5">
                 <div class="row">
                     <!-- Hình ảnh sản phẩm -->
                     <div class="col-md-6">
-                        <img src="../shopgiayadmin/anhgiay/<?php echo $row['anhminhhoa']; ?>"  alt="<?php echo $row['tengiay']; ?>" style="border-radius: 10px; width: 500px; height: auto;">
+                        <img src="../shopgiayadmin/anhgiay/<?php echo $row['anhminhhoa']; ?>" alt="<?php echo $row['tengiay']; ?>" style="border-radius: 10px; width: 500px; height: auto;">
                     </div>
 
                     <!-- Thông tin sản phẩm -->
@@ -63,7 +64,7 @@ if (isset($_GET['masanpham'])) {
                         $total = $avg_data['total'];
                         ?>
                         <p>
-                            
+
                             <?php
                             if ($total > 0) {
                                 // Hiển thị sao bằng icon
@@ -83,74 +84,90 @@ if (isset($_GET['masanpham'])) {
                             ?>
                         </p>
                         <h4 class="text-danger">
-                            <?php 
+                            <?php
                             if ($discount > 0) {
                                 echo "<del>" . number_format($original_price, 0, ',', '.') . " VND</del> ";
                             }
-                            echo number_format($final_price, 0, ',', '.') . " VND"; 
+                            echo number_format($final_price, 0, ',', '.') . " VND";
                             ?>
                         </h4>
                         <h5><?php echo $row['soluongtonkho'] ?> sản phẩm có sẵn</h5>
                         <!-- Nút mua ngay hoặc thông báo hết hàng -->
                         <?php if ($row['soluongtonkho'] > 0): ?>
-        
-        
-    <?php else: ?>
-        <span class="badge bg-danger">Hết hàng</span>
-        <?php
-        // Kiểm tra nếu khách đã đăng nhập và đã đánh giá chưa
-        $show_danhgia_btn = true;
-        if (isset($_SESSION['makhachhang'])) {
-            $makhachhang = mysqli_real_escape_string($conn, $_SESSION['makhachhang']);
-            $check_sql = "SELECT * FROM danhgia WHERE magiay = '$magiay' AND ma_khachhang = '$makhachhang'";
-            $check_result = mysqli_query($conn, $check_sql);
-            if (mysqli_num_rows($check_result) > 0) {
-                $show_danhgia_btn = false;
-            }
-        }
-        if ($show_danhgia_btn) {
-        ?>
-            <!-- Nút đánh giá vẫn hiển thị -->
-            <a href="danhgia.php?masanpham=<?php echo $row['magiay']; ?>" class="btn btn-primary mt-2">Đánh giá sản phẩm</a>
-        <?php
-        } else {
-            echo "<span class='badge bg-info mt-2'>Bạn đã đánh giá sản phẩm này</span>";
-        }
-        ?>
-    <?php endif; ?>
-    <p><?php echo $row['mota']; ?></p>
 
-<!-- Hiển thị bình luận -->
-<div class="mt-4">
-    <h5>Bình luận của khách hàng</h5>
-    <?php
-    $bl_query = "SELECT d.*, k.ten_khachhang FROM danhgia d 
-                 LEFT JOIN khachhang k ON d.ma_khachhang = k.ma_khachhang 
-                 WHERE d.magiay = '$magiay' ORDER BY d.ngaydanhgia DESC";
-    $bl_result = mysqli_query($conn, $bl_query);
-    if (mysqli_num_rows($bl_result) > 0) {
-        while ($bl = mysqli_fetch_assoc($bl_result)) {
-            echo '<div class="border rounded p-2 mb-2 bg-light">';
-            echo '<strong>' . htmlspecialchars($bl['ten_khachhang']) . '</strong> ';
-            // Hiển thị số sao
-            for ($i = 1; $i <= 5; $i++) {
-                if ($i <= $bl['danhgia']) {
-                    echo '<span style="color: gold; font-size:16px;">&#9733;</span>';
-                } else {
-                    echo '<span style="color: #ccc; font-size:16px;">&#9733;</span>';
-                }
-            }
-            echo '<br>';
-            echo nl2br(htmlspecialchars($bl['binhluan']));
-            echo '</div>';
-        }
-    } else {
-        echo '<div class="text-muted">Chưa có bình luận nào cho sản phẩm này.</div>';
-    }
-    ?>
-</div>
-</div>
-               
+
+                        <?php else: ?>
+                            <span class="badge bg-danger">Hết hàng</span>
+                            <?php
+                            // Kiểm tra nếu khách đã đăng nhập và đã đánh giá chưa
+                            $show_danhgia_btn = true;
+                            if (isset($_SESSION['makhachhang'])) {
+                                $makhachhang = mysqli_real_escape_string($conn, $_SESSION['makhachhang']);
+                                $check_sql = "SELECT * FROM danhgia WHERE magiay = '$magiay' AND ma_khachhang = '$makhachhang'";
+                                $check_result = mysqli_query($conn, $check_sql);
+                                if (mysqli_num_rows($check_result) > 0) {
+                                    $show_danhgia_btn = false;
+                                }
+                            }
+                            if ($show_danhgia_btn) {
+                            ?>
+                                <!-- Nút đánh giá vẫn hiển thị -->
+                                <a href="danhgia.php?masanpham=<?php echo $row['magiay']; ?>" class="btn btn-primary mt-2">Đánh giá sản phẩm</a>
+                            <?php
+                            } else {
+                                echo "<span class='badge bg-info mt-2'>Bạn đã đánh giá sản phẩm này</span>";
+                            }
+                            ?>
+                        <?php endif; ?>
+                        <p><?php echo $row['mota']; ?></p>
+
+                        <!-- Hiển thị bình luận -->
+                        <div class="mt-4">
+                            <h5>Bình luận của khách hàng</h5>
+                            <?php
+                            $bl_query = "SELECT 
+    dg.ma_danhgia,
+    dg.ma_khachhang,
+    dg.magiay,
+    dg.danhgia,
+    dg.binhluan AS binhluan_danhgia,
+    dg.ngaydanhgia,
+    bl.ma_binhluan,
+    bl.ma_nhanvien,
+    bl.ma_khachhang AS nguoi_binhluan,
+    bl.noidung AS binhluan_phanhoi,
+    bl.thoigian AS thoigian_phanhoi,
+    kh.ten_khachhang
+FROM danhgia dg
+LEFT JOIN binhluandanhgia bl ON dg.ma_danhgia = bl.ma_danhgia
+JOIN khachhang kh ON dg.ma_khachhang = kh.ma_khachhang
+WHERE dg.an = 0 AND dg.magiay = '$magiay'
+ORDER BY dg.ngaydanhgia DESC, bl.thoigian ASC";
+
+                            $bl_result = mysqli_query($conn, $bl_query);
+                            if (mysqli_num_rows($bl_result) > 0) {
+                                while ($bl = mysqli_fetch_assoc($bl_result)) {
+                                    echo '<div class="border rounded p-2 mb-2 bg-light">';
+                                    echo '<strong>' . htmlspecialchars($bl['ten_khachhang']) . '</strong> ';
+                                    // Hiển thị số sao
+                                    for ($i = 1; $i <= 5; $i++) {
+                                        if ($i <= $bl['danhgia']) {
+                                            echo '<span style="color: gold; font-size:16px;">&#9733;</span>';
+                                        } else {
+                                            echo '<span style="color: #ccc; font-size:16px;">&#9733;</span>';
+                                        }
+                                    }
+                                    echo '<br>';
+                                    echo nl2br(htmlspecialchars($bl['binhluan_danhgia']));
+                                    echo '</div>';
+                                }
+                            } else {
+                                echo '<div class="text-muted">Chưa có bình luận nào cho sản phẩm này.</div>';
+                            }
+
+                            ?>
+                        </div>
+
         </html>
 <?php
     } else {

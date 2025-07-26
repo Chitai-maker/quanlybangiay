@@ -29,11 +29,18 @@ include_once("chucnang/connectdb.php");
             unset($_SESSION['message']); // Clear the message after displaying it
         }
         ?>
+        <h2 class="mb-4">Danh sách tồn kho giày</h2>
 <div class="container mt-4 d-flex justify-content-center align-items-center" style="border:none; box-shadow:none;">
-    <h2 class="mb-4">Danh sách tồn kho giày</h2>
+    
     <form method="get" action="hangtonkho.php" class="d-flex flex-grow-1 justify-content-center" style="border:none; box-shadow:none;">
         <input type="text" name="search" class="form-control w-50" placeholder="Tìm kiếm sản phẩm..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
         <button type="submit" class="btn btn-primary ml-2">Tìm kiếm</button>
+        
+        <select name="sort_magiay" class="form-select ms-3" style="width:auto;">
+            <option value="">-- Sắp xếp mặc định --</option>
+            <option value="asc" <?= (isset($_GET['sort_magiay']) && $_GET['sort_magiay'] == 'asc') ? 'selected' : '' ?>>Cũ đến mới</option>
+            <option value="desc" <?= (isset($_GET['sort_magiay']) && $_GET['sort_magiay'] == 'desc') ? 'selected' : '' ?>>Mới đến cũ</option>
+        </select>
         <div class="form-check ms-3">
             <input class="form-check-input" type="checkbox" name="hangkhongco" id="hangkhongco" value="1" <?= isset($_GET['hangkhongco']) ? 'checked' : '' ?>>
             <label class="form-check-label" for="hangkhongco">
@@ -63,7 +70,15 @@ include_once("chucnang/connectdb.php");
             if (isset($_GET['hangkhongco']) && $_GET['hangkhongco'] == 1) {
                 $where .= " AND magiay NOT IN (SELECT ma_giay FROM chitietdonhang)";
             }
-            $sql = "SELECT * FROM giay $where ORDER BY soluongtonkho DESC";
+
+            // Xử lý sắp xếp theo magiay
+            $orderBy = "ORDER BY soluongtonkho DESC";
+            if (!empty($_GET['sort_magiay'])) {
+                $sort = strtolower($_GET['sort_magiay']) == 'asc' ? 'ASC' : 'DESC';
+                $orderBy = "ORDER BY magiay $sort";
+            }
+
+            $sql = "SELECT * FROM giay $where $orderBy";
             $result = mysqli_query($conn, $sql);
             while ($row = mysqli_fetch_assoc($result)): ?>
                 <tr>

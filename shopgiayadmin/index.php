@@ -26,15 +26,7 @@ include "sidebar.php"; ?>
   }
   ?>
 
-<div class="container mt-4 d-flex justify-content-center align-items-center" style="border:none; box-shadow:none;">
-    <a href="themgiay.php"><img src="anh/add.webp" alt="them" style="width:50px;height:50px;"></a>
-    <form method="get" action="index.php" class="d-flex flex-grow-1 justify-content-center"style="border:none; box-shadow:none;">
-        <input type="text" name="search" class="form-control w-50" placeholder="Tìm kiếm sản phẩm..." value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
-        <button type="submit" class="btn btn-primary ml-2">Tìm kiếm</button>
-    </form>
-    
-    
-</div>
+
 <div class="d-flex gap-3">
     <!-- Nút lọc theo thương hiệu -->
 <?php
@@ -45,6 +37,11 @@ $thuonghieu_result = mysqli_query($conn, $thuonghieu_query);
 ?>
 <form method="GET" action="" style="border: none; max-width:300px;">
     <h3>Thương hiệu</h3>
+    <?php foreach($_GET as $key => $value): ?>
+        <?php if($key != 'mathuonghieu'): ?>
+            <input type="hidden" name="<?= htmlspecialchars($key) ?>" value="<?= htmlspecialchars($value) ?>">
+        <?php endif; ?>
+    <?php endforeach; ?>
     <select name="mathuonghieu" class="form-select mb-2" onchange="this.form.submit()">
         <option value="0">Tất cả thương hiệu</option>
         <?php while($row = mysqli_fetch_assoc($thuonghieu_result)): ?>
@@ -63,6 +60,11 @@ $loaigiay_result = mysqli_query($conn, $loaigiay_query);
 ?>
 <form method="GET" action="" style="border: none; max-width:300px;">
     <h3>Loại giày</h3>
+    <?php foreach($_GET as $key => $value): ?>
+        <?php if($key != 'maloaigiay'): ?>
+            <input type="hidden" name="<?= htmlspecialchars($key) ?>" value="<?= htmlspecialchars($value) ?>">
+        <?php endif; ?>
+    <?php endforeach; ?>
     <select name="maloaigiay" class="form-select mb-2" onchange="this.form.submit()">
         <option value="0">Tất cả loại giày</option>
         <?php while($row = mysqli_fetch_assoc($loaigiay_result)): ?>
@@ -82,6 +84,12 @@ $sizegiay_result = mysqli_query($conn, $sizegiay_query);
 ?>
 <form method="GET" action="" style="border: none; max-width:300px;">
     <h3>Size giày</h3>
+    <!-- Giữ các tham số lọc khác -->
+    <?php foreach($_GET as $key => $value): ?>
+        <?php if($key != 'sizegiay'): ?>
+            <input type="hidden" name="<?= htmlspecialchars($key) ?>" value="<?= htmlspecialchars($value) ?>">
+        <?php endif; ?>
+    <?php endforeach; ?>
     <select name="sizegiay" class="form-select mb-2" onchange="this.form.submit()">
         <option value="0">Tất cả size</option>
         <?php while($row = mysqli_fetch_assoc($sizegiay_result)): ?>
@@ -102,9 +110,34 @@ $sizegiay = isset($_GET['sizegiay']) ? intval($_GET['sizegiay']) : null;
 
 // Lấy giá trị $mathuonghieu từ tham số GET
 $mathuonghieu = isset($_GET['mathuonghieu']) ? intval($_GET['mathuonghieu']) : null;
-
+?>
+<div class="container mt-4 d-flex justify-content-center align-items-center" style="border:none; box-shadow:none;">
+    <a href="themgiay.php"><img src="anh/add.webp" alt="them" style="width:50px;height:50px;"></a>
+    <form method="get" action="index.php" class="d-flex flex-grow-1 justify-content-center"style="border:none; box-shadow:none;">
+        <input type="text" name="search" class="form-control w-50" placeholder="Tìm kiếm sản phẩm..." value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
+        <button type="submit" class="btn btn-primary ml-2">Tìm kiếm</button>
+    </form>
+    <form method="GET" action="" style="border: none; max-width:300px;">
+    <h3>Lọc theo giá</h3>
+    <?php foreach($_GET as $key => $value): ?>
+        <?php if($key != 'sort_price'): ?>
+            <input type="hidden" name="<?= htmlspecialchars($key) ?>" value="<?= htmlspecialchars($value) ?>">
+        <?php endif; ?>
+    <?php endforeach; ?>
+    <select name="sort_price" class="form-select mb-2" onchange="this.form.submit()">
+        <option value="">-- Sắp xếp giá --</option>
+        <option value="asc" <?= (isset($_GET['sort_price']) && $_GET['sort_price']=='asc') ? 'selected' : '' ?>>Giá tăng dần</option>
+        <option value="desc" <?= (isset($_GET['sort_price']) && $_GET['sort_price']=='desc') ? 'selected' : '' ?>>Giá giảm dần</option>
+    </select>
+</form>
+</div>
+<?php
 include("chucnang/chucnang_xemkhogiay.php");
 ?>
+<!-- Nút lọc theo giá -->
+
+
+
 </body>
 
 </html>

@@ -6,6 +6,13 @@ if (!isset($_SESSION['name'])) {
 }
 if ($_POST["submit"]) {
     $TENMAUGIAY = $_POST["tenmaugiay"];
+    $check_query = "SELECT * FROM maugiay WHERE tenmaugiay = '$TENMAUGIAY'";
+    $check_result = mysqli_query($conn, $check_query);
+    if (mysqli_num_rows($check_result) > 0) {
+        $_SESSION['message'] = "Màu giày đã tồn tại.";
+        header("Location: ../themmaugiay.php");
+        exit();
+    }
             $query = "INSERT INTO maugiay (tenmaugiay) VALUES ('$TENMAUGIAY')";
             if(mysqli_query($conn, $query)){
                 echo "Thêm màu giày thành công.";

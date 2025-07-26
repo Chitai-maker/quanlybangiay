@@ -97,6 +97,7 @@ CREATE TABLE danhgia (
     ma_khachhang INT NOT NULL,
     magiay INT NOT NULL,
     danhgia INT CHECK (danhgia BETWEEN 1 and 5),
+    an BOOLEAN NOT NULL DEFAULT FALSE 
     binhluan TEXT,
     ngaydanhgia DATETIME NOT NULL,
     FOREIGN KEY (ma_khachhang) REFERENCES khachhang(ma_khachhang),
@@ -107,7 +108,7 @@ CREATE TABLE binhluandanhgia (
     ma_binhluan INT AUTO_INCREMENT PRIMARY KEY,
     ma_danhgia INT NOT NULL,
     ma_nhanvien INT,
-    ma_khachhang INT,
+    ma_khachhang INT,    
     noidung TEXT NOT NULL,
     thoigian DATETIME NOT NULL,
     FOREIGN KEY (ma_danhgia) REFERENCES danhgia(ma_danhgia),

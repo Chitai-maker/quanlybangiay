@@ -171,9 +171,25 @@ if (isset($_GET['masanpham'])) {
                         <div class="mt-4">
                             <h5>Bình luận của khách hàng</h5>
                             <?php
-                            $bl_query = "SELECT d.*, k.ten_khachhang FROM danhgia d 
-                 LEFT JOIN khachhang k ON d.ma_khachhang = k.ma_khachhang 
-                 WHERE d.magiay = '$magiay' ORDER BY d.ngaydanhgia DESC";
+                            $bl_query = "SELECT 
+    dg.ma_danhgia,
+    dg.ma_khachhang,
+    dg.magiay,
+    dg.danhgia,
+    dg.binhluan AS binhluan_danhgia,
+    dg.ngaydanhgia,
+    bl.ma_binhluan,
+    bl.ma_nhanvien,
+    bl.ma_khachhang AS nguoi_binhluan,
+    bl.noidung AS binhluan_phanhoi,
+    bl.thoigian AS thoigian_phanhoi,
+    kh.ten_khachhang
+FROM danhgia dg
+LEFT JOIN binhluandanhgia bl ON dg.ma_danhgia = bl.ma_danhgia
+JOIN khachhang kh ON dg.ma_khachhang = kh.ma_khachhang
+WHERE dg.an = 0 AND dg.magiay = '$magiay'
+ORDER BY dg.ngaydanhgia DESC, bl.thoigian ASC";
+
                             $bl_result = mysqli_query($conn, $bl_query);
                             if (mysqli_num_rows($bl_result) > 0) {
                                 while ($bl = mysqli_fetch_assoc($bl_result)) {
@@ -188,64 +204,48 @@ if (isset($_GET['masanpham'])) {
                                         }
                                     }
                                     echo '<br>';
-                                    echo nl2br(htmlspecialchars($bl['binhluan']));
-
-                                    // Truy vấn phản hồi của người bán cho đánh giá này
-                                    $madanhgia = $bl['ma_danhgia'];
-                                    $reply_sql = "SELECT b.*, n.ten_nhanvien FROM binhluandanhgia b
-                                                LEFT JOIN nhanvien n ON b.ma_nhanvien = n.ma_nhanvien
-                                                WHERE b.ma_danhgia = '$madanhgia'
-                                                ORDER BY b.thoigian ASC";
-                                    $reply_result = mysqli_query($conn, $reply_sql);
-                                    if (mysqli_num_rows($reply_result) > 0) {
-                                        while ($reply = mysqli_fetch_assoc($reply_result)) {
-                                            echo '<div class="mt-2 p-2" style="background:#f8f9fa;border-radius:5px;">';
-                                            echo '<strong>Phản hồi của người bán</strong><br>';
-                                            echo '<span style="color:#333;">' . nl2br(htmlspecialchars($reply['noidung'])) . '</span>';
-                                            echo '<br><small class="text-muted">(' . htmlspecialchars($reply['ten_nhanvien'] ?? 'Admin') . ' - ' . $reply['thoigian'] . ')</small>';
-                                            echo '</div>';
-                                        }
-                                    }
-
+                                    echo nl2br(htmlspecialchars($bl['binhluan_danhgia']));
                                     echo '</div>';
                                 }
                             } else {
                                 echo '<div class="text-muted">Chưa có bình luận nào cho sản phẩm này.</div>';
                             }
+
                             ?>
                         </div>
                     </div>
                 </div>
-                <div class="container mt-5">
-                    <h3 class="text-center">Sản phẩm liên quan</h3>
-                    <div class="row">
-                        <?php
-                        // Truy vấn sản phẩm liên quan dựa trên maloaigiay
-                        $related_query = "SELECT * FROM giay WHERE maloaigiay = '" . $row['maloaigiay'] . "' AND magiay != '" . $magiay . "' LIMIT 4";
-                        $related_result = mysqli_query($conn, $related_query);
+            </div>
+            <div class="container mt-5">
+                <h3 class="text-center">Sản phẩm liên quan</h3>
+                <div class="row">
+                    <?php
+                    // Truy vấn sản phẩm liên quan dựa trên maloaigiay
+                    $related_query = "SELECT * FROM giay WHERE maloaigiay = '" . $row['maloaigiay'] . "' AND magiay != '" . $magiay . "' LIMIT 4";
+                    $related_result = mysqli_query($conn, $related_query);
 
-                        if (mysqli_num_rows($related_result) > 0) {
-                            while ($related_row = mysqli_fetch_assoc($related_result)) {
-                        ?>
-                                <div class="col-md-3" style="float: left;">
-                                    <div class="product">
-                                        <a href="sanpham.php?masanpham=<?php echo $related_row['magiay']; ?>">
-                                            <img src="../shopgiayadmin/anhgiay/<?php echo $related_row['anhminhhoa']; ?>" width="190px" height="200px" class="img-responsive" style="border-radius: 10px;">
-                                        </a>
-                                        <h6><?php echo $related_row['tengiay']; ?></h6>
-                                        <h6 class="text-danger">
-                                            <?php echo number_format($related_row['giaban'], 0, ',', '.'); ?> đ
-                                        </h6>
-                                    </div>
+                    if (mysqli_num_rows($related_result) > 0) {
+                        while ($related_row = mysqli_fetch_assoc($related_result)) {
+                    ?>
+                            <div class="col-md-3" style="float: left;">
+                                <div class="product">
+                                    <a href="sanpham.php?masanpham=<?php echo $related_row['magiay']; ?>">
+                                        <img src="../shopgiayadmin/anhgiay/<?php echo $related_row['anhminhhoa']; ?>" width="190px" height="200px" class="img-responsive" style="border-radius: 10px;">
+                                    </a>
+                                    <h6><?php echo $related_row['tengiay']; ?></h6>
+                                    <h6 class="text-danger">
+                                        <?php echo number_format($related_row['giaban'], 0, ',', '.'); ?> đ
+                                    </h6>
                                 </div>
-                        <?php
-                            }
-                        } else {
-                            echo "<p class='text-center'>Không có sản phẩm liên quan.</p>";
+                            </div>
+                    <?php
                         }
-                        ?>
-                    </div>
+                    } else {
+                        echo "<p class='text-center'>Không có sản phẩm liên quan.</p>";
+                    }
+                    ?>
                 </div>
+            </div>
         </body>
 
         </html>
